@@ -1,0 +1,25 @@
+{% extends '::account_base.html.twig' %}
+{% block body %}
+    <i>Reminder: you can add {{ max_keyword }} keywords per project.</i>
+    <br />
+    Please choose a project from the list below:
+    <div class="sep"></div>
+    <table class="table">
+        <tr>
+            <th>#</th>
+            <th>Project name</th>
+            <th>Keyword count</th>
+            <th>Category</th>
+            <th>Domain</th>
+        </tr>
+        {% for key, item in project_list %}
+            <tr>
+                <td>{{ key+1 }}</td>
+                <td><a href="{{ path('account_keywords') }}?hash={{ item.project_hash }}">{{ item.project_name }}</a></td>
+                <td>{{ item.cnt_keywords }}</td>
+                <td>{{ item.category_name }}</td>
+                <td>{{ item.project_domain }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

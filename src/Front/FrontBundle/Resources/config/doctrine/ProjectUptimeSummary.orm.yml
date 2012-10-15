@@ -1,0 +1,39 @@
+Front\FrontBundle\Entity\ProjectUptimeSummary:
+  type: entity
+  table: project_uptime_summary
+  fields:
+    id:
+      id: true
+      type: integer
+      unsigned: false
+      nullable: false
+      generator:
+        strategy: IDENTITY
+    summaryDate:
+      type: date
+      nullable: true
+      column: summary_date
+    summary:
+      type: text
+      nullable: true
+    totalDown:
+      type: integer
+      unsigned: false
+      nullable: true
+      column: total_down
+    totalUp:
+      type: integer
+      unsigned: false
+      nullable: true
+      column: total_up
+  manyToOne:
+    project:
+      targetEntity: Project
+      cascade: {  }
+      mappedBy: null
+      inversedBy: null
+      joinColumns:
+        project_id:
+          referencedColumnName: id
+      orphanRemoval: false
+  lifecycleCallbacks: {  }

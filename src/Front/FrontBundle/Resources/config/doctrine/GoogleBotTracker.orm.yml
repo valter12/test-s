@@ -1,0 +1,85 @@
+Front\FrontBundle\Entity\GoogleBotTracker:
+  type: entity
+  table: google_bot_tracker
+  fields:
+    id:
+      id: true
+      type: integer
+      unsigned: false
+      nullable: false
+      generator:
+        strategy: IDENTITY
+    param1:
+      type: string
+      length: 100
+      fixed: false
+      nullable: true
+      column: param_1
+    param2:
+      type: string
+      length: 100
+      fixed: false
+      nullable: true
+      column: param_2
+    param3:
+      type: string
+      length: 100
+      fixed: false
+      nullable: true
+      column: param_3
+    param4:
+      type: string
+      length: 100
+      fixed: false
+      nullable: true
+      column: param_4
+    param5:
+      type: string
+      length: 100
+      fixed: false
+      nullable: true
+      column: param_5
+    param6:
+      type: string
+      length: 100
+      fixed: false
+      nullable: true
+      column: param_6
+    param7:
+      type: string
+      length: 100
+      fixed: false
+      nullable: true
+      column: param_7
+    param8:
+      type: string
+      length: 100
+      fixed: false
+      nullable: true
+      column: param_8
+    param9:
+      type: string
+      length: 100
+      fixed: false
+      nullable: true
+      column: param_9
+    param10:
+      type: string
+      length: 100
+      fixed: false
+      nullable: true
+      column: param_10
+    added:
+      type: datetime
+      nullable: true
+  manyToOne:
+    project:
+      targetEntity: Project
+      cascade: {  }
+      mappedBy: null
+      inversedBy: null
+      joinColumns:
+        project_id:
+          referencedColumnName: id
+      orphanRemoval: false
+  lifecycleCallbacks: {  }

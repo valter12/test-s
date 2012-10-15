@@ -1,0 +1,25 @@
+Front\FrontBundle\Entity\Ips:
+  type: entity
+  table: IPs
+  fields:
+    id:
+      id: true
+      type: integer
+      unsigned: false
+      nullable: false
+      generator:
+        strategy: IDENTITY
+    ipServer:
+      type: string
+      length: 150
+      fixed: false
+      nullable: true
+      column: ip_server
+    lastUsed:
+      type: datetime
+      nullable: true
+      column: last_used
+    added:
+      type: date
+      nullable: true
+  lifecycleCallbacks: {  }

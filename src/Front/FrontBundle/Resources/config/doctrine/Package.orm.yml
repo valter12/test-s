@@ -1,0 +1,28 @@
+Front\FrontBundle\Entity\Package:
+  type: entity
+  table: package
+  fields:
+    id:
+      id: true
+      type: integer
+      unsigned: false
+      nullable: false
+      generator:
+        strategy: IDENTITY
+    packageName:
+      type: string
+      length: 45
+      fixed: false
+      nullable: true
+      column: package_name
+    packagePrice:
+      type: integer
+      unsigned: false
+      nullable: true
+      column: package_price
+    isActive:
+      type: integer
+      unsigned: false
+      nullable: true
+      column: is_active
+  lifecycleCallbacks: {  }

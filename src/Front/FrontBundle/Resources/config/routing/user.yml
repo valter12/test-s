@@ -1,0 +1,30 @@
+user:
+    pattern:  /
+    defaults: { _controller: "FrontFrontBundle:User:index" }
+
+user_show:
+    pattern:  /{id}/show
+    defaults: { _controller: "FrontFrontBundle:User:show" }
+
+user_new:
+    pattern:  /new
+    defaults: { _controller: "FrontFrontBundle:User:new" }
+
+user_create:
+    pattern:  /create
+    defaults: { _controller: "FrontFrontBundle:User:create" }
+    requirements: { _method: post }
+
+user_edit:
+    pattern:  /{id}/edit
+    defaults: { _controller: "FrontFrontBundle:User:edit" }
+
+user_update:
+    pattern:  /{id}/update
+    defaults: { _controller: "FrontFrontBundle:User:update" }
+    requirements: { _method: post }
+
+user_delete:
+    pattern:  /{id}/delete
+    defaults: { _controller: "FrontFrontBundle:User:delete" }
+    requirements: { _method: post }

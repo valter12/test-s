@@ -1,0 +1,33 @@
+{% extends '::account_base.html.twig' %}
+{% block body %}
+    Project category list
+    <div class="sep"></div>
+    <a href="javascript:;" onclick="addProjectCategoryModal();" class="btn btn-success">Add category</a>
+    <div class="sep"></div>
+    <table class="table">
+        <tr>
+            <th>#</th>
+            <th>Category name</th>
+            <th>Operations</th>
+        </tr>
+        {% for key, item in categories_list %}
+            <tr>
+                <td>{{ key+1 }}</td>
+                <td>{{ item.category_name }}</td>
+                <td>
+                    <a href="javascript:;" onclick="showModifyModal('{{ item.id }}')">Modify</a>
+                    {% if item.is_generic != 1 %}
+                        <br />
+                        <a href="{{ path('account_delete_project_category') }}?category_id={{ item.id }}" onclick="return confirm('Please confirm you want to delete this project category. (The projects, keywords and all statistics associated with it will be deleted also)')">Delete</a>
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+    <a href="javascript:;" onclick="addProjectCategoryModal();" class="btn btn-success">Add category</a>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('js/bootstrap-modal.js') }}"></script>
+    <script src="{{ asset('js/pages/project-category.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,95 @@
+Front\FrontBundle\Entity\TemporaryKeyword:
+  type: entity
+  table: temporary_keyword
+  fields:
+    id:
+      id: true
+      type: integer
+      unsigned: false
+      nullable: false
+      generator:
+        strategy: IDENTITY
+    keywordId:
+      type: integer
+      unsigned: false
+      nullable: true
+      column: keyword_id
+    keyword:
+      type: string
+      length: 100
+      fixed: false
+      nullable: true
+    googlePosition:
+      type: integer
+      unsigned: false
+      nullable: true
+      column: google_position
+    bingPosition:
+      type: integer
+      unsigned: false
+      nullable: true
+      column: bing_position
+    yahooPosition:
+      type: integer
+      unsigned: false
+      nullable: true
+      column: yahoo_position
+    competitorId:
+      type: integer
+      unsigned: false
+      nullable: true
+      column: competitor_id
+    ipServer:
+      type: string
+      length: 150
+      fixed: false
+      nullable: true
+      column: ip_server
+    instanceId:
+      type: integer
+      unsigned: false
+      nullable: true
+      column: instance_id
+    domainName:
+      type: string
+      length: 200
+      fixed: false
+      nullable: true
+      column: domain_name
+    pageLinkGoogle:
+      type: string
+      length: 500
+      fixed: false
+      nullable: true
+      column: page_link_google
+    pageLinkBing:
+      type: string
+      length: 500
+      fixed: false
+      nullable: true
+      column: page_link_bing
+    pageLinkYahoo:
+      type: string
+      length: 500
+      fixed: false
+      nullable: true
+      column: page_link_yahoo
+    googleDescription:
+      type: string
+      length: 500
+      fixed: false
+      nullable: true
+      column: google_description
+    bingDescription:
+      type: string
+      length: 500
+      fixed: false
+      nullable: true
+      column: bing_description
+    yahooDescription:
+      type: string
+      length: 500
+      fixed: false
+      nullable: true
+      column: yahoo_description
+  lifecycleCallbacks: {  }

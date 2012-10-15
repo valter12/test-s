@@ -1,0 +1,22 @@
+Front\FrontBundle\Entity\TrialDomain:
+  type: entity
+  table: trial_domain
+  repositoryClass: Front\FrontBundle\Repository\TrialDomainRepository
+  fields:
+    id:
+      id: true
+      type: integer
+      unsigned: false
+      nullable: false
+      generator:
+        strategy: IDENTITY
+    domainName:
+      type: string
+      length: 250
+      fixed: false
+      nullable: true
+      column: domain_name
+    added:
+      type: datetime
+      nullable: true
+  lifecycleCallbacks: {  }

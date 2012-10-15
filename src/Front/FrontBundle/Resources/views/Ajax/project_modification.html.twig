@@ -1,0 +1,45 @@
+<div class="modal hide" id="modal_box">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">×</button>
+        {% if action == 'new' %}
+            <h3>Create project</h3>
+        {% else %}
+            <h3>Modify project "{{ project_data.project_name }}"</h3>
+        {% endif %}
+    </div>
+    <form action="{{ path('account_execute_modify_project') }}" method="post" style="margin:0">
+        <div class="modal-body">
+            <label for="project_category">Project category</label>
+            <select name="project_category" id="project_category">
+                {% for item in project_categories %}
+                    <option value="{{ item.id }}" {% if project_data.category_id==item.id %}selected="selected"{% endif %}>{{ item.category_name }}</option>
+                {% endfor %}
+            </select>
+            <div class="sep"></div>
+            <label for="project_name">Project name</label>
+            <input type="text" name="project_name" value="{{ project_data.project_name }}" id="project_name" required="required">
+            {% if action == 'new' %}
+                <div class="sep"></div>
+                <label for="project_domain">Project domain</label>
+                <input type="url" name="project_domain" value="" id="project_domain" class="popup_focus" data-original-title="ATTENTION!" data-content="Please double check the domain name, after the system will begin to track it you will not be able to change it." required="required" >
+            {% endif %}
+            <div class="sep"></div>
+            <label for="project_desc">Project description</label>
+            <textarea name="project_desc" id="project_desc">{{ project_data.project_description }}</textarea>
+            <div class="sep"></div>
+            <input type="hidden" name="project_hash" value="{{ project_data.project_hash }}">
+            <input type="hidden" name="action" value="{{ action }}">
+        </div>
+        <div class="modal-footer">
+            <a href="#" class="btn" data-dismiss="modal">Close</a>
+            <input type="submit" class="btn btn-primary" value="Save changes">
+        </div>
+    </form>
+</div>
+<script>
+    jQuery(document).ready(function(){
+        $('.popup_focus').popover({
+            'trigger': 'focus'
+        });
+    });
+</script>

@@ -1,0 +1,38 @@
+Front\FrontBundle\Entity\Competitor:
+  type: entity
+  table: competitor
+  repositoryClass: Front\FrontBundle\Repository\CompetitorRepository
+  fields:
+    id:
+      id: true
+      type: integer
+      unsigned: false
+      nullable: false
+      generator:
+        strategy: IDENTITY
+    competitorName:
+      type: string
+      length: 200
+      fixed: false
+      nullable: true
+      column: competitor_name
+    competitorDomain:
+      type: string
+      length: 200
+      fixed: false
+      nullable: true
+      column: competitor_domain
+    added:
+      type: date
+      nullable: true
+  manyToOne:
+    project:
+      targetEntity: Project
+      cascade: {  }
+      mappedBy: null
+      inversedBy: null
+      joinColumns:
+        project_id:
+          referencedColumnName: id
+      orphanRemoval: false
+  lifecycleCallbacks: {  }

@@ -1,0 +1,7 @@
+FrontFrontBundle:
+    resource: "@FrontFrontBundle/Resources/config/routing.yml"
+    prefix:   /
+
+FrontFrontBundle_user:
+    resource: "@FrontFrontBundle/Resources/config/routing/user.yml"
+    prefix:   /user

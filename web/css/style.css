@@ -1,0 +1,173 @@
+input, button::-moz-focus-inner {
+  border: 0 medium none;
+  outline : none; 
+}
+
+* {
+    outline: none;
+}
+.rows{
+    float: left;
+    padding-top: 203px;
+    width: 258px;
+}
+.pricing .item {
+    padding-left:20px;
+    border-top:1px solid #CCCCCC;
+    color:#333333;
+    height: 50px;
+    line-height:50px;
+}
+.rows .item {
+    text-align: right;
+}
+.item:first-child{
+    border-top:medium none;
+}
+.card {
+  background: none repeat scroll 0 0 #FFFFFF;
+  border-radius: 30px 30px 10px 10px;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.4);
+  float: left;
+  font-size: 14px;
+  line-height: normal;
+  margin-left: 14px;
+  width: 220px;
+  margin-top: 63px;
+}
+.card .top {
+  background: none repeat scroll 0 0 #333333;
+  border-top-left-radius: 30px;
+  border-top-right-radius: 30px;
+  box-shadow: none;
+  color: #EEEEEE;
+  padding-top: 10px;
+}
+.card .description {
+  font-size: 12px;
+  height: 45px;
+}
+.card .price {
+  height: 45px;
+  margin-top: 0;
+  text-align: center;
+}
+.price .currency {
+  display: inline-block;
+  font-size: 18px;
+  padding-left: 20px;
+  vertical-align: top;
+}
+.price .amount {
+  display: inline-block;
+  font-size: 40px;
+  letter-spacing: -3px;
+  line-height: 35px;
+  vertical-align: middle;
+}
+.price .period {
+  display: inline-block;
+  font-size: 12px;
+  vertical-align: bottom;
+}
+.card .select {
+  margin-top: 10px;
+  text-align: center;
+}
+a.button {
+  background-color: #9FD968;
+  background-image: -moz-linear-gradient(center top , #FFDA80 0%, #FF7C00 100%);
+  border: 1px solid #999999;
+  border-radius: 26px 26px 26px 26px;
+  color: #000000;
+  display: inline-block;
+  font-size: 15px;
+  font-weight: bold;
+  height: 20px;
+  line-height: 20px;
+  padding: 8px 18px;
+  text-decoration: none;
+  white-space: nowrap;
+}
+a.button:hover {
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.6);
+}
+.card h2 {
+  color: #EEEEEE;
+  height: 40px;
+  margin: 0;
+  text-align: center;
+}
+.highlight {
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.8);
+  width: 240px;
+}
+.highlight .top {
+  background: none repeat scroll 0 0 #000000;
+}
+.pricing .item, .card .description, .card .price2 {
+  padding-left: 20px;
+}
+.sep{
+    display: block;
+    height: 10px;
+    clear: both;
+}
+tr.data_tr:not(:first-child) {
+    border-top:2px solid #FF5D5D;
+}
+tr.data_tr:first-child {
+    border-top:0;
+}
+.keyword_td_hover{
+    background-color: #B4F1FF !important;
+}
+.table_no_hover td, .table_no_hover th, .table td, .table th {
+    text-align: center !important;
+    white-space: nowrap;
+}
+.uptime_UP, .uptime_DOWN {
+    height:12px;
+    float:left;
+}
+.uptime_UP{
+    background-color:#48D863;
+}
+.uptime_DOWN{
+    background-color:#D02B28;
+}
+.uptime_all{
+    background-color:#48D863;
+    height:12px;
+    width:300px;
+}
+.dropdown-menu li{
+    text-align: left !important;
+}
+.font_seo_links{
+    font-size: 10px;
+}
+.report_list li{
+    list-style-type: none !important;
+    margin-bottom: 5px;
+}
+.report_item{
+    background-color: #CECECE;
+    padding: 10px;
+}
+.right{
+    float: right;
+}
+.report_detailed{
+    display: none;
+    margin-left: 25px;
+    margin-top: 10px;
+}
+.report_subdetails{
+    display: none;
+}
+.dotted{
+    height: 1px;
+    display: block;
+    border-top: 1px dashed #000;
+}

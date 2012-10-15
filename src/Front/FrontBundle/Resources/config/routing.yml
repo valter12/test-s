@@ -1,0 +1,138 @@
+captcha:
+    pattern: /captcha
+    defaults: { _controller: FrontFrontBundle:Default:captcha }
+
+homepage:
+    pattern:  /
+    defaults: { _controller: FrontFrontBundle:Default:homepage }
+    
+plans:
+    pattern:  /plans
+    defaults: { _controller: FrontFrontBundle:Default:plans }
+
+login_register:
+  pattern: /login-register
+  defaults: { _controller: FrontFrontBundle:User:loginRegister }
+
+execute_login:
+  pattern: /execute-login
+  defaults: { _controller: FrontFrontBundle:User:executeLogin }
+
+execute_register_1:
+  pattern: /register
+  defaults: { _controller: FrontFrontBundle:User:registerStep2 }
+
+register_step_3:
+  pattern: /register-account-data
+  defaults: { _controller: FrontFrontBundle:User:registerStep3 }
+  
+email_activation:
+  pattern: /activate-email
+  defaults: { _controller: FrontFrontBundle:User:activateEmail }
+  
+resend_activation_hash:
+  pattern: /resend-activation-hash
+  defaults: { _controller: FrontFrontBundle:User:resendActivationEmail }
+  
+password_recovery:
+  pattern: /password-recovery
+  defaults: { _controller: FrontFrontBundle:User:passwordRecovery }
+ 
+account_dashboard:
+  pattern: /dashboard
+  defaults: { _controller: FrontFrontBundle:Account:dashboard }
+
+# projects
+account_projects:
+  pattern: /projects
+  defaults: { _controller: FrontFrontBundle:Project:projects }
+  
+account_delete_project:
+  pattern: /delete-project
+  defaults: { _controller: FrontFrontBundle:Project:deleteProject }
+
+account_execute_modify_project:
+  pattern: /execute-modify-project
+  defaults: { _controller: FrontFrontBundle:Project:executeModify }
+
+# ajax
+ajax:
+  pattern: /ajax
+  defaults: { _controller: FrontFrontBundle:Ajax:ajax }
+
+# project category
+account_project_categories:
+  pattern: /project-categories
+  defaults: { _controller: FrontFrontBundle:ProjectCategory:categories }
+  
+account_delete_project_category:
+  pattern: /delete-project-category
+  defaults: { _controller: FrontFrontBundle:ProjectCategory:deleteProjectCategory }
+  
+account_modify_add_project_category:
+  pattern: /add-modify-category
+  defaults: { _controller: FrontFrontBundle:ProjectCategory:executeAddModifyCategory }
+ 
+# keywords
+account_keywords:
+  pattern: /keywords
+  defaults: { _controller: FrontFrontBundle:Keyword:keywords }
+  
+account_execute_add_keywords:
+  pattern: /execute-add-keywords
+  defaults: { _controller: FrontFrontBundle:Keyword:addKeywords }
+  
+account_delete_keyword:
+  pattern: /delete-keyword
+  defaults: { _controller: FrontFrontBundle:Keyword:deleteKeyword }
+
+account_execute_modify_keyword:
+  pattern: /execute-modify-keyword
+  defaults: { _controller: FrontFrontBundle:Keyword:executeModify }
+  
+# keyword track
+account_keyword_stats:
+  pattern: /keyword-stats
+  defaults: { _controller: FrontFrontBundle:KeywordTrack:keywordStats }
+
+# competitors
+account_competitors:
+  pattern: /project-competitors
+  defaults: { _controller: FrontFrontBundle:Competitor:projectCompetitors }
+
+account_delete_project_competitor:
+  pattern: /delete-competitor
+  defaults: { _controller: FrontFrontBundle:Competitor:deleteCompetitor }
+
+account_execute_modify_project_competitor:
+  pattern: /execute-modify-project-competitor
+  defaults: { _controller: FrontFrontBundle:Competitor:executeModify }
+
+# charts
+account_keyword_charts:
+  pattern: /keyword-chart
+  defaults: { _controller: FrontFrontBundle:Chart:keywordChart }
+
+# uptime
+account_uptime:
+  pattern: /uptime
+  defaults: { _controller: FrontFrontBundle:Uptime:uptime }
+
+# keyword note
+account_delete_keyword_note:
+  pattern: /delete-keyword-note
+  defaults: { _controller: FrontFrontBundle:KeywordNote:deleteKeywordNote }
+  
+account_modify_add_keyoword_note:
+  pattern: /add-modify-keyword-note
+  defaults: { _controller: FrontFrontBundle:KeywordNote:executeAddModifyNote }
+
+# project report
+account_report_list:
+  pattern: /report-list
+  defaults: { _controller: FrontFrontBundle:ProjectReport:reportList }
+
+account_modify_add_report:
+  pattern: /add-modify-report
+  defaults: { _controller: FrontFrontBundle:ProjectReport:addModify }
+  

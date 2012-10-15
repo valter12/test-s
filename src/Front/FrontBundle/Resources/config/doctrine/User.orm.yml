@@ -1,0 +1,93 @@
+Front\FrontBundle\Entity\User:
+  type: entity
+  table: user
+  repositoryClass: Front\FrontBundle\Repository\UserRepository
+  fields:
+    id:
+      id: true
+      type: integer
+      unsigned: false
+      nullable: false
+      generator:
+        strategy: IDENTITY
+    email:
+      type: string
+      length: 50
+      fixed: false
+      nullable: true
+    fName:
+      type: string
+      length: 50
+      fixed: false
+      nullable: true
+      column: f_name
+    lName:
+      type: string
+      length: 50
+      fixed: false
+      nullable: true
+      column: l_name
+    pass:
+      type: string
+      length: 45
+      fixed: false
+      nullable: true
+    hasActivatedEmail:
+      type: integer
+      unsigned: false
+      nullable: true
+      column: has_activated_email
+    activationHash:
+      type: string
+      length: 50
+      fixed: false
+      nullable: true
+      column: activation_hash
+    hasPayed:
+      type: integer
+      unsigned: false
+      nullable: true
+      column: has_payed
+    isDeleted:
+      type: integer
+      unsigned: false
+      nullable: true
+      column: is_deleted
+    secretHash:
+      type: string
+      length: 15
+      fixed: false
+      nullable: true
+      column: secret_hash
+    nextPayDate:
+      type: date
+      nullable: true
+      column: next_pay_date
+    hasCompletedProfile:
+      type: integer
+      unsigned: false
+      nullable: true
+      column: has_completed_profile
+    isTrial:
+      type: integer
+      unsigned: false
+      nullable: true
+      column: is_trial
+    trialStart:
+      type: date
+      nullable: true
+      column: trial_start
+    added:
+      type: datetime
+      nullable: true
+  manyToOne:
+    package:
+      targetEntity: Package
+      cascade: {  }
+      mappedBy: null
+      inversedBy: null
+      joinColumns:
+        package_id:
+          referencedColumnName: id
+      orphanRemoval: false
+  lifecycleCallbacks: {  }

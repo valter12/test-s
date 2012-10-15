@@ -1,0 +1,41 @@
+Front\FrontBundle\Entity\BackLink:
+  type: entity
+  table: back_link
+  fields:
+    id:
+      id: true
+      type: integer
+      unsigned: false
+      nullable: false
+      generator:
+        strategy: IDENTITY
+    googleBackLinks:
+      type: integer
+      unsigned: false
+      nullable: true
+      column: google_back_links
+    bingBackLinks:
+      type: integer
+      unsigned: false
+      nullable: true
+      column: bing_back_links
+    yahooBackLinks:
+      type: integer
+      unsigned: false
+      nullable: true
+      column: yahoo_back_links
+    checkDate:
+      type: date
+      nullable: true
+      column: check_date
+  manyToOne:
+    project:
+      targetEntity: Project
+      cascade: {  }
+      mappedBy: null
+      inversedBy: null
+      joinColumns:
+        project_id:
+          referencedColumnName: id
+      orphanRemoval: false
+  lifecycleCallbacks: {  }

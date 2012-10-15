@@ -1,0 +1,23 @@
+<div class="modal hide" id="modal_box">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">×</button>
+        {% if action == 'new' %}
+            <h3>Create project category</h3>
+        {% else %}
+            <h3>Modify project category "{{ category_data.category_name }}"</h3>
+        {% endif %}
+    </div>
+    <form action="{{ path('account_modify_add_project_category') }}" method="post" style="margin:0">
+        <div class="modal-body">
+            <label for="category_name">Category name</label>
+            <input type="text" name="category_name" value="{{ category_data.category_name }}" id="category_name" required="required">
+            <div class="sep"></div>
+            <input type="hidden" name="category_id" value="{{ category_data.id }}">
+            <input type="hidden" name="action" value="{{ action }}">
+        </div>
+        <div class="modal-footer">
+            <a href="#" class="btn" data-dismiss="modal">Close</a>
+            <input type="submit" class="btn btn-primary" value="Save changes">
+        </div>
+    </form>
+</div>

@@ -1,0 +1,24 @@
+<?php
+
+namespace Front\FrontBundle\Repository;
+
+use Doctrine\ORM\EntityRepository;
+
+class ProjectReportRepository extends EntityRepository {
+
+    public function getReports($user_id, $project_hash) {
+        $query = "
+            SELECT *
+            FROM project_report pr, project p
+            WHERE p.user_id=:user_id
+            AND pr.project_id=p.id
+            AND p.project_hash=:project_hash
+        ";
+        $params[':user_id'] = $user_id;
+        $params[':project_hash'] = $project_hash;
+        $q = $this->getEntityManager()->getConnection()->executeQuery($query, $params);
+        $result = $q->fetchAll(2);
+        return $result;
+    }
+
+}

@@ -1,0 +1,47 @@
+Front\FrontBundle\Entity\Payments:
+  type: entity
+  table: payments
+  fields:
+    id:
+      id: true
+      type: integer
+      unsigned: false
+      nullable: false
+      generator:
+        strategy: IDENTITY
+    amount:
+      type: float
+      nullable: true
+    method:
+      type: string
+      length: 45
+      fixed: false
+      nullable: true
+    payedForNrMonths:
+      type: integer
+      unsigned: false
+      nullable: true
+      column: payed_for_nr_months
+    added:
+      type: datetime
+      nullable: true
+  manyToOne:
+    package:
+      targetEntity: Package
+      cascade: {  }
+      mappedBy: null
+      inversedBy: null
+      joinColumns:
+        package_id:
+          referencedColumnName: id
+      orphanRemoval: false
+    user:
+      targetEntity: User
+      cascade: {  }
+      mappedBy: null
+      inversedBy: null
+      joinColumns:
+        user_id:
+          referencedColumnName: id
+      orphanRemoval: false
+  lifecycleCallbacks: {  }

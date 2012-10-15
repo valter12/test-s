@@ -1,0 +1,21 @@
+Front\FrontBundle\Entity\Logs:
+  type: entity
+  table: logs
+  fields:
+    id:
+      id: true
+      type: integer
+      unsigned: false
+      nullable: false
+      generator:
+        strategy: IDENTITY
+    logMessage:
+      type: string
+      length: 5000
+      fixed: false
+      nullable: true
+      column: log_message
+    added:
+      type: datetime
+      nullable: true
+  lifecycleCallbacks: {  }

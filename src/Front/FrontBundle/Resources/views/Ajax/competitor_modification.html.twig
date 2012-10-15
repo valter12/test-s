@@ -1,0 +1,40 @@
+<div class="modal hide" id="modal_box">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">×</button>
+        {% if action == 'new' %}
+            <h3>Add competitor</h3>
+        {% else %}
+            <h3>Modify competitor "{{ competitor_data.competitor_name }}"</h3>
+        {% endif %}
+    </div>
+    <form action="{{ path('account_execute_modify_project_competitor') }}" method="post" style="margin:0">
+        <div class="modal-body">
+            Project name: {{ project_data.project_name }}
+            <div class="sep"></div>
+            <label for="competitor_name">Competitor name</label>
+            <input type="text" name="competitor_name" value="{% if competitor_data %}{{ competitor_data.competitor_name }}{% endif %}" id="competitor_name" required="required" >
+            {% if action == 'new' %}
+                <div class="sep"></div>
+                <label for="competitor_domain">Competitor domain</label>
+                <input type="text" name="competitor_domain" value="" id="competitor_domain" class="popup_focus" data-original-title="ATTENTION!" data-content="Please double check the domain name, after the system will begin to track it you will not be able to change it." required="required" >
+            {% endif %}
+            <div class="sep"></div>
+            <input type="hidden" name="project_hash" value="{{ project_data.project_hash }}">
+            <input type="hidden" name="action" value="{{ action }}">
+            {% if competitor_data %}
+                <input type="hidden" name="competitor_id" value="{{ competitor_data.id }}">
+            {% endif %}
+        </div>
+        <div class="modal-footer">
+            <a href="#" class="btn" data-dismiss="modal">Close</a>
+            <input type="submit" class="btn btn-primary" value="Save changes">
+        </div>
+    </form>
+</div>
+<script>
+    jQuery(document).ready(function(){
+        $('.popup_focus').popover({
+            'trigger': 'focus'
+        });
+    });
+</script>

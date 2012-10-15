@@ -1,0 +1,30 @@
+Front\FrontBundle\Entity\EmailingSettings:
+  type: entity
+  table: emailing_settings
+  fields:
+    id:
+      id: true
+      type: integer
+      unsigned: false
+      nullable: false
+      generator:
+        strategy: IDENTITY
+    frequency:
+      type: integer
+      unsigned: false
+      nullable: true
+    lastSent:
+      type: date
+      nullable: true
+      column: last_sent
+  manyToOne:
+    user:
+      targetEntity: User
+      cascade: {  }
+      mappedBy: null
+      inversedBy: null
+      joinColumns:
+        user_id:
+          referencedColumnName: id
+      orphanRemoval: false
+  lifecycleCallbacks: {  }

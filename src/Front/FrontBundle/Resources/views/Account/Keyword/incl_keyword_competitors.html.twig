@@ -1,0 +1,11 @@
+{% if competitors %}
+    <div>
+        <select name="competitor_list" id="competitors">
+            {% for competitor in competitors %}
+            <option value="{{ competitor.id }}">{{ competitor.competitor_name }}</option>
+            {% endfor %}
+        </select>
+        <a href="javascript:;" onclick="addCompetitor()"><i class="icon-plus"></i> add competitor</a> 
+        <span id="competitor_containter"></span>
+    </div>
+{% endif %}

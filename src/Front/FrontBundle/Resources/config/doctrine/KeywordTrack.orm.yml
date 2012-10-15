@@ -1,0 +1,122 @@
+Front\FrontBundle\Entity\KeywordTrack:
+  type: entity
+  table: keyword_track
+  repositoryClass: Front\FrontBundle\Repository\KeywordTrackRepository
+  fields:
+    id:
+      id: true
+      type: bigint
+      nullable: false
+      generator:
+        strategy: IDENTITY
+    trackDate:
+      type: datetime
+      nullable: true
+      column: track_date
+    googlePosition:
+      type: integer
+      unsigned: false
+      nullable: true
+      column: google_position
+    bingPosition:
+      type: integer
+      unsigned: false
+      nullable: true
+      column: bing_position
+    yahooPosition:
+      type: integer
+      unsigned: false
+      nullable: true
+      column: yahoo_position
+    googleChange:
+      type: integer
+      unsigned: false
+      nullable: true
+      column: google_change
+    bingChange:
+      type: integer
+      unsigned: false
+      nullable: true
+      column: bing_change
+    yahooChange:
+      type: integer
+      unsigned: false
+      nullable: true
+      column: yahoo_change
+    pageLinkGoogle:
+      type: string
+      length: 500
+      fixed: false
+      nullable: true
+      column: page_link_google
+    pageLinkBing:
+      type: string
+      length: 500
+      fixed: false
+      nullable: true
+      column: page_link_bing
+    pageLinkYahoo:
+      type: string
+      length: 500
+      fixed: false
+      nullable: true
+      column: page_link_yahoo
+    pageLinkGoogleChange:
+      type: integer
+      unsigned: false
+      nullable: true
+      column: page_link_google_change
+    pageLinkBingChange:
+      type: integer
+      unsigned: false
+      nullable: true
+      column: page_link_bing_change
+    pageLinkYahooChange:
+      type: integer
+      unsigned: false
+      nullable: true
+      column: page_link_yahoo_change
+    googleDescription:
+      type: string
+      length: 500
+      fixed: false
+      nullable: true
+      column: google_description
+    bingDescription:
+      type: string
+      length: 500
+      fixed: false
+      nullable: true
+      column: bing_description
+    yahooDescription:
+      type: string
+      length: 500
+      fixed: false
+      nullable: true
+      column: yahoo_description
+    googleDescriptionChange:
+      type: integer
+      unsigned: false
+      nullable: true
+      column: google_description_change
+    bingDescriptionChange:
+      type: integer
+      unsigned: false
+      nullable: true
+      column: bing_description_change
+    yahooDescriptionChange:
+      type: integer
+      unsigned: false
+      nullable: true
+      column: yahoo_description_change
+  manyToOne:
+    keyword:
+      targetEntity: Keyword
+      cascade: {  }
+      mappedBy: null
+      inversedBy: null
+      joinColumns:
+        keyword_id:
+          referencedColumnName: id
+      orphanRemoval: false
+  lifecycleCallbacks: {  }

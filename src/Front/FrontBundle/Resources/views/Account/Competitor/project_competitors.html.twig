@@ -1,0 +1,44 @@
+{% extends '::account_base.html.twig' %}
+{% block body %}
+    <div class="sep"></div>
+    <select name="" onchange="window.location='{{ path('account_competitors') }}?hash='+this.value">
+        {% for item in project_list %}
+            <option value="{{ item.project_hash }}" {% if app.request.get('hash')==item.project_hash %}selected="selected"{% endif %}>{{ item.project_name }}</option>
+        {% endfor %}
+    </select>
+    <br />
+    Competitors for "{{ project_data.project_name }}" project.
+    <br />
+    You currently have {{ project_competitors|length }} of possible {{ max_competitors }} competitors.
+    <div class="sep"></div>
+    <a href="javascript:;" onclick="addProjectCompetitorModal('{{ project_data.project_hash }}');" class="btn btn-success">Add competitor</a>
+    <div class="sep"></div>
+    <table class="table">
+        <tr>
+            <th>#</th>
+            <th>Competitor name</th>
+            <th>Competitor domain</th>
+            <th>Creation date</th>
+            <th>Operations</th>
+        </tr>
+        {% for key, item in project_competitors %}
+            <tr>
+                <td>{{ key+1 }}</td>
+                <td>{{ item.competitor_name }}</td>
+                <td>{{ item.competitor_domain }}</td>
+                <td>{{ item.added }}</td>
+                <td>
+                    <a href="javascript:;" onclick="showModifyModal('{{ item.id }}', '{{ project_data.project_hash }}')">Modify</a>
+                    <br />
+                    <a href="{{ path('account_delete_project_competitor') }}?id={{ item.id }}" onclick="return confirm('Please confirm you want to delete this competitor. (All statistics associated with it will be deleted also)')">Delete</a>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+    <a href="javascript:;" onclick="addProjectCompetitorModal('{{ project_data.project_hash }}');" class="btn btn-success">Add competitor</a>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('js/bootstrap-modal.js') }}"></script>
+    <script src="{{ asset('js/pages/competitor.js') }}"></script>
+{% endblock %}

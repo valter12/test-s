@@ -1,0 +1,45 @@
+{% extends '::account_base.html.twig' %}
+{% block body %}
+    <h1>Report list</h1>
+    <br />
+    Choose project: 
+    <select name="hash" onchange="window.location='{{ path('account_report_list') }}?hash='+this.value">
+        <option value="0">[All projects]</option>
+        {% for item in project_list %}
+            <option value="{{ item.project_hash }}" {% if app.request.get('hash')==item.project_hash %}selected="selected"{% endif %}>{{ item.project_name }}</option>
+        {% endfor %}
+    </select>
+    <div class="sep"></div>
+    <a href="{{ path('account_modify_add_report') }}" class="btn btn-success">Create report</a>
+    <div class="sep"></div>
+    <table class="table">
+        <tr>
+            <th>Report title</th>
+            <th>Report description</th>
+            <th>Frequency</th>
+            <th>Next Report</th>
+            <th>Project</th>
+            <th>Actions</th>
+        </tr>
+        {% for key, item in reports %}
+            <tr>
+                <td>{{ item.report_title }}</td>
+                <td>{{ item.report_desc }}</td>
+                <td>{{ item.frequency }}</td>
+                <td>{{ item.last_sent }}</td>
+                <td>{{ item.added }}</td>
+                <td>{{ item.cnt_keywords }}</td>
+                <td>
+                    <a href="">Edit</a> |
+                    <a href="" onclick="return confirm('Please confirm');">Delete</a>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('js/bootstrap-modal.js') }}"></script>
+    <script src="{{ asset('js/bootstrap-dropdown.js') }}"></script>
+    <script src="{{ asset('js/pages/projects.js') }}"></script>
+{% endblock %}

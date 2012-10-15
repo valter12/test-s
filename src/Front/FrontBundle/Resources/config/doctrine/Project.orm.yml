@@ -1,0 +1,65 @@
+Front\FrontBundle\Entity\Project:
+  type: entity
+  table: project
+  repositoryClass: Front\FrontBundle\Repository\ProjectRepository
+  fields:
+    id:
+      id: true
+      type: integer
+      unsigned: false
+      nullable: false
+      generator:
+        strategy: IDENTITY
+    projectName:
+      type: string
+      length: 250
+      fixed: false
+      nullable: true
+      column: project_name
+    projectDescription:
+      type: string
+      length: 2000
+      fixed: false
+      nullable: true
+      column: project_description
+    projectDomain:
+      type: string
+      length: 200
+      fixed: false
+      nullable: true
+      column: project_domain
+    googleRankIdent:
+      type: string
+      length: 200
+      fixed: false
+      nullable: true
+      column: google_rank_ident
+    projectHash:
+      type: string
+      length: 15
+      fixed: false
+      nullable: true
+      column: project_hash
+    added:
+      type: datetime
+      nullable: true
+  manyToOne:
+    category:
+      targetEntity: ProjectCategory
+      cascade: {  }
+      mappedBy: null
+      inversedBy: null
+      joinColumns:
+        category_id:
+          referencedColumnName: id
+      orphanRemoval: false
+    user:
+      targetEntity: User
+      cascade: {  }
+      mappedBy: null
+      inversedBy: null
+      joinColumns:
+        user_id:
+          referencedColumnName: id
+      orphanRemoval: false
+  lifecycleCallbacks: {  }

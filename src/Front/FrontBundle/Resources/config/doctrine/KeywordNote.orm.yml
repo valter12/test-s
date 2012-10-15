@@ -1,0 +1,31 @@
+Front\FrontBundle\Entity\KeywordNote:
+  type: entity
+  table: keyword_note
+  repositoryClass: Front\FrontBundle\Repository\KeywordNoteRepository
+  fields:
+    id:
+      id: true
+      type: integer
+      unsigned: false
+      nullable: false
+      generator:
+        strategy: IDENTITY
+    note:
+      type: string
+      length: 1000
+      fixed: false
+      nullable: true
+    added:
+      type: datetime
+      nullable: true
+  manyToOne:
+    keyword:
+      targetEntity: Keyword
+      cascade: {  }
+      mappedBy: null
+      inversedBy: null
+      joinColumns:
+        keyword_id:
+          referencedColumnName: id
+      orphanRemoval: false
+  lifecycleCallbacks: {  }

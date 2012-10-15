@@ -1,0 +1,143 @@
+{% extends '::account_base.html.twig' %}
+{% block body %}
+    <div class="sep"></div>
+    {% include "FrontFrontBundle:Account:Keyword/incl_keyword_stats_filter.html.twig" %}
+    {% include "FrontFrontBundle:Account:Keyword/keyword_stats_pagination.html.twig" %}
+    <div class="sep"></div>
+    <a href="{{ path('account_keyword_charts') }}{{ chart_page }}&show_chart=1&all_search_engines=1">See chart for this page</a>
+    <div class="sep"></div>
+    <table class="table_no_hover">
+        <tr>
+            <th>Track date <a href="javascript:;" class="popup_hover_simple" data-original-title="Track date" data-content="The date and time when the keyword was tracked."><i class="icon-question-sign"></i></a></th>
+            <th>Competitor</th>
+            <th>Google <a href="javascript:;" class="popup_hover_simple" data-original-title="Position in search engines" data-content="Shows the position in a search engine and the fluctuations from last time."><i class="icon-question-sign"></i></a></th>
+            <th>Bing</th>
+            <th>Yahoo</th>
+            <th>Google link</th>
+            <th>Bing link</th>
+            <th>Yahoo link</th>
+            <th>Other changes</th>
+            <th>Options</th>
+        </tr>
+        {% set i = 0 %}
+        {% for date, item in keyword_stats %}
+            <tr class="data_tr">
+                <td rowspan="{{ item|length+1 }}">{{ date }}</td>
+                {% set additional_td = 'show' %}
+                {% for stats in item %}
+                        <td>{{ stats.competitor_name }}</td>
+                        <td {% if stats.google_change %}style="background-color:{% if stats.google_change > 0 %}#96FF47{% else %}#FFA5A5{% endif %}"{% endif %} parent_class="{{ stats.competitor_name|clear_class }}_google_change" rel="keyword_hover">
+                            {% if stats.project_added <= date %}
+                                {% if stats.google_position %}{{ stats.google_position }}{% else %}-{% endif %}
+                                {% if stats.google_change != 0 %}
+                                    /
+                                    {% if stats.google_change > 0 %}+{{ stats.google_change }}{% else %}{{ stats.google_change }}{% endif %}
+                                {% endif %}
+                            {% else %}
+                                <center><a href="javascript:;" class="site_not_tracker"><i class="icon-exclamation-sign"></i></a></center>
+                            {% endif %}
+                        </td>
+                        <td {% if stats.bing_change != 0 %}style="background-color:{% if stats.bing_change > 0 %}#96FF47{% else %}#FFA5A5{% endif %}"{% endif %} parent_class="{{ stats.competitor_name|clear_class }}_bing_change" rel="keyword_hover">
+                            {% if stats.project_added <= date %}
+                                {% if stats.bing_position %}{{ stats.bing_position }}{% else %}-{% endif %}
+                                {% if stats.bing_change != 0 %}
+                                    /
+                                    {% if stats.bing_change > 0 %}+{{ stats.bing_change }}{% elseif stats.bing_change < 0 %}{{ stats.bing_change }}{% endif %}
+                                {% endif %}
+                            {% else %}
+                                <center><a href="javascript:;" class="site_not_tracker"><i class="icon-exclamation-sign"></i></a></center>
+                            {% endif %}
+                        </td>
+                        <td {% if stats.yahoo_change != 0 %}style="background-color:{% if stats.yahoo_change > 0 %}#96FF47{% else %}#FFA5A5{% endif %}"{% endif %} parent_class="{{ stats.competitor_name|clear_class }}_yahoo_change" rel="keyword_hover">
+                            {% if stats.project_added <= date %}
+                                {% if stats.yahoo_position %}{{ stats.yahoo_position }}{% else %}-{% endif %}
+                                {% if stats.yahoo_change != 0 %}
+                                    /
+                                    {% if stats.yahoo_change > 0 %}+{{ stats.yahoo_change }}{% elseif stats.yahoo_change < 0 %}{{ stats.yahoo_change }}{% endif %}
+                                {% endif %}
+                            {% else %}
+                                <center><a href="javascript:;" class="site_not_tracker"><i class="icon-exclamation-sign"></i></a></center>
+                            {% endif %}
+                        </td>
+                        <td class="font_seo_links" parent_class="{{ stats.competitor_name|clear_class }}_page_link_google" rel="keyword_hover">
+                            {% if stats.project_added <= date %}
+                                {% if stats.page_link_google %}{{ stats.page_link_google }}{% else %}-{% endif %}
+                            {% else %}
+                                <center><a href="javascript:;" class="site_not_tracker"><i class="icon-exclamation-sign"></i></a></center>
+                            {% endif %}
+                        </td>
+                        <td class="font_seo_links" parent_class="{{ stats.competitor_name|clear_class }}_page_link_bing" rel="keyword_hover">
+                            {% if stats.project_added <= date %}
+                                {% if stats.page_link_bing %}{{ stats.page_link_bing }}{% else %}-{% endif %}
+                            {% else %}
+                                <center><a href="javascript:;" class="site_not_tracker"><i class="icon-exclamation-sign"></i></a></center>
+                            {% endif %}
+                        </td>
+                        <td class="font_seo_links" parent_class="{{ stats.competitor_name|clear_class }}_page_link_yahoo" rel="keyword_hover">
+                            {% if stats.project_added <= date %}
+                                {% if stats.page_link_yahoo %}{{ stats.page_link_yahoo }}{% else %}-{% endif %}
+                            {% else %}
+                                <center><a href="javascript:;" class="site_not_tracker"><i class="icon-exclamation-sign"></i></a></center>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if stats.google_description_change or stats.bing_description_change or stats.yahoo_description_change %}<a href="javascript:;" class="popup_hover_simple_left" onclick="getChangesModal({{ stats.track_id }}, {{ stats.competitor_id }})" data-original-title="Record contains changes" data-content="You have some changes on this record. Click the icon too see them."><i class="icon-asterisk"></i></a>{% else %}&nbsp;{% endif %}
+                        </td>
+                        {% if additional_td != '' %}
+                            <td width="160" style="padding:0" rowspan="{{ item|length+1 }}">
+                                <ul class="nav nav-pills" style="margin:0 auto;width:78px;">
+                                    <li class="dropdown">
+                                        <a class="dropdown-toggle" data-toggle="dropdown" href="javascript:;">
+                                            Options
+                                            <b class="caret"></b>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            <li><a href="javascript:;" onclick="notes('{{ app.request.get('keyword_id') }}', '{{ date }}')"><i class="icon-list-alt"></i>&nbsp;Record notes</a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </td>
+                            {% set additional_td = '' %}
+                        {% endif %}
+                    </tr>
+                    <tr>
+                {% endfor %}
+        {% endfor %}
+    </table>
+    {% include "FrontFrontBundle:Account:Keyword/keyword_stats_pagination.html.twig" %}
+    <script>
+        jQuery(document).ready(function(){
+            jQuery('.datepicker').datepicker({dateFormat: 'yy-mm-dd'});
+            jQuery('td[rel=keyword_hover]').hover(function(){
+                jQuery('td[rel=keyword_hover]').removeClass('keyword_td_hover');
+                var class_name = jQuery(this).attr('parent_class');
+                jQuery('td[parent_class='+class_name+']').addClass('keyword_td_hover');
+            })
+        });
+    </script>
+{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="../css/jquery-ui-1.8.22.custom.css" rel="stylesheet" type="text/css" />
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('js/bootstrap-modal.js') }}"></script>
+    <script src="{{ asset('js/jquery-ui-1.8.22.custom.min_datepicker.js') }}"></script>
+    <script src="{{ asset('js/bootstrap-dropdown.js') }}"></script>
+    <script src="{{ asset('js/pages/keyword_stats.js') }}"></script>
+{% endblock %}
+{% block inline_javascripts %}
+    <script>
+        {% for item in app.request.get('competitor_ids') %}
+            addCompetitor({{ item }});
+        {% endfor %}
+        jQuery(document).ready(function() {
+            jQuery('.site_not_tracker').attr('data-original-title', 'No data');
+            jQuery('.site_not_tracker').attr('data-content', 'This competitor was added after this date. So we have no track data for this date.');
+            jQuery('.site_not_tracker').popover({
+                trigger: 'hover'
+            });
+        })
+    </script>
+{% endblock %}

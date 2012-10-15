@@ -1,0 +1,40 @@
+{% extends '::account_base.html.twig' %}
+{% block body %}
+    <div class="sep"></div>
+    <select name="" onchange="window.location='{{ path('account_uptime') }}?hash='+this.value">
+        {% for item in project_list %}
+            <option value="{{ item.project_hash }}" {% if app.request.get('hash')==item.project_hash %}selected="selected"{% endif %}>{{ item.project_name }}</option>
+        {% endfor %}
+    </select>
+    <br />
+    Uptime stats for "{{ project_data.project_name }}" project.
+    <div class="sep"></div>
+    <table>
+            <tr>
+                <th>Date</th>
+                <th>&nbsp;</th>
+                <th align="right">Total offline</th>
+            </tr>
+        {% for key, item in project_uptime %}
+            <tr>
+                <td width="100">{{ item.summary_date }}</td>
+                <td>
+                    <div class="uptime_all">
+                        {% for summary_data in item.summary %}
+                            <div class="uptime_{% if summary_data.site_status=='DOWN' %}UP {% else %}DOWN tooltip_el{% endif %}" data-original-title="Site down between {{ summary_data.between_hours }}" style="width:{{ summary_data.width_percent }}%"></div>
+                        {% endfor %}
+                    </div>
+                </td>
+                <td width="100" align="right">
+                    {{ item.total_down }} hours ({{ item.total_down_percent }}%)
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('js/bootstrap-tooltip.js') }}"></script>
+    <script src="{{ asset('js/jquery-ui-1.8.22.custom.min_datepicker.js') }}"></script>
+    <script src="{{ asset('js/pages/project_uptime.js') }}"></script>
+{% endblock %}

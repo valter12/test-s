@@ -1,0 +1,59 @@
+<div class="modal hide" id="modal_box">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">×</button>
+        <h3>You have changes on this track item:</h3>
+    </div>
+    <div class="modal-body">
+        {% if changes[0]['google_description_change'] %}
+            <span class="label label-success">Google description</span>
+            <table width="100%">
+                <tr>
+                    <td width="50%" valign="top">
+                        <h5>Before</h5>
+                        {{ changes[1]['google_description'] }}
+                    </td>
+                    <td width="50%" valign="top">
+                        <h5>After</h5>
+                        {{ changes[0]['google_description'] }}
+                    </td>
+                </tr>
+            </table>
+            <div class="sep"></div>
+        {% endif %}
+        {% if changes[0]['bing_description_change'] %}
+            <span class="label label-success">Bing description</span>
+            <table width="100%">
+                <tr>
+                    <td width="50%" valign="top">
+                        <h5>Before</h5>
+                        {{ changes[1]['bing_description'] }}
+                    </td>
+                    <td width="50%" valign="top">
+                        <h5>After</h5>
+                        {{ changes[0]['bing_description'] }}
+                    </td>
+                </tr>
+            </table>
+            <div class="sep"></div>
+        {% endif %}
+        {% if changes[0]['yahoo_description_change'] %}
+            <span class="label label-success">Yahoo description</span>
+            <table width="100%">
+                <tr>
+                    <td width="50%" valign="top">
+                        <h5>Before</h5>
+                        {{ changes[1]['yahoo_description'] }}
+                    </td>
+                    <td width="50%" valign="top">
+                        <h5>After</h5>
+                        {{ changes[0]['yahoo_description'] }}
+                    </td>
+                </tr>
+            </table>
+            <div class="sep"></div>
+        {% endif %}
+    </div>
+    <div class="modal-footer">
+        <a href="#" class="btn" data-dismiss="modal">Close</a>
+    </div>
+</div>

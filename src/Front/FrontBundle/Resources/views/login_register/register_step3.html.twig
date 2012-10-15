@@ -1,0 +1,12 @@
+{% extends '::base.html.twig' %}
+{% block body %}
+    <form action="{{ path('register_step_3') }}" method="post">
+        <label for="f_name">First name:</label>
+        <input type="text" name="f_name" id="f_name" required="required">
+        <div class="sep"></div>
+        <label for="l_name">Last name:</label>
+        <input type="text" name="l_name" id="l_name" required="required">
+        <div class="sep"></div>
+        <input type="submit" value="Continue >>" class="btn btn-success">
+    </form>
+{% endblock %}

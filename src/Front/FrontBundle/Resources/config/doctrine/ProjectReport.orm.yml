@@ -1,0 +1,55 @@
+Front\FrontBundle\Entity\ProjectReport:
+  type: entity
+  table: project_report
+  repositoryClass: Front\FrontBundle\Repository\ProjectReportRepository
+  fields:
+    id:
+      id: true
+      type: integer
+      unsigned: false
+      nullable: false
+      generator:
+        strategy: IDENTITY
+    reportTitle:
+      type: string
+      length: 250
+      fixed: false
+      nullable: true
+      column: report_title
+    reportDesc:
+      type: string
+      length: 500
+      fixed: false
+      nullable: true
+      column: report_desc
+    reportSettings:
+      type: text
+      nullable: true
+      column: report_settings
+    recipientEmails:
+      type: text
+      nullable: true
+      column: recipient_emails
+    frequency:
+      type: string
+      length: 10
+      fixed: false
+      nullable: true
+    lastSent:
+      type: date
+      nullable: true
+      column: last_sent
+    added:
+      type: datetime
+      nullable: true
+  manyToOne:
+    project:
+      targetEntity: Project
+      cascade: {  }
+      mappedBy: null
+      inversedBy: null
+      joinColumns:
+        project_id:
+          referencedColumnName: id
+      orphanRemoval: false
+  lifecycleCallbacks: {  }

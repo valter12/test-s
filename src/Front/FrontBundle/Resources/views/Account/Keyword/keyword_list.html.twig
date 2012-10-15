@@ -1,0 +1,70 @@
+{% extends '::account_base.html.twig' %}
+{% block body %}
+    <div class="sep"></div>
+    <div class="sep"></div>
+    <select name="hash" onchange="window.location='{{ path('account_keywords') }}?hash='+this.value">
+        <option value="0">[Choose project]</option>
+        {% for item in project_list %}
+            <option value="{{ item.project_hash }}" {% if app.request.get('hash')==item.project_hash %}selected="selected"{% endif %}>{{ item.project_name }}</option>
+        {% endfor %}
+    </select>
+    <div class="sep"></div>
+    Keywords for project "{{ project_data.project_name }}"
+    <br />
+    You currently have {{ keyword_list|length }} of possible {{ max_keywords }} keywords.
+    <div class="sep"></div>
+    <a href="javascript:;" onclick="$('#add_keywords_div').toggle();" class="btn btn-success">Add Keywords</a>
+    <br />
+    <br />
+    <div id="add_keywords_div" style="display: none;">
+        <form action="{{ path('account_execute_add_keywords') }}" method="post">
+            <input type="hidden" name="project_hash" value="{{ project_data.project_hash }}">
+            <div class="add_group">
+                Enter one keyword per line:
+                <br />
+                <textarea name="keywords"></textarea>
+            </div>
+            <div class="sep"></div>
+            <input type="submit" class="btn btn-primary" value="Save keywords">
+        </form>
+    </div>
+    <div class="sep"></div>
+    <table class="table">
+        <tr>
+            <th>#</th>
+            <th>Keyword</th>
+            <th>Last track</th>
+            <th>Creation date</th>
+            <th style="padding-left:20px;text-align:left !important">Options</th>
+        </tr>
+        {% for key, item in keyword_list %}
+            <tr>
+                <td>{{ key+1 }}</td>
+                <td><a title="Show keyword stats" href="{{ path('account_keyword_stats') }}?keyword_id={{ item.id }}">{{ item.keyword }}</a></td>
+                <td>{{ item.last_track }}</td>
+                <td>{{ item.added }}</td>
+                <td width="150" style="padding:0">
+                    <ul class="nav nav-pills" style="margin:0">
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="javascript:;">
+                                Options
+                                <b class="caret"></b>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a href="{{ path('account_keyword_stats') }}?keyword_id={{ item.id }}"><i class="icon-align-left"></i>&nbsp;Keyword stats</a></li>
+                                <li class="divider"></li>
+                                <li><a href="{{ path('account_delete_keyword') }}?id={{ item.id }}" onclick="return confirm('Please confirm you want to delete this keyword. (All statistics associated with it will be deleted also)')"><i class="icon-trash"></i>&nbsp;Delete</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('js/bootstrap-modal.js') }}"></script>
+    <script src="{{ asset('js/bootstrap-dropdown.js') }}"></script>
+    <script src="{{ asset('js/pages/keyword-list.js') }}"></script>
+{% endblock %}

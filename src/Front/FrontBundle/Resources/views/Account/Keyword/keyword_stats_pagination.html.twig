@@ -1,0 +1,4 @@
+<div style="float: right;">
+    {% if prev_page %}<a href="{{ path('account_keyword_stats') }}?{{ prev_page }}" class="btn"><i class="icon-circle-arrow-left"></i></a>{% endif %}
+    {% if next_page %}<a href="{{ path('account_keyword_stats') }}?{{ next_page }}" class="btn"><i class="icon-circle-arrow-right"></i></a>{% endif %}
+</div>
