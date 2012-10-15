@@ -5,10 +5,6 @@ namespace Front\FrontBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Front\FrontBundle\Security\Auth as Auth;
 
-/**
- * User controller.
- *
- */
 class AccountController extends Controller {
 
     
