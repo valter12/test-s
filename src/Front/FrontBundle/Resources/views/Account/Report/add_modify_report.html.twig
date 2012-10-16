@@ -25,15 +25,15 @@
             <br />
             Which timeframe of data would you like to use?
             <br />
-            <input type="radio" name="frequency" value="weekly"> Weekly - Show changes from one week to the next.
+            <input type="radio" name="frequency" value="weekly" id="frec_weekly"> <label for="frec_weekly" class="no-block">Weekly - Show changes from one week to the next.</label>
             <br />
-            <input type="radio" name="frequency" value="monthly"> Monthly - Show changes from one month to the next (since data is collected weekly, this will be four or five weeks of data).
+            <input type="radio" name="frequency" value="monthly" id="frec_monthly"> <label for="frec_monthly" class="no-block">Monthly - Show changes from one month to the next (since data is collected weekly, this will be four or five weeks of data).</label>
             <br />
-            <input type="radio" name="frequency" value="quarterly"> Quarterly - Show changes from one quarter to the next.
+            <input type="radio" name="frequency" value="quarterly" id="frec_quarterly"> <label for="frec_quarterly" class="no-block">Quarterly - Show changes from one quarter to the next.</label>
             <div class="sep"></div>
             <b>Who should receive this report?</b>
             <br />
-            <input type="checkbox" name="send_me"> Email me each week when a new report is complete.
+            <input type="checkbox" name="send_me" id="send_me"> <label for="send_me" class="no-block">Email me each week when a new report is complete.</label>
             <br />
             Also send the report to the following email addresses:
             <br />
@@ -51,7 +51,7 @@
                         <a href="javascript:;" class="helper" title="Drag to reorder"><i class="icon-move right"></i></a>
                         <i class="icon-play"></i> <a href="javascript:;" onclick="$('#ranking_details').toggle(200);">Rankings</a>
                         <div class="report_detailed" id="ranking_details">
-                            <input type="checkbox" onclick="this.checked?$('#ranking_summary_options').show(200):$('#ranking_summary_options').hide(200);" name="ranking_summary[checked]" value="1"> <b>Ranking summary</b>
+                            <input type="checkbox" id="ranking_summary_checked" onclick="this.checked?$('#ranking_summary_options').show(200):$('#ranking_summary_options').hide(200);" name="ranking_summary[checked]" value="1"> <label for="ranking_summary_checked" class="no-block"><b>Ranking summary</b></label>
                             <br />
                             Shows total number of keywords and the number of those that rank in the top 3 and the top 10. 
                             <br />
@@ -69,18 +69,18 @@
                                 <br />
                                 <b>Search engines:</b>
                                 <br />
-                                <input type="checkbox" name="ranking_summary[search_engines][]" value="google"> Google
+                                <input type="checkbox" id="ranking_summary_google" name="ranking_summary[search_engines][]" value="google"> <label for="ranking_summary_google" class="no-block">Google</label>
                                 <br />
-                                <input type="checkbox" name="ranking_summary[search_engines][]" value="bing"> Bing
+                                <input type="checkbox" id="ranking_summary_bing" name="ranking_summary[search_engines][]" value="bing"> <label for="ranking_summary_bing" class="no-block">Bing</label>
                                 <br />
-                                <input type="checkbox" name="ranking_summary[search_engines][]" value="yahoo"> Yahoo
+                                <input type="checkbox" id="ranking_summary_yahoo" name="ranking_summary[search_engines][]" value="yahoo"> <label for="ranking_summary_yahoo" class="no-block">Yahoo</label>
                                 <br />
                             </div>
                             <div class="sep"></div>
                             <div class="dotted"></div>
                             <div class="sep"></div>
                             <div>
-                                <input type="checkbox" onclick="this.checked?$('#ranking_improvements_declines_summary_options').show(200):$('#ranking_improvements_declines_summary_options').hide(200);" name="ranking_improvements_declines_summary[checked]" value="1"> <b>Ranking Improvements and Declines</b>
+                                <input type="checkbox" id="ranking_improvements_declines_summary_checked" onclick="this.checked?$('#ranking_improvements_declines_summary_options').show(200):$('#ranking_improvements_declines_summary_options').hide(200);" name="ranking_improvements_declines_summary[checked]" value="1"> <label for="ranking_improvements_declines_summary_checked" class="no-block"><b>Ranking Improvements and Declines</b></label>
                                 <br />
                                 Shows ranking improvements and declines for the specified search engine(s).
                                 <br />
@@ -96,11 +96,11 @@
                                     <br />
                                     <b>Search engines:</b>
                                     <br />
-                                    <input type="checkbox" name="ranking_improvements_declines_summary[search_engines][]" value="google"> Google
+                                    <input type="checkbox" id="ranking_improvements_declines_summary_google" name="ranking_improvements_declines_summary[search_engines][]" value="google"> <label class="no-block" for="ranking_improvements_declines_summary_google">Google</label>
                                     <br />
-                                    <input type="checkbox" name="ranking_improvements_declines_summary[search_engines][]" value="bing"> Bing
+                                    <input type="checkbox" id="ranking_improvements_declines_summary_bing" name="ranking_improvements_declines_summary[search_engines][]" value="bing"> <label class="no-block" for="ranking_improvements_declines_summary_bing">Bing</label>
                                     <br />
-                                    <input type="checkbox" name="ranking_improvements_declines_summary[search_engines][]" value="yahoo"> Yahoo
+                                    <input type="checkbox" id="ranking_improvements_declines_summary_yahoo" name="ranking_improvements_declines_summary[search_engines][]" value="yahoo"> <label class="no-block" for="ranking_improvements_declines_summary_yahoo">Yahoo</label>
                                     <br />
                                 </div>
                             </div>
