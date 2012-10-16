@@ -50,7 +50,7 @@
                 <div class="report_item">
                     <a href="javascript:;" class="helper" title="Drag to reorder"><i class="icon-move right"></i></a>
                     <i class="icon-play"></i> <a href="javascript:;" onclick="$('#ranking_details').toggle(200);">Rankings</a>
-                    <div class="report_detailed" id="ranking_details">
+                    <div class="report_detailed" id="ranking_details" style="display: block;">
                         <input type="checkbox" id="ranking_summary_checked" onclick="this.checked?$('#ranking_summary_options').show(200):$('#ranking_summary_options').hide(200);" name="ranking_summary[checked]" value="1"> <label for="ranking_summary_checked" class="no-block"><b>Ranking summary</b></label>
                         <br />
                         Shows total number of keywords and the number of those that rank in the top 3 and the top 10. 
@@ -82,7 +82,7 @@
 
                         <div class="sep"></div>
                         <div>
-                            <input type="checkbox" id="competitor_summary_checked" onclick="this.checked?$('#competitor_summary_options').show(200):$('#competitor_summary_options').hide(200);" name="ranking_improvements_declines_summary[checked]" value="1"> 
+                            <input type="checkbox" id="competitor_summary_checked" onclick="this.checked?$('#competitor_summary_options').show(200):$('#competitor_summary_options').hide(200);" name="competitor_summary[checked]" value="1"> 
                             <label for="competitor_summary_checked" class="no-block"><b>Competitor summary</b></label>
                             <br />
                             Shows ranking improvements and declines for the specified competitor(s).
@@ -111,41 +111,124 @@
 
                         <div class="sep"></div>
                         <div>
-                            <input type="checkbox" onclick="this.checked?$('#ranking_improvements_summary_options').show(200):$('#ranking_improvements_summary_options').hide(200);" name="ranking_improvements_summary[checked]" value="1"> <b>Keyword Rankings Improved</b>
+                            <input type="checkbox" id="site_ranks_checked" onclick="this.checked?$('#site_ranks_options').show(200):$('#site_ranks_options').hide(200);" name="site_ranks[checked]" value="1"> 
+                            <label for="site_ranks_checked" class="no-block"><b>Site ranks</b></label>
                             <br />
-                            Shows ranking improvements for the specified search engine(s).
+                            Shows site ranks (Google PR, Alexa rank etc..) improvements and declines for your site and the specified competitor(s).
                             <br />
                             <a href="">View example</a>
                             <div class="sep"></div>
-                            <div class="report_subdetails" id="ranking_improvements_summary_options">
+                            <div class="report_subdetails" id="site_ranks_options">
                                 <b>Options for this module:</b>
                                 <br />
-                                <label for="ranking_improvements_summary_title">Title of section to display on report <i>(seen in the email)</i>:</label>
-                                <input type="text" name="ranking_improvements_summary[title]" id="ranking_improvements_summary">
-                                <label for="ranking_improvements_summary_desc">Description of section to display on report <i>(seen in the email)</i>:</label>
-                                <textarea name="ranking_improvements_summary[desc]" id="ranking_improvements_summary_desc"></textarea>
+                                <label for="site_ranks_title">Title of section to display on report <i>(seen in the email)</i>:</label>
+                                <input type="text" name="site_ranks[title]" id="site_ranks_title">
+                                <label for="site_ranks_desc">Description of section to display on report <i>(seen in the email)</i>:</label>
+                                <textarea name="site_ranks[desc]" id="site_ranks_desc"></textarea>
+                                <br />
+                                <b>Competitors:</b>
+                                <br />
+                                {% for item in competitor_list %}
+                                    <input type="checkbox" id="site_ranks_competitor_{{ item.id }}" name="site_ranks[competitors][]" value="{{ item.id }}"> <label class="no-block" for="site_ranks_competitor_{{ item.id }}">{{ item.competitor_name }}</label>
+                                    <br />
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="sep"></div>
+
+                        <div class="dotted"></div>
+
+                        <div class="sep"></div>
+                        <div>
+                            <input type="checkbox" id="detailed_keyword_ranks_checked" onclick="this.checked?$('#detailed_keyword_ranks_options').show(200):$('#detailed_keyword_ranks_options').hide(200);" name="detailed_keyword_ranks[checked]" value="1"> 
+                            <label for="detailed_keyword_ranks_checked" class="no-block"><b>Detailed keyword ranks</b></label>
+                            <br />
+                            Shows all keyword ranks improvements and declines for the specified competitor(s) and search engine(s).
+                            <br />
+                            <a href="">View example</a>
+                            <div class="sep"></div>
+                            <div class="report_subdetails" id="detailed_keyword_ranks_options">
+                                <b>Options for this module:</b>
+                                <br />
+                                <label for="detailed_keyword_ranks_title">Title of section to display on report <i>(seen in the email)</i>:</label>
+                                <input type="text" name="detailed_keyword_ranks[title]" id="detailed_keyword_ranks_title">
+                                <label for="detailed_keyword_ranks_desc">Description of section to display on report <i>(seen in the email)</i>:</label>
+                                <textarea name="detailed_keyword_ranks[desc]" id="detailed_keyword_ranks_desc"></textarea>
+                                <br />
+                                <b>Competitors:</b>
+                                <br />
+                                {% for item in competitor_list %}
+                                    <input type="checkbox" id="detailed_keyword_ranks_{{ item.id }}" name="detailed_keyword_ranks[competitors][]" value="{{ item.id }}"> <label class="no-block" for="detailed_keyword_ranks_{{ item.id }}">{{ item.competitor_name }}</label>
+                                    <br />
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="sep"></div>
+
+                        <div class="dotted"></div>
+
+                        <div class="sep"></div>
+                        <div>
+                            <input type="checkbox" id="overall_competitor_graph_checked" onclick="this.checked?$('#overall_competitor_graph_options').show(200):$('#overall_competitor_graph_options').hide(200);" name="overall_competitor_graph[checked]" value="1"> 
+                            <label for="overall_competitor_graph_checked" class="no-block"><b>Overall competitor graph</b></label>
+                            <br />
+                            Shows a graph so you could know how your site is doing compared to your competitor over time.
+                            <br />
+                            <a href="">View example</a>
+                            <div class="sep"></div>
+                            <div class="report_subdetails" id="overall_competitor_graph_options">
+                                <b>Options for this module:</b>
+                                <br />
+                                <label for="overall_competitor_graph_title">Title of section to display on report <i>(seen in the email)</i>:</label>
+                                <input type="text" name="overall_competitor_graph[title]" id="overall_competitor_graph_title">
+                                <label for="overall_competitor_graph_desc">Description of section to display on report <i>(seen in the email)</i>:</label>
+                                <textarea name="overall_competitor_graph[desc]" id="overall_competitor_graph_desc"></textarea>
+                                <br />
+                                <b>Competitors:</b>
+                                <br />
+                                {% for item in competitor_list %}
+                                    <input type="checkbox" id="overall_competitor_graph_{{ item.id }}" name="overall_competitor_graph[competitors][]" value="{{ item.id }}"> <label class="no-block" for="overall_competitor_graph_{{ item.id }}">{{ item.competitor_name }}</label>
+                                    <br />
+                                {% endfor %}
                                 <br />
                                 <b>Search engines:</b>
                                 <br />
-                                <input type="checkbox" name="ranking_improvements_summary[search_engines][]" value="google"> Google
+                                <input type="checkbox" id="overall_competitor_graph_google" name="overall_competitor_graph[search_engines][]" value="google"> <label for="overall_competitor_graph_google" class="no-block">Google</label>
                                 <br />
-                                <input type="checkbox" name="ranking_improvements_summary[search_engines][]" value="bing"> Bing
+                                <input type="checkbox" id="overall_competitor_graph_bing" name="overall_competitor_graph[search_engines][]" value="bing"> <label for="overall_competitor_graph_bing" class="no-block">Bing</label>
                                 <br />
-                                <input type="checkbox" name="ranking_improvements_summary[search_engines][]" value="yahoo"> Yahoo
+                                <input type="checkbox" id="overall_competitor_graph_yahoo" name="overall_competitor_graph[search_engines][]" value="yahoo"> <label for="overall_competitor_graph_yahoo" class="no-block">Yahoo</label>
+                            </div>
+                        </div>
+                        <div class="sep"></div>
+
+                        <div class="dotted"></div>
+
+                        <div class="sep"></div>
+                        <div>
+                            <input type="checkbox" id="site_uptime_checked" onclick="this.checked?$('#site_uptime_options').show(200):$('#site_uptime_options').hide(200);" name="site_uptime[checked]" value="1"> 
+                            <label for="site_uptime_checked" class="no-block"><b>Site uptime</b></label>
+                            <br />
+                            Shows if your site was down (date and time range).
+                            <br />
+                            <a href="">View example</a>
+                            <div class="sep"></div>
+                            <div class="report_subdetails" id="site_uptime_options">
+                                <b>Options for this module:</b>
                                 <br />
+                                <label for="site_uptime_title">Title of section to display on report <i>(seen in the email)</i>:</label>
+                                <input type="text" name="site_uptime[title]" id="site_uptime_title">
+                                <label for="site_uptime_desc">Description of section to display on report <i>(seen in the email)</i>:</label>
+                                <textarea name="site_uptime[desc]" id="site_uptime_desc"></textarea>
                             </div>
                         </div>
                     </div>
                 </div>
             </li>
-            <li>
-                <div class="report_item">
-                    <a href="javascript:;" class="helper" title="Drag to reorder"><i class="icon-move right"></i></a>
-                    <i class="icon-play"></i> <a href="">Uptime</a>
-                </div>
-            </li>
         </ul>
     </fieldset>
+    <div class="sep"></div>
+    <a href="">Want a type of report that is missing?</a>
 </form>
 
 {% endblock %}
