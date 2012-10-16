@@ -10,7 +10,7 @@
         {% endfor %}
     </select>
     <div class="sep"></div>
-    <a href="{{ path('account_modify_add_report') }}" class="btn btn-success">Create report</a>
+    <a href="{{ path('account_modify_add_report') }}?hash={{ app.request.get('hash') }}" class="btn btn-success">Create report</a>
     <div class="sep"></div>
     <table class="table">
         <tr>
