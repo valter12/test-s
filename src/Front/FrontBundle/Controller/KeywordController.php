@@ -25,11 +25,11 @@ class KeywordController extends Controller {
         $em = $this->getDoctrine()->getEntityManager();
         $project_list = $em->getRepository('FrontFrontBundle:Project')->getProjects(Auth::getAuthParam('id'));
         $project_hash = $request->get('hash', $project_list[0]['project_hash']);
-        if(empty($project_list)) {
+        if (empty($project_list)) {
             $this->get('session')->setFlash('error', 'The request is incorrect.');
             return $this->redirect($request->headers->get('referer'));
         }
-        
+
         $project_data = $em->getRepository('FrontFrontBundle:Project')->getProjectByHash(Auth::getAuthParam('id'), $project_hash);
         if (!count($project_data)) { // user does not own this project
             $this->get('session')->setFlash('error', 'The request is incorrect.');
@@ -51,10 +51,10 @@ class KeywordController extends Controller {
         }
         $request = $this->getRequest();
         $keywords = $request->get('keywords');
-        
+
         $keywords = explode("\n", $keywords);
 //        echo '<pre>';print_r($keywords);die;
-        
+
         $project_hash = $request->get('project_hash');
         $em = $this->getDoctrine()->getEntityManager();
         $project_data = $em->getRepository('FrontFrontBundle:Project')->getProjectByHash(Auth::getAuthParam('id'), $project_hash);
@@ -71,11 +71,11 @@ class KeywordController extends Controller {
         }
 
         for ($i = 0; $i < count($keywords); $i++) {
-            if($i + $keyword_cnt >= $max_allowed_keywords) { // check if not reaching maximum allowed keyword count
+            if ($i + $keyword_cnt >= $max_allowed_keywords) { // check if not reaching maximum allowed keyword count
                 $this->get('session')->setFlash('error', 'Maximum keyword count for this project had been reached. Some keywords were not inserted.');
                 return $this->redirect($request->headers->get('referer'));
             }
-            if(trim($keywords[$i]) == '') {
+            if (trim($keywords[$i]) == '') {
                 continue;
             }
             $keyword_clean = preg_replace('/(?:\r\n|[\r\n])/', '', $keywords[$i]);
@@ -85,7 +85,6 @@ class KeywordController extends Controller {
 
         $this->get('session')->setFlash('notice', 'All keywords were inserted.');
         return $this->redirect($request->headers->get('referer'));
-        
     }
 
     /**
@@ -105,15 +104,15 @@ class KeywordController extends Controller {
             $this->get('session')->setFlash('error', 'The request is incorrect.');
             return $this->redirect($request->headers->get('referer'));
         }
-        
+
         $keyword_exists = $em->getRepository('FrontFrontBundle:Keyword')->userOwnsKeyword(Auth::getAuthParam('id'), $keyword_id);
-        if(!$keyword_exists['cnt']) {
+        if (!$keyword_exists['cnt']) {
             $this->get('session')->setFlash('error', 'The request is incorrect (E22).');
             return $this->redirect($request->headers->get('referer'));
         }
-        
+
         $em->getRepository('FrontFrontBundle:Keyword')->deleteKeywordById($keyword_id);
-        
+
         $this->get('session')->setFlash('notice', 'The keyword was deleted.');
         return $this->redirect($request->headers->get('referer'));
     }
