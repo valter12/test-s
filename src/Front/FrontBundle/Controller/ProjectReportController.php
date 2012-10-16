@@ -64,5 +64,19 @@ class ProjectReportController extends Controller {
         
         return $this->render('FrontFrontBundle:Account:Report/add_modify_report.html.twig', array('project_list' => $project_list, 'competitor_list' => $competitors));
     }
+    
+    /**
+     * store a report in db
+     * routing: account_store_report
+     */
+    public function storeReportAction() {
+        if (!Auth::isAuth()) {
+            return $this->redirect($this->generateUrl('login_register'));
+        }
+        
+        $request = $this->getRequest();
+        $project_hash = $request->get('hash', false);
+        echo '<pre>';print_r($_POST);die;
+    }
 
 }
