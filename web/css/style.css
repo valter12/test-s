@@ -171,3 +171,9 @@ tr.data_tr:first-child {
     display: block;
     border-top: 1px dashed #000;
 }
+label {
+    cursor: pointer;
+}
+.no-block{
+    display: inline !important;
+}
