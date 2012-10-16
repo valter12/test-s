@@ -75,8 +75,33 @@ class ProjectReportController extends Controller {
         }
         
         $request = $this->getRequest();
-        $project_hash = $request->get('hash', false);
-        echo '<pre>';print_r($_POST);die;
+        $project_hash = $request->get('project_hash', false);
+        
+        if(!$project_hash) {
+            $this->get('session')->setFlash('error', 'The request is incorrect.');
+            return $this->redirect($request->headers->get('referer'));
+        }
+        
+        $em = $this->getDoctrine()->getEntityManager();
+        $project = $em->getRepository('FrontFrontBundle:Project')->getProjectByHash(Auth::getAuthParam('id'), $project_hash);
+        
+        if(empty($project)) { // check if user owns project
+            $this->get('session')->setFlash('error', 'The request is incorrect.');
+            return $this->redirect($request->headers->get('referer'));
+        }
+        
+        $request_params = $request->request->all();
+        $report_title = $request->get('report_title');
+        $report_desc = $request->get('report_desc');
+        $frequency = $request->get('frequency');
+        $send_me = $request->get('send_me');
+        
+        unset($request_params['project_hash'], $request_params['report_title'], $request_params['report_desc'], $request_params['frequency'], $request_params['send_me']);
+        
+        $em->getRepository('FrontFrontBundle:ProjectReport')->saveReport($project['id'], $report_title, $report_desc, $frequency, $send_me, serialize($request_params));
+
+        $this->get('session')->setFlash('notice', 'Operation successfull.');
+        return $this->redirect($this->generateUrl('account_report_list'));
     }
 
 }
