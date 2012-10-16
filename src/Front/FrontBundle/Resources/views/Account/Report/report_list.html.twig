@@ -18,7 +18,6 @@
             <th>Report description</th>
             <th>Frequency</th>
             <th>Next Report</th>
-            <th>Project</th>
             <th>Actions</th>
         </tr>
         {% for key, item in reports %}
@@ -27,8 +26,6 @@
                 <td>{{ item.report_desc }}</td>
                 <td>{{ item.frequency }}</td>
                 <td>{{ item.last_sent }}</td>
-                <td>{{ item.added }}</td>
-                <td>{{ item.cnt_keywords }}</td>
                 <td>
                     <a href="">Edit</a> |
                     <a href="" onclick="return confirm('Please confirm');">Delete</a>
