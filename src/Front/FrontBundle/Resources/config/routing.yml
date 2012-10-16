@@ -135,4 +135,8 @@ account_report_list:
 account_modify_add_report:
   pattern: /add-modify-report
   defaults: { _controller: FrontFrontBundle:ProjectReport:addModify }
+
+account_store_report:
+  pattern: /store-report
+  defaults: { _controller: FrontFrontBundle:ProjectReport:storeReport }
   
