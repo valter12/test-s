@@ -1,7 +1,7 @@
 {% extends '::account_base.html.twig' %}
 {% block body %}
 <h1>Add report</h1>
-<form method="post" >
+<form method="post" action="{{ path('account_store_report') }}">
     Change project: 
     <select name="project_hash" onchange="window.location='{{ path('account_modify_add_report') }}?hash='+this.value">
         {% for item in project_list %}
@@ -19,17 +19,17 @@
         <input type="text" name="report_title" required="required" style="width:400px;" id="report_title">
         <br />
         <label for="report_desc">Description</label>
-        <input type="text" name="report_desc" required="required" style="width:400px;" id="report_desc">
+        <textarea name="report_desc" required="required" style="width:400px;" id="report_desc"></textarea>
         <div class="sep"></div>
         <b>Timeframe:</b>
         <br />
         Which timeframe of data would you like to use?
         <br />
-        <input type="radio" name="frequency" value="weekly" id="frec_weekly"> <label for="frec_weekly" class="no-block">Weekly - Show changes from one week to the next.</label>
+        <input type="radio" required="required" name="frequency" value="weekly" id="frec_weekly"> <label for="frec_weekly" class="no-block">Weekly - Show changes from one week to the next.</label>
         <br />
-        <input type="radio" name="frequency" value="monthly" id="frec_monthly"> <label for="frec_monthly" class="no-block">Monthly - Show changes from one month to the next (since data is collected weekly, this will be four or five weeks of data).</label>
+        <input type="radio" required="required" name="frequency" value="monthly" id="frec_monthly"> <label for="frec_monthly" class="no-block">Monthly - Show changes from one month to the next (since data is collected weekly, this will be four or five weeks of data).</label>
         <br />
-        <input type="radio" name="frequency" value="quarterly" id="frec_quarterly"> <label for="frec_quarterly" class="no-block">Quarterly - Show changes from one quarter to the next.</label>
+        <input type="radio" required="required" name="frequency" value="quarterly" id="frec_quarterly"> <label for="frec_quarterly" class="no-block">Quarterly - Show changes from one quarter to the next.</label>
         <div class="sep"></div>
         <b>Who should receive this report?</b>
         <br />
@@ -227,6 +227,8 @@
             </li>
         </ul>
     </fieldset>
+    <div class="sep"></div>
+    <input type="submit" class="btn btn-success" value="Save report">
     <div class="sep"></div>
     <a href="">Want a type of report that is missing?</a>
 </form>
