@@ -68,7 +68,6 @@ class ProjectReportController extends Controller {
 //            echo '<pre>';print_r($report_settings);die;
         }
         
-        
         $competitors = $em->getRepository('FrontFrontBundle:Competitor')->getCompetitorByProjectHash(Auth::getAuthParam('id'), $project_hash);
         
         return $this->render('FrontFrontBundle:Account:Report/add_modify_report.html.twig', array('project_list' => $project_list, 'competitor_list' => $competitors, 'report_data' => $report_data, 'report_settings' => $report_settings));
