@@ -1,14 +1,20 @@
 {% extends '::account_base.html.twig' %}
 {% block body %}
-<h1>Add report</h1>
-<form method="post" action="{{ path('account_store_report') }}">
+{% if report_data.id %}
+    <h1>Modify report</h1>
+{% else %}
+    <h1>Create report</h1>
     Change project: 
     <select name="project_hash" onchange="window.location='{{ path('account_modify_add_report') }}?hash='+this.value">
         {% for item in project_list %}
             <option value="{{ item.project_hash }}" {% if app.request.get('hash')==item.project_hash %}selected="selected"{% endif %}>{{ item.project_name }}</option>
         {% endfor %}
     </select>
-    <div class="sep"></div>
+{% endif %}
+<div class="sep"></div>
+<form method="post" action="{{ path('account_store_report') }}">
+    <input type="hidden" name="modify_id" value="{{ report_data.id }}">
+    <input type="hidden" name="project_hash" value="{{ app.request.get('hash') }}">
     <fieldset>
         <legend>General settings</legend>
         <b>Title and Description:</b>
