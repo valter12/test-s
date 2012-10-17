@@ -18,6 +18,7 @@
             <th>Report description</th>
             <th>Frequency</th>
             <th>Next Report</th>
+            <th>Created</th>
             <th>Actions</th>
         </tr>
         {% for key, item in reports %}
@@ -25,10 +26,11 @@
                 <td>{{ item.report_title }}</td>
                 <td>{{ item.report_desc }}</td>
                 <td>{{ item.frequency }}</td>
-                <td>{{ item.last_sent }}</td>
+                <td>{{ item.last_sent|next_report(item.frequency) }}</td>
+                <td>{{ item.added|date('Y-m-d') }}</td>
                 <td>
                     <a href="{{ path('account_modify_add_report') }}?hash={{ item.project_hash }}&report_id={{ item.id }}">Edit</a> |
-                    <a href="" onclick="return confirm('Please confirm');">Delete</a>
+                    <a href="{{ path('account_delete_report') }}?hash={{ item.project_hash }}&report_id={{ item.id }}" onclick="return confirm('Please confirm');">Delete</a>
                 </td>
             </tr>
         {% endfor %}
