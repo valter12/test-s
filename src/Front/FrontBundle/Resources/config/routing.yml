@@ -139,4 +139,8 @@ account_modify_add_report:
 account_store_report:
   pattern: /store-report
   defaults: { _controller: FrontFrontBundle:ProjectReport:storeReport }
+
+account_delete_report:
+  pattern: /delete-report
+  defaults: { _controller: FrontFrontBundle:ProjectReport:deleteReport }
   
