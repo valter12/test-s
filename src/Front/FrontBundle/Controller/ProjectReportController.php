@@ -59,10 +59,19 @@ class ProjectReportController extends Controller {
             $this->get('session')->setFlash('error', 'The request is incorrect.');
             return $this->redirect($request->headers->get('referer'));
         }
+
+        $report_data = $report_settings = array();
+        $report_id = $request->get('report_id', false);
+        if($report_id) {
+            $report_data = $em->getRepository('FrontFrontBundle:ProjectReport')->getReportData(Auth::getAuthParam('id'), $report_id);
+            $report_settings = unserialize($report_data['report_settings']);
+//            echo '<pre>';print_r($report_settings);die;
+        }
+        
         
         $competitors = $em->getRepository('FrontFrontBundle:Competitor')->getCompetitorByProjectHash(Auth::getAuthParam('id'), $project_hash);
         
-        return $this->render('FrontFrontBundle:Account:Report/add_modify_report.html.twig', array('project_list' => $project_list, 'competitor_list' => $competitors));
+        return $this->render('FrontFrontBundle:Account:Report/add_modify_report.html.twig', array('project_list' => $project_list, 'competitor_list' => $competitors, 'report_data' => $report_data, 'report_settings' => $report_settings));
     }
     
     /**
