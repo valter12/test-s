@@ -110,7 +110,7 @@ class ProjectReportController extends Controller {
         
         $send_me = $request->get('send_me');
         
-        unset($request_params['project_hash'], $request_params['report_title'], $request_params['report_desc'], $request_params['frequency'], $request_params['send_me']);
+        unset($request_params['project_hash'], $request_params['report_title'], $request_params['report_desc'], $request_params['frequency'], $request_params['send_me'], $request_params['modify_id']);
         
         $modify_id = $request->get('modify_id');
         if(is_numeric($modify_id)) { // if modifying a report
