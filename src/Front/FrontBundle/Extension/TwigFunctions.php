@@ -9,39 +9,25 @@ class TwigFunctions extends \Twig_Extension {
             'truncate' => new \Twig_Filter_Method($this, 'truncate'),
             'no_title' => new \Twig_Filter_Method($this, 'no_title'),
             'nl2br' => new \Twig_Filter_Method($this, 'nl2br'),
-            'days_ago' => new \Twig_Filter_Method($this, 'days_ago'),
+            'next_report' => new \Twig_Filter_Method($this, 'next_report'),
             'clear_class' => new \Twig_Filter_Method($this, 'clear_class'),
         );
     }
 
-    public function days_ago($date) {
-        $timestamp = strtotime($date);
-        $now = time();
-        $diff = $now-$timestamp;
-        $days = $diff/60/60/24;
-        if(floor($days) == 1) {
-            $ret = 'Ieri';
-        } elseif(floor($days) > 1) {
-            $ret = floor($days).' zile in urma';
-        } elseif(floor($days) == 0) {
-            $hours = $diff/60/60;
-            if(floor($hours) == 1) {
-                $ret = 'acum o ora';
-            } elseif(floor($hours) > 1) {
-                $ret = 'acum '.floor($hours).' ore';
-            } elseif(floor($hours) == 0) {
-                $minutes = $diff/60;
-                if(floor($minutes) == 1) {
-                    $ret = 'acum o minuta';
-                } elseif(floor($minutes) > 1) {
-                    $ret = 'acum '.floor($minutes).' minute';
-                } elseif(floor($minutes) == 0) {
-                    $ret = 'acum '.$diff.' secunde';
-                }
-            }
-            
+    public function next_report($last_sent, $frequency) {
+        $return = false;
+        switch($frequency) {
+            case 'weekly':
+                $return = date('Y-m-d', strtotime('+1 week', strtotime($last_sent)));
+                break;
+            case 'monthly':
+                $return = date('Y-m-d', strtotime('+1 month', strtotime($last_sent)));
+                break;
+            case 'quarterly':
+                $return = date('Y-m-d', strtotime('+3 month', strtotime($last_sent)));
+                break;
         }
-        return $ret;
+        return $return;
     }
 
     public function no_title($sentence) {
