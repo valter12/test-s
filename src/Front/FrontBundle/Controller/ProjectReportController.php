@@ -82,14 +82,14 @@ class ProjectReportController extends Controller {
             return $this->redirect($this->generateUrl('login_register'));
         }
         
+        $allowed_frequencies = array('weekly', 'monthly', 'quarterly');
+        
         $request = $this->getRequest();
         $project_hash = $request->get('project_hash', false);
-        
         if(!$project_hash) {
             $this->get('session')->setFlash('error', 'The request is incorrect.');
             return $this->redirect($request->headers->get('referer'));
         }
-        
         $em = $this->getDoctrine()->getEntityManager();
         $project = $em->getRepository('FrontFrontBundle:Project')->getProjectByHash(Auth::getAuthParam('id'), $project_hash);
         
@@ -102,14 +102,60 @@ class ProjectReportController extends Controller {
         $report_title = $request->get('report_title');
         $report_desc = $request->get('report_desc');
         $frequency = $request->get('frequency');
+        
+        if(!in_array($frequency, $allowed_frequencies)) {
+            $this->get('session')->setFlash('error', 'The request is incorrect.');
+            return $this->redirect($request->headers->get('referer'));
+        }
+        
         $send_me = $request->get('send_me');
         
         unset($request_params['project_hash'], $request_params['report_title'], $request_params['report_desc'], $request_params['frequency'], $request_params['send_me']);
         
-        $em->getRepository('FrontFrontBundle:ProjectReport')->saveReport($project['id'], $report_title, $report_desc, $frequency, $send_me, serialize($request_params));
+        $modify_id = $request->get('modify_id');
+        if(is_numeric($modify_id)) { // if modifying a report
+            $report_data = $em->getRepository('FrontFrontBundle:ProjectReport')->getReportData(Auth::getAuthParam('id'), $modify_id);
+            if(empty($report_data)) { // user does not own report
+                $this->get('session')->setFlash('error', 'The request is incorrect.');
+                return $this->redirect($request->headers->get('referer'));
+            } else {
+                $em->getRepository('FrontFrontBundle:ProjectReport')->updateReport($modify_id, $report_title, $report_desc, $frequency, $send_me, serialize($request_params));
+            }
+        } else {
+            $em->getRepository('FrontFrontBundle:ProjectReport')->saveReport($project['id'], $report_title, $report_desc, $frequency, $send_me, serialize($request_params));
+        }
+        
 
         $this->get('session')->setFlash('notice', 'Operation successfull.');
-        return $this->redirect($this->generateUrl('account_report_list'));
+        return $this->redirect($this->generateUrl('account_report_list').'?hash='.$project_hash);
+    }
+    
+    /**
+     * deletes a report
+     * routing: account_delete_report
+     */
+    public function deleteReportAction() {
+        if (!Auth::isAuth()) {
+            return $this->redirect($this->generateUrl('login_register'));
+        }
+        $request = $this->getRequest();
+        $report_id = $request->get('report_id', false);
+        $project_hash = $request->get('hash', false);
+        
+        if(!is_numeric($report_id)) {
+            $this->get('session')->setFlash('error', 'The request is incorrect.');
+            return $this->redirect($request->headers->get('referer'));
+        }
+        
+        $em = $this->getDoctrine()->getEntityManager();
+        $report_data = $em->getRepository('FrontFrontBundle:ProjectReport')->getReportData(Auth::getAuthParam('id'), $report_id);
+        if(empty($report_data)) { // user does not own report
+            $this->get('session')->setFlash('error', 'The request is incorrect.');
+            return $this->redirect($request->headers->get('referer'));
+        }
+        
+        $em->getRepository('FrontFrontBundle:ProjectReport')->deleteReport($report_id);
+        return $this->redirect($this->generateUrl('account_report_list').'?hash='.$project_hash);
     }
 
 }
