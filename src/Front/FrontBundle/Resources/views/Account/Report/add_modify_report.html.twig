@@ -16,30 +16,36 @@
         Give this report a title and description. The description is only viewable by you.
         <br />
         <label for="report_title">Title</label>
-        <input type="text" name="report_title" required="required" style="width:400px;" id="report_title">
+        <input type="text" name="report_title" required="required" value="{{ report_data.report_title }}" style="width:400px;" id="report_title">
         <br />
         <label for="report_desc">Description</label>
-        <textarea name="report_desc" required="required" style="width:400px;" id="report_desc"></textarea>
+        <textarea name="report_desc" required="required" style="width:400px;" id="report_desc">{{ report_data.report_desc }}</textarea>
         <div class="sep"></div>
         <b>Timeframe:</b>
         <br />
         Which timeframe of data would you like to use?
         <br />
-        <input type="radio" required="required" name="frequency" value="weekly" id="frec_weekly"> <label for="frec_weekly" class="no-block">Weekly - Show changes from one week to the next.</label>
+        <input type="radio" required="required" name="frequency" value="weekly" id="frec_weekly" {% if report_data.frequency == 'weekly' %}checked="checked"{% endif %}> <label for="frec_weekly" class="no-block">Weekly - Show changes from one week to the next.</label>
         <br />
-        <input type="radio" required="required" name="frequency" value="monthly" id="frec_monthly"> <label for="frec_monthly" class="no-block">Monthly - Show changes from one month to the next (since data is collected weekly, this will be four or five weeks of data).</label>
+        <input type="radio" required="required" name="frequency" value="monthly" id="frec_monthly" {% if report_data.frequency == 'monthly' %}checked="checked"{% endif %}> <label for="frec_monthly" class="no-block">Monthly - Show changes from one month to the next (since data is collected weekly, this will be four or five weeks of data).</label>
         <br />
-        <input type="radio" required="required" name="frequency" value="quarterly" id="frec_quarterly"> <label for="frec_quarterly" class="no-block">Quarterly - Show changes from one quarter to the next.</label>
+        <input type="radio" required="required" name="frequency" value="quarterly" id="frec_quarterly" {% if report_data.frequency == 'quarterly' %}checked="checked"{% endif %}> <label for="frec_quarterly" class="no-block">Quarterly - Show changes from one quarter to the next.</label>
         <div class="sep"></div>
         <b>Who should receive this report?</b>
         <br />
-        <input type="checkbox" name="send_me" id="send_me"> <label for="send_me" class="no-block">Email me each week when a new report is complete.</label>
+        <input type="checkbox" name="send_me" id="send_me" {% if report_data.send_me == '1' %}checked="checked"{% endif %}> <label for="send_me" class="no-block">Email me each week when a new report is complete.</label>
         <br />
         Also send the report to the following email addresses:
         <br />
-        <div>
-            <input type="email" name="recipient_emails[]"> <a href="javascript:;" onclick="jQuery(this).parent().remove();">remove</a>
-        </div>
+        {% for item in report_settings.recipient_emails %}
+            <div>
+                <input type="email" name="recipient_emails[]" value="{{ item }}"> <a href="javascript:;" onclick="jQuery(this).parent().remove();">remove</a>
+            </div>
+        {% else %}
+            <div>
+                <input type="email" name="recipient_emails[]"> <a href="javascript:;" onclick="jQuery(this).parent().remove();">remove</a>
+            </div>
+        {% endfor %}
         <a href="javascript:;" onclick="addEmail(this);"><i class="icon-plus-sign"></i> Add email address</a>
     </fieldset>
     <div class="sep"></div>
@@ -51,7 +57,7 @@
                     <a href="javascript:;" class="helper" title="Drag to reorder"><i class="icon-move right"></i></a>
                     <i class="icon-play"></i> <a href="javascript:;" onclick="$('#ranking_details').toggle(200);">Rankings</a>
                     <div class="report_detailed" id="ranking_details" style="display: block;">
-                        <input type="checkbox" id="ranking_summary_checked" onclick="this.checked?$('#ranking_summary_options').show(200):$('#ranking_summary_options').hide(200);" name="ranking_summary[checked]" value="1"> <label for="ranking_summary_checked" class="no-block"><b>Ranking summary</b></label>
+                        <input type="checkbox" {% if report_settings.ranking_summary.checked %}checked="checked"{% endif %} id="ranking_summary_checked" onclick="this.checked?$('#ranking_summary_options').show(200):$('#ranking_summary_options').hide(200);" name="ranking_summary[checked]" value="1"> <label for="ranking_summary_checked" class="no-block"><b>Ranking summary</b></label>
                         <br />
                         Shows total number of keywords and the number of those that rank in the top 3 and the top 10. 
                         <br />
@@ -59,21 +65,21 @@
                         <br />
                         <a href="">View example</a>
                         <div class="sep"></div>
-                        <div class="report_subdetails" id="ranking_summary_options">
+                        <div class="report_subdetails" id="ranking_summary_options" {% if report_settings.ranking_summary.checked %}style="display:block;"{% endif %}>
                             <b>Options for this module:</b>
                             <br />
                             <label for="ranking_summary_title">Title of section to display on report <i>(seen in the email)</i>:</label>
-                            <input type="text" name="ranking_summary[title]" id="ranking_summary_title">
+                            <input type="text" name="ranking_summary[title]" value="{{ report_settings.ranking_summary.title }}" id="ranking_summary_title">
                             <label for="ranking_summary_desc">Description of section to display on report <i>(seen in the email)</i>:</label>
-                            <textarea name="ranking_summary[desc]" id="ranking_summary_desc"></textarea>
+                            <textarea name="ranking_summary[desc]" value="{{ report_settings.ranking_summary.desc }}" id="ranking_summary_desc">{{ report_settings.ranking_summary.desc }}</textarea>
                             <br />
                             <b>Search engines:</b>
                             <br />
-                            <input type="checkbox" id="ranking_summary_google" name="ranking_summary[search_engines][]" value="google"> <label for="ranking_summary_google" class="no-block">Google</label>
+                            <input type="checkbox" id="ranking_summary_google" name="ranking_summary[search_engines][]" {% if 'google' in report_settings.ranking_summary.search_engines %}checked="checked"{% endif %} value="google"> <label for="ranking_summary_google" class="no-block">Google</label>
                             <br />
-                            <input type="checkbox" id="ranking_summary_bing" name="ranking_summary[search_engines][]" value="bing"> <label for="ranking_summary_bing" class="no-block">Bing</label>
+                            <input type="checkbox" id="ranking_summary_bing" name="ranking_summary[search_engines][]" {% if 'bing' in report_settings.ranking_summary.search_engines %}checked="checked"{% endif %} value="bing"> <label for="ranking_summary_bing" class="no-block">Bing</label>
                             <br />
-                            <input type="checkbox" id="ranking_summary_yahoo" name="ranking_summary[search_engines][]" value="yahoo"> <label for="ranking_summary_yahoo" class="no-block">Yahoo</label>
+                            <input type="checkbox" id="ranking_summary_yahoo" name="ranking_summary[search_engines][]" {% if 'yahoo' in report_settings.ranking_summary.search_engines %}checked="checked"{% endif %} value="yahoo"> <label for="ranking_summary_yahoo" class="no-block">Yahoo</label>
                             <br />
                         </div>
                         <div class="sep"></div>
@@ -82,25 +88,25 @@
 
                         <div class="sep"></div>
                         <div>
-                            <input type="checkbox" id="competitor_summary_checked" onclick="this.checked?$('#competitor_summary_options').show(200):$('#competitor_summary_options').hide(200);" name="competitor_summary[checked]" value="1"> 
+                            <input type="checkbox" {% if report_settings.competitor_summary.checked %}checked="checked"{% endif %} id="competitor_summary_checked" onclick="this.checked?$('#competitor_summary_options').show(200):$('#competitor_summary_options').hide(200);" name="competitor_summary[checked]" value="1"> 
                             <label for="competitor_summary_checked" class="no-block"><b>Competitor summary</b></label>
                             <br />
                             Shows ranking improvements and declines for the specified competitor(s).
                             <br />
                             <a href="">View example</a>
                             <div class="sep"></div>
-                            <div class="report_subdetails" id="competitor_summary_options">
+                            <div class="report_subdetails" id="competitor_summary_options" {% if report_settings.competitor_summary.checked %}style="display:block"{% endif %}>
                                 <b>Options for this module:</b>
                                 <br />
                                 <label for="competitor_summary_title">Title of section to display on report <i>(seen in the email)</i>:</label>
-                                <input type="text" name="competitor_summary[title]" id="competitor_summary_title">
+                                <input type="text" name="competitor_summary[title]" value="{{ report_settings.competitor_summary.title }}" id="competitor_summary_title">
                                 <label for="competitor_summary_desc">Description of section to display on report <i>(seen in the email)</i>:</label>
-                                <textarea name="competitor_summary[desc]" id="competitor_summary_desc"></textarea>
+                                <textarea name="competitor_summary[desc]" id="competitor_summary_desc">{{ report_settings.competitor_summary.desc }}</textarea>
                                 <br />
                                 <b>Competitors:</b>
                                 <br />
                                 {% for item in competitor_list %}
-                                    <input type="checkbox" id="competitor_{{ item.id }}" name="competitor_summary[competitors][]" value="{{ item.id }}"> <label class="no-block" for="competitor_{{ item.id }}">{{ item.competitor_name }}</label>
+                                    <input type="checkbox" id="competitor_{{ item.id }}" {% if item.id in report_settings.competitor_summary.competitors %}checked="checked"{% endif %} name="competitor_summary[competitors][]" value="{{ item.id }}"> <label class="no-block" for="competitor_{{ item.id }}">{{ item.competitor_name }}</label>
                                     <br />
                                 {% endfor %}
                             </div>
@@ -111,25 +117,25 @@
 
                         <div class="sep"></div>
                         <div>
-                            <input type="checkbox" id="site_ranks_checked" onclick="this.checked?$('#site_ranks_options').show(200):$('#site_ranks_options').hide(200);" name="site_ranks[checked]" value="1"> 
+                            <input type="checkbox" {% if report_settings.site_ranks.checked %}checked="checked"{% endif %} id="site_ranks_checked" onclick="this.checked?$('#site_ranks_options').show(200):$('#site_ranks_options').hide(200);" name="site_ranks[checked]" value="1"> 
                             <label for="site_ranks_checked" class="no-block"><b>Site ranks</b></label>
                             <br />
                             Shows site ranks (Google PR, Alexa rank etc..) improvements and declines for your site and the specified competitor(s).
                             <br />
                             <a href="">View example</a>
                             <div class="sep"></div>
-                            <div class="report_subdetails" id="site_ranks_options">
+                            <div class="report_subdetails" id="site_ranks_options" {% if report_settings.site_ranks.checked %}style="display:block;"{% endif %}>
                                 <b>Options for this module:</b>
                                 <br />
                                 <label for="site_ranks_title">Title of section to display on report <i>(seen in the email)</i>:</label>
-                                <input type="text" name="site_ranks[title]" id="site_ranks_title">
+                                <input type="text" name="site_ranks[title]" id="site_ranks_title" value="{{ report_settings.site_ranks.title }}">
                                 <label for="site_ranks_desc">Description of section to display on report <i>(seen in the email)</i>:</label>
-                                <textarea name="site_ranks[desc]" id="site_ranks_desc"></textarea>
+                                <textarea name="site_ranks[desc]" id="site_ranks_desc">{{ report_settings.site_ranks.desc }}</textarea>
                                 <br />
                                 <b>Competitors:</b>
                                 <br />
                                 {% for item in competitor_list %}
-                                    <input type="checkbox" id="site_ranks_competitor_{{ item.id }}" name="site_ranks[competitors][]" value="{{ item.id }}"> <label class="no-block" for="site_ranks_competitor_{{ item.id }}">{{ item.competitor_name }}</label>
+                                    <input type="checkbox" id="site_ranks_competitor_{{ item.id }}" {% if item.id in report_settings.site_ranks.competitors %}checked="checked"{% endif %} name="site_ranks[competitors][]" value="{{ item.id }}"> <label class="no-block" for="site_ranks_competitor_{{ item.id }}">{{ item.competitor_name }}</label>
                                     <br />
                                 {% endfor %}
                             </div>
@@ -140,27 +146,35 @@
 
                         <div class="sep"></div>
                         <div>
-                            <input type="checkbox" id="detailed_keyword_ranks_checked" onclick="this.checked?$('#detailed_keyword_ranks_options').show(200):$('#detailed_keyword_ranks_options').hide(200);" name="detailed_keyword_ranks[checked]" value="1"> 
+                            <input type="checkbox" {% if report_settings.detailed_keyword_ranks.checked %}checked="checked"{% endif %} id="detailed_keyword_ranks_checked" onclick="this.checked?$('#detailed_keyword_ranks_options').show(200):$('#detailed_keyword_ranks_options').hide(200);" name="detailed_keyword_ranks[checked]" value="1"> 
                             <label for="detailed_keyword_ranks_checked" class="no-block"><b>Detailed keyword ranks</b></label>
                             <br />
                             Shows all keyword ranks improvements and declines for the specified competitor(s) and search engine(s).
                             <br />
                             <a href="">View example</a>
                             <div class="sep"></div>
-                            <div class="report_subdetails" id="detailed_keyword_ranks_options">
+                            <div class="report_subdetails" id="detailed_keyword_ranks_options" {% if report_settings.detailed_keyword_ranks.checked %}style="display:block"{% endif %}>
                                 <b>Options for this module:</b>
                                 <br />
                                 <label for="detailed_keyword_ranks_title">Title of section to display on report <i>(seen in the email)</i>:</label>
-                                <input type="text" name="detailed_keyword_ranks[title]" id="detailed_keyword_ranks_title">
+                                <input type="text" name="detailed_keyword_ranks[title]" id="detailed_keyword_ranks_title" value="{{ report_settings.detailed_keyword_ranks.title }}">
                                 <label for="detailed_keyword_ranks_desc">Description of section to display on report <i>(seen in the email)</i>:</label>
-                                <textarea name="detailed_keyword_ranks[desc]" id="detailed_keyword_ranks_desc"></textarea>
+                                <textarea name="detailed_keyword_ranks[desc]" id="detailed_keyword_ranks_desc">{{ report_settings.detailed_keyword_ranks.desc }}</textarea>
                                 <br />
                                 <b>Competitors:</b>
                                 <br />
                                 {% for item in competitor_list %}
-                                    <input type="checkbox" id="detailed_keyword_ranks_{{ item.id }}" name="detailed_keyword_ranks[competitors][]" value="{{ item.id }}"> <label class="no-block" for="detailed_keyword_ranks_{{ item.id }}">{{ item.competitor_name }}</label>
+                                    <input type="checkbox" id="detailed_keyword_ranks_{{ item.id }}" {% if item.id in report_settings.detailed_keyword_ranks.competitors %}checked="checked"{% endif %} name="detailed_keyword_ranks[competitors][]" value="{{ item.id }}"> <label class="no-block" for="detailed_keyword_ranks_{{ item.id }}">{{ item.competitor_name }}</label>
                                     <br />
                                 {% endfor %}
+                                <br />
+                                <b>Search engines:</b>
+                                <br />
+                                <input type="checkbox" id="detailed_keyword_ranks_google" name="detailed_keyword_ranks[search_engines][]" {% if 'google' in report_settings.detailed_keyword_ranks.search_engines %}checked="checked"{% endif %} value="google"> <label for="detailed_keyword_ranks_google" class="no-block">Google</label>
+                                <br />
+                                <input type="checkbox" id="detailed_keyword_ranks_bing" name="detailed_keyword_ranks[search_engines][]" {% if 'bing' in report_settings.detailed_keyword_ranks.search_engines %}checked="checked"{% endif %} value="bing"> <label for="detailed_keyword_ranks_bing" class="no-block">Bing</label>
+                                <br />
+                                <input type="checkbox" id="detailed_keyword_ranks_yahoo" name="detailed_keyword_ranks[search_engines][]" {% if 'yahoo' in report_settings.detailed_keyword_ranks.search_engines %}checked="checked"{% endif %} value="yahoo"> <label for="detailed_keyword_ranks_yahoo" class="no-block">Yahoo</label>
                             </div>
                         </div>
                         <div class="sep"></div>
@@ -169,35 +183,35 @@
 
                         <div class="sep"></div>
                         <div>
-                            <input type="checkbox" id="overall_competitor_graph_checked" onclick="this.checked?$('#overall_competitor_graph_options').show(200):$('#overall_competitor_graph_options').hide(200);" name="overall_competitor_graph[checked]" value="1"> 
+                            <input type="checkbox" {% if report_settings.overall_competitor_graph.checked %}checked="checked"{% endif %} id="overall_competitor_graph_checked" onclick="this.checked?$('#overall_competitor_graph_options').show(200):$('#overall_competitor_graph_options').hide(200);" name="overall_competitor_graph[checked]" value="1"> 
                             <label for="overall_competitor_graph_checked" class="no-block"><b>Overall competitor graph</b></label>
                             <br />
                             Shows a graph so you could know how your site is doing compared to your competitor over time.
                             <br />
                             <a href="">View example</a>
                             <div class="sep"></div>
-                            <div class="report_subdetails" id="overall_competitor_graph_options">
+                            <div class="report_subdetails" id="overall_competitor_graph_options" {% if report_settings.overall_competitor_graph.checked %}style="display:block;"{% endif %}>
                                 <b>Options for this module:</b>
                                 <br />
                                 <label for="overall_competitor_graph_title">Title of section to display on report <i>(seen in the email)</i>:</label>
-                                <input type="text" name="overall_competitor_graph[title]" id="overall_competitor_graph_title">
+                                <input type="text" name="overall_competitor_graph[title]" value="{{ report_settings.overall_competitor_graph.title }}" id="overall_competitor_graph_title">
                                 <label for="overall_competitor_graph_desc">Description of section to display on report <i>(seen in the email)</i>:</label>
-                                <textarea name="overall_competitor_graph[desc]" id="overall_competitor_graph_desc"></textarea>
+                                <textarea name="overall_competitor_graph[desc]" id="overall_competitor_graph_desc">{{ report_settings.overall_competitor_graph.desc }}</textarea>
                                 <br />
                                 <b>Competitors:</b>
                                 <br />
                                 {% for item in competitor_list %}
-                                    <input type="checkbox" id="overall_competitor_graph_{{ item.id }}" name="overall_competitor_graph[competitors][]" value="{{ item.id }}"> <label class="no-block" for="overall_competitor_graph_{{ item.id }}">{{ item.competitor_name }}</label>
+                                    <input type="checkbox" id="overall_competitor_graph_{{ item.id }}" {% if item.id in report_settings.overall_competitor_graph.competitors %}checked="checked"{% endif %} name="overall_competitor_graph[competitors][]" value="{{ item.id }}"> <label class="no-block" for="overall_competitor_graph_{{ item.id }}">{{ item.competitor_name }}</label>
                                     <br />
                                 {% endfor %}
                                 <br />
                                 <b>Search engines:</b>
                                 <br />
-                                <input type="checkbox" id="overall_competitor_graph_google" name="overall_competitor_graph[search_engines][]" value="google"> <label for="overall_competitor_graph_google" class="no-block">Google</label>
+                                <input type="checkbox" id="overall_competitor_graph_google" {% if 'google' in report_settings.overall_competitor_graph.search_engines %}checked="checked"{% endif %} name="overall_competitor_graph[search_engines][]" value="google"> <label for="overall_competitor_graph_google" class="no-block">Google</label>
                                 <br />
-                                <input type="checkbox" id="overall_competitor_graph_bing" name="overall_competitor_graph[search_engines][]" value="bing"> <label for="overall_competitor_graph_bing" class="no-block">Bing</label>
+                                <input type="checkbox" id="overall_competitor_graph_bing" {% if 'bing' in report_settings.overall_competitor_graph.search_engines %}checked="checked"{% endif %} name="overall_competitor_graph[search_engines][]" value="bing"> <label for="overall_competitor_graph_bing" class="no-block">Bing</label>
                                 <br />
-                                <input type="checkbox" id="overall_competitor_graph_yahoo" name="overall_competitor_graph[search_engines][]" value="yahoo"> <label for="overall_competitor_graph_yahoo" class="no-block">Yahoo</label>
+                                <input type="checkbox" id="overall_competitor_graph_yahoo" {% if 'yahoo' in report_settings.overall_competitor_graph.search_engines %}checked="checked"{% endif %} name="overall_competitor_graph[search_engines][]" value="yahoo"> <label for="overall_competitor_graph_yahoo" class="no-block">Yahoo</label>
                             </div>
                         </div>
                         <div class="sep"></div>
