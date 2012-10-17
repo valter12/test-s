@@ -220,20 +220,20 @@
 
                         <div class="sep"></div>
                         <div>
-                            <input type="checkbox" id="site_uptime_checked" onclick="this.checked?$('#site_uptime_options').show(200):$('#site_uptime_options').hide(200);" name="site_uptime[checked]" value="1"> 
+                            <input type="checkbox" {% if report_settings.site_uptime.checked %}checked="checked"{% endif %} id="site_uptime_checked" onclick="this.checked?$('#site_uptime_options').show(200):$('#site_uptime_options').hide(200);" name="site_uptime[checked]" value="1"> 
                             <label for="site_uptime_checked" class="no-block"><b>Site uptime</b></label>
                             <br />
                             Shows if your site was down (date and time range).
                             <br />
                             <a href="">View example</a>
                             <div class="sep"></div>
-                            <div class="report_subdetails" id="site_uptime_options">
+                            <div class="report_subdetails" id="site_uptime_options" {% if report_settings.site_uptime.checked %}style="display:block;"{% endif %}>
                                 <b>Options for this module:</b>
                                 <br />
                                 <label for="site_uptime_title">Title of section to display on report <i>(seen in the email)</i>:</label>
-                                <input type="text" name="site_uptime[title]" id="site_uptime_title">
+                                <input type="text" name="site_uptime[title]" id="site_uptime_title" value="{{ report_settings.site_uptime.title }}">
                                 <label for="site_uptime_desc">Description of section to display on report <i>(seen in the email)</i>:</label>
-                                <textarea name="site_uptime[desc]" id="site_uptime_desc"></textarea>
+                                <textarea name="site_uptime[desc]" id="site_uptime_desc">{{ report_settings.site_uptime.desc }}</textarea>
                             </div>
                         </div>
                     </div>
