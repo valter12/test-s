@@ -126,7 +126,7 @@
                             <input type="checkbox" {% if report_settings.site_ranks.checked %}checked="checked"{% endif %} id="site_ranks_checked" onclick="this.checked?$('#site_ranks_options').show(200):$('#site_ranks_options').hide(200);" name="site_ranks[checked]" value="1"> 
                             <label for="site_ranks_checked" class="no-block"><b>Site ranks</b></label>
                             <br />
-                            Shows site ranks (Google PR, Alexa rank etc..) improvements and declines for your site and the specified competitor(s).
+                            Shows site ranks (Google PR, Alexa rank etc..) improvements and declines for your site.
                             <br />
                             <a href="">View example</a>
                             <div class="sep"></div>
@@ -137,13 +137,6 @@
                                 <input type="text" name="site_ranks[title]" id="site_ranks_title" value="{{ report_settings.site_ranks.title }}">
                                 <label for="site_ranks_desc">Description of section to display on report <i>(seen in the email)</i>:</label>
                                 <textarea name="site_ranks[desc]" id="site_ranks_desc">{{ report_settings.site_ranks.desc }}</textarea>
-                                <br />
-                                <b>Competitors:</b>
-                                <br />
-                                {% for item in competitor_list %}
-                                    <input type="checkbox" id="site_ranks_competitor_{{ item.id }}" {% if item.id in report_settings.site_ranks.competitors %}checked="checked"{% endif %} name="site_ranks[competitors][]" value="{{ item.id }}"> <label class="no-block" for="site_ranks_competitor_{{ item.id }}">{{ item.competitor_name }}</label>
-                                    <br />
-                                {% endfor %}
                             </div>
                         </div>
                         <div class="sep"></div>
