@@ -44,7 +44,7 @@
                 <td>{% if item.page_link_google %}{{ item.page_link_google }}{% else %}-{% endif %}</td>
                 <td>{% if item.page_link_bing %}{{ item.page_link_bing }}{% else %}-{% endif %}</td>
                 <td>{% if item.page_link_yahoo %}{{ item.page_link_yahoo }}{% else %}-{% endif %}</td>
-                <td>{% if item.google_description_change or item.bing_description_change or item.yahoo_description_change %}<a href="javascript:;" onclick="getChangesModal({{ item.track_id }}, 0)" class="popup_hover_simple_left" data-original-title="Record contains changes" data-content="You have some changes on this record. Click the icon too see them."><i class="icon-asterisk"></i></a>{% else %}&nbsp;{% endif %}</td>
+                <td>{% if item.google_description_change or item.bing_description_change or item.yahoo_description_change %}<a href="javascript:;" onclick="getChangesModal({{ item.track_id }}, 0)" class="popup_hover_simple_left" data-original-title="Record contains changes" data-content="You have some changes on this record. Click the icon to see them."><i class="icon-asterisk"></i></a>{% else %}&nbsp;{% endif %}</td>
             </tr>
         {% endfor %}
     </table>
