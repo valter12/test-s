@@ -50,7 +50,6 @@ class KeywordTrackRepository extends EntityRepository {
         $params[':keyword_id'] = $keyword_id;
         $q = $this->getEntityManager()->getConnection()->executeQuery($query, $params);
         $result = $q->fetchAll(2);
-//        echo '<pre>';print_r($result);die;
         return array('result_final' => $result, 'total' => $total);
     }
 
