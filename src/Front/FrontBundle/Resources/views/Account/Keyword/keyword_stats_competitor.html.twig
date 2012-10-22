@@ -81,7 +81,7 @@
                             {% endif %}
                         </td>
                         <td>
-                            {% if stats.google_description_change or stats.bing_description_change or stats.yahoo_description_change %}<a href="javascript:;" class="popup_hover_simple_left" onclick="getChangesModal({{ stats.track_id }}, {{ stats.competitor_id }})" data-original-title="Record contains changes" data-content="You have some changes on this record. Click the icon too see them."><i class="icon-asterisk"></i></a>{% else %}&nbsp;{% endif %}
+                            {% if stats.google_description_change or stats.bing_description_change or stats.yahoo_description_change %}<a href="javascript:;" class="popup_hover_simple_left" onclick="getChangesModal({{ stats.track_id }}, {{ stats.competitor_id }})" data-original-title="Record contains changes" data-content="You have some changes on this record. Click the icon to see them."><i class="icon-asterisk"></i></a>{% else %}&nbsp;{% endif %}
                         </td>
                         {% if additional_td != '' %}
                             <td width="160" style="padding:0" rowspan="{{ item|length+1 }}">
