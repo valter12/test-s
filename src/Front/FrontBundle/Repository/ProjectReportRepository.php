@@ -101,4 +101,19 @@ class ProjectReportRepository extends EntityRepository {
         $q = $this->getEntityManager()->getConnection()->executeQuery($query, $params);
     }
     
+    /**
+     * gets generated report data by hash 
+     */
+    public function checkGeneratedReportHash($report_hash) {
+        $query = "
+            SELECT *
+            FROM generated_reports gr
+            WHERE gr.report_hash=:report_hash
+        ";
+        $params[':report_hash'] = $report_hash;
+        $q = $this->getEntityManager()->getConnection()->executeQuery($query, $params);
+        $result = $q->fetch(2);
+        return $result;
+    }
+    
 }
