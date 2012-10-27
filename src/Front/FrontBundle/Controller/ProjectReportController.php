@@ -157,5 +157,23 @@ class ProjectReportController extends Controller {
         $em->getRepository('FrontFrontBundle:ProjectReport')->deleteReport($report_id);
         return $this->redirect($this->generateUrl('account_report_list').'?hash='.$project_hash);
     }
+    
+    /**
+     * here the user will come from email with the report link
+     */
+    public function viewPdfReportAction() {
+        $request = $this->getRequest();
+        $report_hash = $request->get('hash');
+        $em = $this->getDoctrine()->getEntityManager();
+        $report_data = $em->getRepository('FrontFrontBundle:ProjectReport')->checkGeneratedReportHash($report_hash);
+        if(!empty($report_data)) {
+            header('Content-type: application/pdf');
+            header('Content-Disposition: attachment; filename="'.$report_data['report_filename'].'"');
+            readfile('/var/www/seowatchman_sf/reports/'.$report_data['report_filename']);
+            die;
+        } else {
+            die('Report does not exist.');
+        }
+    }
 
 }
