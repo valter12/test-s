@@ -169,7 +169,7 @@ class ProjectReportController extends Controller {
         if(!empty($report_data)) {
             header('Content-type: application/pdf');
             header('Content-Disposition: attachment; filename="'.$report_data['report_filename'].'"');
-            readfile('/var/www/seowatchman_sf/reports/'.$report_data['report_filename']);
+            readfile('../reports/'.$report_data['report_filename']);
             die;
         } else {
             die('Report does not exist.');
