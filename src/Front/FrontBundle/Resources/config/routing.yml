@@ -143,4 +143,8 @@ account_store_report:
 account_delete_report:
   pattern: /delete-report
   defaults: { _controller: FrontFrontBundle:ProjectReport:deleteReport }
+
+account_view_email_report:
+  pattern: /view-report-pdf
+  defaults: { _controller: FrontFrontBundle:ProjectReport:viewPdfReport }
   
