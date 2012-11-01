@@ -204,7 +204,7 @@ class KeywordTrackRepository extends EntityRepository {
                         competitor c
                     LEFT JOIN keyword_track_competitor ktc ON ktc.competitor_id = c.id AND ktc.keyword_id = " . $keyword_id . " AND ktc.competitor_id = " . $competitor_ids[$j] . " AND (DATE_FORMAT(ktc.track_date, '%Y-%m-%d') = '" . $dates[$i] . "' OR DATE_FORMAT(ktc.track_date, '%Y-%m-%d')=(SELECT MAX(DATE_FORMAT(track_date, '%Y-%m-%d')) FROM keyword_track_competitor WHERE DATE_FORMAT(track_date, '%Y-%m-%d')<'" . $dates[$i] . "' AND keyword_id=ktc.keyword_id AND competitor_id=" . $competitor_ids[$j] . "))
                     WHERE c.id = " . $competitor_ids[$j] . "
-                    ORDER BY DATE_FORMAT(ktc.track_date, '%Y-%m-%d') ".$order."
+                    ORDER BY DATE_FORMAT(ktc.track_date, '%Y-%m-%d') DESC
                     LIMIT 1)
                 ";
 //                die($q);
