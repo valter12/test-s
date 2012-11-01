@@ -96,6 +96,8 @@ class UserController extends Controller {
      * @param string $activation_hash
      */
     private function sendActivationEmail($email, $activation_hash) {
+        echo $this->renderView('FrontFrontBundle:Emails:email_confirmation.html.twig', array('activation_link' => 'http://www.seowatchman.com/activate-email?hash=' . $activation_hash));
+        return '';
         $message = \Swift_Message::newInstance()
                 ->setSubject('SEOwatchman.com - email confirmation')
                 ->setFrom('noreply@seowatchman.com')
@@ -106,6 +108,7 @@ class UserController extends Controller {
     }
 
     private function sendPasswordEmail($email, $password) {
+        return '';
         $message = \Swift_Message::newInstance()
                 ->setSubject('SEOwatchman.com - password recovery')
                 ->setFrom('noreply@seowatchman.com')
@@ -125,7 +128,7 @@ class UserController extends Controller {
         $em = $this->getDoctrine()->getEntityManager();
         $hash = $request->get('hash');
         $hash_exists = $em->getRepository('FrontFrontBundle:User')->checkHashExists($hash);
-        if ($hash_exists['exists']) {
+        if ($hash_exists['hash_exists']) {
             $em->getRepository('FrontFrontBundle:User')->actiavateHash($hash, $hash_exists['is_trial']);
             $message = 'Your account had been activated';
         } else {
