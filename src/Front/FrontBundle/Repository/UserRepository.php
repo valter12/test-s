@@ -35,7 +35,7 @@ class UserRepository extends EntityRepository {
      * @return type
      */
     public function checkHashExists($hash) {
-        $query = "SELECT COUNT(id) AS exists, is_trial FROM user WHERE activation_hash=:hash AND has_activated_email=0";
+        $query = "SELECT COUNT(id) AS hash_exists, is_trial FROM user WHERE activation_hash=:hash AND has_activated_email=0";
         $q = $this->getEntityManager()->getConnection()->executeQuery($query, array(':hash' => $hash));
 
         $result = $q->fetch(2);
