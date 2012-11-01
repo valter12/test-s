@@ -88,7 +88,6 @@ class UserRepository extends EntityRepository {
             VALUES(:package_id, :email, :pass, :activation_hash, :secret_hash, 0, 0, 0, 0, :is_trial, NOW())
         ";
         
-        $q = $this->getEntityManager()->getConnection()->executeQuery($query, $params);
         
         $params = array(
             ':package_id' => $package_id,
@@ -97,8 +96,9 @@ class UserRepository extends EntityRepository {
             ':activation_hash' => md5($email . $pass . $package_id . rand(0, 9000)),
             ':secret_hash' => strtoupper($secret_hash),
             ':is_trial' => (int)$is_trial,
-            ':last_insert_id' => $this->getEntityManager()->getConnection()->lastInsertId()
         );
+        $q = $this->getEntityManager()->getConnection()->executeQuery($query, $params);
+        $params[':last_insert_id'] = $this->getEntityManager()->getConnection()->lastInsertId();
         
         return $params;
     }
