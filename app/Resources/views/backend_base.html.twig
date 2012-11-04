@@ -4,8 +4,8 @@
         <meta charset="UTF-8" />
         <title>{% block title %}Welcome!{% endblock %}</title>
         {% block stylesheets %}
-            <link href="../css/style.css" rel="stylesheet" type="text/css" />
-            <link href="../css/bootstrap.css" rel="stylesheet" type="text/css" />
+            <link href="../../css/style.css" rel="stylesheet" type="text/css" />
+            <link href="../../css/bootstrap.css" rel="stylesheet" type="text/css" />
         {% endblock %}
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
         <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" />
@@ -13,41 +13,92 @@
     <body>
         <div class="container-fluid">
             <div class="row-fluid">
-                <div class="span2" style="width:154px;">
+                <div class="span2" style="width:175px;">
                     {% block left_menu %}
                         <ul class="nav nav-list" style="margin-top: 22px;">
                             <li>
-                                <a href="{{ path('account_dashboard') }}"><i class="icon-th"></i>Dashboard</a>
+                                <a href="javascript:;" onclick="$('#users_submenu').toggle();"><i class="icon-user"></i>Users</a>
+                                <div style="display:none;" id="users_submenu">
+                                    <ul class="nav nav-list" style="margin-bottom:">
+                                        <li>
+                                            <a style="margin:0" href="">List</a> 
+                                        </li>
+                                        <li>
+                                            <a style="margin:0" href="">Graph</a> 
+                                        </li>
+                                    </ul>
+                                </div>
                             </li>
                             <li>
-                                <a href="{{ path('account_projects') }}"><i class="icon-list-alt"></i>Projects</a>
+                                <a href="javascript:;" onclick="$('#projects_submenu').toggle();"><i class="icon-list-alt"></i>Projects</a>
+                                <div style="display:none;" id="projects_submenu">
+                                    <ul class="nav nav-list" style="margin-bottom:">
+                                        <li>
+                                            <a style="margin:0" href="">List</a> 
+                                        </li>
+                                        <li>
+                                            <a style="margin:0" href="">Graph</a> 
+                                        </li>
+                                    </ul>
+                                </div>
                             </li>
                             <li>
-                                <a href="{{ path('account_project_categories') }}"><i class="icon-indent-right"></i>Project categories</a>
+                                <a href="javascript:;" onclick="$('#reports_submenu').toggle();"><i class="icon-tasks"></i>User Reports</a>
+                                <div style="display:none;" id="reports_submenu">
+                                    <ul class="nav nav-list" style="margin-bottom:">
+                                        <li>
+                                            <a style="margin:0" href="">List</a> 
+                                        </li>
+                                        <li>
+                                            <a style="margin:0" href="">Graph</a> 
+                                        </li>
+                                    </ul>
+                                </div>
                             </li>
                             <li>
-                                <a href="{{ path('account_keywords') }}"><i class="icon-screenshot"></i>Keywords</a>
+                                <a href="javascript:;" onclick="$('#trial_submenu').toggle();"><i class="icon-tint"></i>Trial domains</a>
+                                <div style="display:none;" id="trial_submenu">
+                                    <ul class="nav nav-list" style="margin-bottom:">
+                                        <li>
+                                            <a style="margin:0" href="">List</a> 
+                                        </li>
+                                        <li>
+                                            <a style="margin:0" href="">Graph</a> 
+                                        </li>
+                                    </ul>
+                                </div>
                             </li>
                             <li>
-                                <a href="{{ path('account_keyword_charts') }}"><i class="icon-align-left"></i>Charts</a>
+                                <a href="javascript:;" onclick="$('#logs_submenu').toggle();"><i class="icon-eye-open"></i>Logs</a>
+                                <div style="display:none;" id="logs_submenu">
+                                    <ul class="nav nav-list" style="margin-bottom:">
+                                        <li>
+                                            <a style="margin:0" href="">Errors</a> 
+                                        </li>
+                                        <li>
+                                            <a style="margin:0" href="">Critical errors</a> 
+                                        </li>
+                                        <li>
+                                            <a style="margin:0" href="">Graph</a> 
+                                        </li>
+                                    </ul>
+                                </div>
                             </li>
                             <li>
-                                <a href="{{ path('account_report_list') }}"><i class="icon-tasks"></i>Scheduled reports</a>
+                                <a href="javascript:;" onclick="$('#payments_submenu').toggle();"><i class="icon-gift"></i>Payments</a>
+                                <div style="display:none;" id="payments_submenu">
+                                    <ul class="nav nav-list" style="margin-bottom:">
+                                        <li>
+                                            <a style="margin:0" href="">List</a> 
+                                        </li>
+                                        <li>
+                                            <a style="margin:0" href="">Graph</a> 
+                                        </li>
+                                    </ul>
+                                </div>
                             </li>
                             <li>
-                                <a href="{{ path('account_uptime') }}"><i class="icon-time"></i>Uptime</a>
-                            </li>
-                            <li>
-                                <a href=""><i class="icon-wrench"></i>Account settings</a>
-                            </li>
-                            <li>
-                                <a href=""><i class="icon-book"></i>Knowledge-base</a>
-                            </li>
-                            <li>
-                                <a href=""><i class="icon-inbox"></i>Submit a ticket</a>
-                            </li>
-                            <li>
-                                <a href=""><i class="icon-circle-arrow-up"></i>Upgrade account</a>
+                                <a href="{{ path('BackendBackendBundle_logout') }}"><i class="icon-off"></i>Logout</a>
                             </li>
                         </ul>
                     {% endblock %}
