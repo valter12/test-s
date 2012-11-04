@@ -19,5 +19,12 @@ class LoginController extends Controller {
         }
         return $this->render('BackendBackendBundle:Login:login.html.twig');
     }
-
+    
+    public function logoutAction() {
+        $session = $this->getRequest()->getSession();
+        $session->set('auth', false);
+        return $this->render('BackendBackendBundle:Login:login.html.twig');
+    }
+    
+    
 }
