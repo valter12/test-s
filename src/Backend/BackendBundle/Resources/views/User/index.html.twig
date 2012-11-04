@@ -1,3 +1,56 @@
 {% extends '::backend_base.html.twig' %}
 {% block body %}
+<table class="table table-hover">
+    <tr>
+        <th>ID</th>
+        <th>Package</th>
+        <th>Email</th>
+        <th>Name</th>
+        <th>Actem <a href="javascript:;" title="Has activated email?">?</a></th>
+        <th>Payed</th>
+        <th>Next pay</th>
+        <th>Cp <a href="javascript:;" title="Has completed profile?">?</a></th>
+        <th>Trial</th>
+        <th>Tr start</th>
+        <th>Pr <a href="javascript:;" title="Number of projects">?</a></th>
+        <th>Ky <a href="javascript:;" title="Number of keywords">?</a></th>
+        <th>Created</th>
+        <th>Options</th>
+    </tr>
+    {% for item in users %}
+        <tr class="{% if item.added|date('Y-m-d') == now|date('Y-m-d') %}success{% endif %}">
+            <td>{{ item.id }}</td>
+            <td>{{ item.package_id }}</td>
+            <td>{{ item.email }}</td>
+            <td>{{ item.f_name }} {{ item.l_name }}</td>
+            <td>{% if item.has_activated_email %}Yes{%else%}No{% endif %}</td>
+            <td>{% if item.has_payed %}Yes{%else%}No{% endif %}</td>
+            <td>{{ item.next_pay_date }}</td>
+            <td>{% if item.has_completed_profile %}Yes{%else%}No{% endif %}</td>
+            <td>{% if item.is_trial %}Yes{%else%}No{% endif %}</td>
+            <td>{{ item.trial_start }}</td>
+            <td>{{ item.project_cnt }}</td>
+            <td>{{ item.keyword_cnt }}</td>
+            <td>{{ item.added }}</td>
+            <td width="155">
+                <ul class="nav nav-pills" style="margin:0">
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="javascript:;">
+                            Options
+                            <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="?id={{ item.id }}"><i class="icon-edit"></i>&nbsp;Modify</a></li>
+                            <li><a href="?ann_id={{ item.id }}"><i class="icon-list-alt"></i>&nbsp;Projects</a></li>
+                            <li><a href="?ann_id={{ item.id }}"><i class="icon-tasks"></i>&nbsp;Reports</a></li>
+                            <li><a href="?ann_id={{ item.id }}"><i class="icon-gift"></i>&nbsp;Payments</a></li>
+                            <li class="divider"></li>
+                            <li><a href="?ann_id={{ item.id }}" onclick="return confirm('Confirmati?')"><i class="icon-trash"></i>&nbsp;Delete</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </td>
+        </tr>
+    {% endfor %}
+</table>
 {% endblock %}
