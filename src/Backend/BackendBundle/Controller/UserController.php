@@ -13,14 +13,42 @@ class UserController extends Controller {
         }
     }
     
+    /**
+     * list of users
+     */
     public function indexAction() {
         if ($this->checkLogin()) {
             return $this->checkLogin();
         }
-
+        $em = $this->getDoctrine()->getEntityManager();
+        $users = $em->getRepository('FrontFrontBundle:User')->getAllUsers();
+        return $this->render('BackendBackendBundle:User:index.html.twig', array('users' => $users));
+    }
+    
+    public function userActionsAction() {
+        if ($this->checkLogin()) {
+            return $this->checkLogin();
+        }
+        $request = $this->getRequest();
+        $id = $request->get('id');
+        $todo = $request->get('todo');
         
+        if(!is_numeric($id) || !$todo) {
+            die('Request must have an id and todo variable.');
+        }
         
-        return $this->render('BackendBackendBundle:User:index.html.twig');
+        switch($todo) {
+            case 'modify':
+                break;
+            case 'projects':
+                break;
+            case 'reports':
+                break;
+            case 'payments':
+                break;
+            case 'delete':
+                break;
+        }
     }
 
 }
