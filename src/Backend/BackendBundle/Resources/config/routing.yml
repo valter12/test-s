@@ -6,6 +6,11 @@ BackendBackendBundle_logout:
     pattern:  /logout
     defaults: { _controller: BackendBackendBundle:Login:logout }
 
+###  USER
 BackendBackendBundle_user:
-    pattern:  /
+    pattern:  /users
     defaults: { _controller: BackendBackendBundle:User:index }
+
+BackendBackendBundle_user_actions:
+    pattern:  /users
+    defaults: { _controller: BackendBackendBundle:User:userActions }
