@@ -3,8 +3,9 @@
 namespace Front\FrontBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Front\FrontBundle\Repository\Backend\BackendCompetitorRepository;
 
-class CompetitorRepository extends EntityRepository {
+class CompetitorRepository extends BackendCompetitorRepository {
 
     public function getCompetitorsByKeywordId($keyword_id) {
         $query = "

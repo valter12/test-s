@@ -2,9 +2,7 @@
 
 namespace Front\FrontBundle\Repository;
 
-use Doctrine\ORM\EntityRepository;
-
-class UserRepository extends EntityRepository {
+class UserRepository extends Backend\BackendUserRepository {
 
     /**
      * checks if email exists in DB

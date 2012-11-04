@@ -1,0 +1,7 @@
+BackendBackendBundle_login:
+    pattern:  /login
+    defaults: { _controller: BackendBackendBundle:Login:login }
+
+BackendBackendBundle_user:
+    pattern:  /
+    defaults: { _controller: BackendBackendBundle:User:index }
