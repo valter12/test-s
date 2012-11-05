@@ -1,0 +1,56 @@
+{% extends '::backend_base.html.twig' %}
+{% block body %}
+<form method="post" action="{{ path('BackendBackendBundle_user_actions') }}?todo=modify">
+    User id: {{ user.id }}
+    <input type="hidden" name="id" value="{{ user.id }}">
+    <br />
+    <br />
+    <label for="package_id">Package:</label>
+    <select name="package_id" id="package_id">
+        {% for item in packages %}
+            <option value="{{ item.id }}" {% if item.id==user.package_id %}selected="selected"{% endif %}>{{ item.package_name }} - {{ item.package_price }}</option>
+        {% endfor %}
+    </select>
+    
+    <label for="email">Email:</label>
+    <input type="text" name="email" value="{{ user.email }}">
+    
+    <label for="f_name">First name:</label>
+    <input type="text" id="f_name" name="f_name" value="{{ user.f_name }}">
+    
+    <label for="l_name">Last name:</label>
+    <input type="text" id="l_name" name="l_name" value="{{ user.l_name }}">
+    
+    <label for="pass">Password:</label>
+    <input type="text" id="pass" name="pass" value="{{ user.pass }}">
+    
+    <label for="has_activated_email">Has activated email:</label>
+    <input type="text" id="has_activated_email" name="has_activated_email" value="{{ user.has_activated_email }}">
+    
+    <label for="activation_hash">Activation hash:</label>
+    <input type="text" id="activation_hash" name="activation_hash" value="{{ user.activation_hash }}">
+    
+    <label for="has_payed">Has payed:</label>
+    <input type="text" id="has_payed" name="has_payed" value="{{ user.has_payed }}">
+    
+    <label for="is_deleted">Is deleted:</label>
+    <input type="text" id="is_deleted" name="is_deleted" value="{{ user.is_deleted }}">
+    
+    <label for="secret_hash">Secret hash:</label>
+    <input type="text" id="secret_hash" name="secret_hash" value="{{ user.secret_hash }}">
+    
+    <label for="next_pay_date">Next pay date:</label>
+    <input type="text" id="next_pay_date" name="next_pay_date" value="{{ user.next_pay_date }}">
+    
+    <label for="is_trial">Is trial:</label>
+    <input type="text" id="is_trial" name="is_trial" value="{{ user.is_trial }}">
+    
+    <label for="trial_start">Trial start:</label>
+    <input type="text" id="trial_start" name="trial_start" value="{{ user.trial_start }}">
+    <br />
+    Created: {{ user.added }}
+    <br />
+    <input type="hidden" name="execute_todo" value="save_user">
+    <input type="submit" value="Save">
+</form>
+{% endblock %}
