@@ -61,6 +61,14 @@ class UserController extends Controller {
             case 'payments':
                 break;
             case 'delete':
+                $em = $this->getDoctrine()->getEntityManager();
+                $em->getRepository('FrontFrontBundle:User')->deleteUser($id, 1);
+                return $this->redirect($this->generateUrl('BackendBackendBundle_user'));
+                break;
+            case 'undelete':
+                $em = $this->getDoctrine()->getEntityManager();
+                $em->getRepository('FrontFrontBundle:User')->deleteUser($id, 0);
+                return $this->redirect($this->generateUrl('BackendBackendBundle_user'));
                 break;
         }
     }
