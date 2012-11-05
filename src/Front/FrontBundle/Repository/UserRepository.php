@@ -21,7 +21,7 @@ class UserRepository extends Backend\BackendUserRepository {
      * @return type
      */
     public function userHadTrial($email) {
-        $query = "SELECT COUNT(id) AS cnt FROM user WHERE email=:email AND is_trial=2";
+        $query = "SELECT COUNT(id) AS cnt FROM user WHERE email=:email AND was_trial=1";
         $q = $this->getEntityManager()->getConnection()->executeQuery($query, array(':email' => $email));
 
         $result = $q->fetch(2);
