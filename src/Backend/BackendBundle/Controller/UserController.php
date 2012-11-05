@@ -39,6 +39,7 @@ class UserController extends Controller {
         
         switch($todo) {
             case 'modify':
+                return $this->__modifyUser();
                 break;
             case 'projects':
                 break;
@@ -49,6 +50,23 @@ class UserController extends Controller {
             case 'delete':
                 break;
         }
+    }
+    
+    protected function __modifyUser() {
+        $request = $this->getRequest();
+        $em = $this->getDoctrine()->getEntityManager();
+        
+        $id = $request->get('id');
+        $execute_todo = $request->get('execute_todo');
+        
+        if($execute_todo == 'save_user') {
+            $em->getRepository('FrontFrontBundle:User')->updateUserData($id, $_POST);
+            return $this->redirect($this->generateUrl('BackendBackendBundle_user'));
+        }
+        
+        $user = $em->getRepository('FrontFrontBundle:User')->getUserDataById($id);
+        $packages = $em->getRepository('FrontFrontBundle:User')->getAllPackages();
+        return $this->render('BackendBackendBundle:User:modify_user.html.twig', array('user' => $user, 'packages' => $packages));
     }
 
 }
