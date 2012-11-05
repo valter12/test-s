@@ -1,6 +1,6 @@
 <?php
 
-namespace Notar\NotarBundle\Additional;
+namespace Backend\BackendBundle\Additional;
 
 class Debug {
 
