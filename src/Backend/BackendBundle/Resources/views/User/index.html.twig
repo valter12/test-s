@@ -45,7 +45,7 @@
                             <li><a href="{{ path('BackendBackendBundle_user_actions') }}?todo=reports&id={{ item.id }}"><i class="icon-tasks"></i>&nbsp;Reports</a></li>
                             <li><a href="{{ path('BackendBackendBundle_user_actions') }}?todo=payments&id={{ item.id }}"><i class="icon-gift"></i>&nbsp;Payments</a></li>
                             <li class="divider"></li>
-                            <li><a href="{{ path('BackendBackendBundle_user_actions') }}?todo=delete&id={{ item.id }}" onclick="return confirm('Confirm?')"><i class="icon-trash"></i>&nbsp;Delete</a></li>
+                            <li><a href="{{ path('BackendBackendBundle_user_actions') }}?todo={% if item.is_deleted==1 %}undelete{% else %}delete{% endif %}&id={{ item.id }}" onclick="return confirm('Confirm?')"><i class="icon-trash"></i>&nbsp;{% if item.is_deleted==1 %}Undelete{% else %}Delete{% endif %}</a></li>
                         </ul>
                     </li>
                 </ul>
