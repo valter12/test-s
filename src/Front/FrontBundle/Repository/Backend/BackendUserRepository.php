@@ -71,5 +71,98 @@ class BackendUserRepository extends EntityRepository {
         );
         $this->getEntityManager()->getConnection()->executeQuery($query, $params);
     }
+    
+    public function getAllUsersChart() {
+        $query = "
+            SELECT 
+                DATE_FORMAT(u.added, '%Y-%m-%d') as date,
+                (SELECT COUNT(u1.id) FROM user u1 WHERE DATE_FORMAT(u1.added, '%Y-%m-%d')<=DATE_FORMAT(u.added, '%Y-%m-%d')) as cnt_users
+            FROM user u
+            GROUP BY DATE_FORMAT(u.added, '%Y-%m-%d')
+            ORDER BY DATE_FORMAT(u.added, '%Y-%m-%d') ASC
+        ";
+        
+        $q = $this->getEntityManager()->getConnection()->executeQuery($query, array());
+        $result = $q->fetchAll(2);
+        return $result;
+    }
+    
+    /**
+     * gets the trial users over time and trial users that had become clients
+     */
+    public function getTrialVsRealUsersChart() {
+        $query = "
+            SELECT 
+                DATE_FORMAT(u.added, '%Y-%m-%d') as date,
+                (SELECT COUNT(u1.id) FROM user u1 WHERE DATE_FORMAT(u1.added, '%Y-%m-%d')<=DATE_FORMAT(u.added, '%Y-%m-%d') AND u1.is_trial=1) as cnt_trial_users,
+                (SELECT COUNT(u1.id) FROM user u1 WHERE DATE_FORMAT(u1.added, '%Y-%m-%d')<=DATE_FORMAT(u.added, '%Y-%m-%d') AND u1.was_trial=1) as cnt_real_users
+            FROM user u
+            GROUP BY DATE_FORMAT(u.added, '%Y-%m-%d')
+            ORDER BY DATE_FORMAT(u.added, '%Y-%m-%d') ASC
+        ";
+        
+        $q = $this->getEntityManager()->getConnection()->executeQuery($query, array());
+        $result = $q->fetchAll(2);
+        return $result;
+    }
+    
+    /**
+     * gets the trial users over time and trial users that had left the site without becoming clients
+     */
+    public function getTrialVsGoneUsersChart() {
+        $query = "
+            SELECT 
+                DATE_FORMAT(u.added, '%Y-%m-%d') as date,
+                (SELECT COUNT(u1.id) FROM user u1 WHERE DATE_FORMAT(u1.added, '%Y-%m-%d')<=DATE_FORMAT(u.added, '%Y-%m-%d') AND u1.is_trial=1) as cnt_trial_users,
+                (SELECT COUNT(u1.id) FROM user u1 WHERE DATE_FORMAT(u1.added, '%Y-%m-%d')<=DATE_FORMAT(u.added, '%Y-%m-%d') AND u1.is_trial=1 AND u1.is_deleted=1) as cnt_gone_users
+            FROM user u
+            GROUP BY DATE_FORMAT(u.added, '%Y-%m-%d')
+            ORDER BY DATE_FORMAT(u.added, '%Y-%m-%d') ASC
+        ";
+        
+        $q = $this->getEntityManager()->getConnection()->executeQuery($query, array());
+        $result = $q->fetchAll(2);
+        return $result;
+    }
+    
+    /**
+     * gets the real users over time and real users that had left the site (not paying)
+     */
+    public function getRealVsGoneUsersChart() {
+        $query = "
+            SELECT 
+                DATE_FORMAT(u.added, '%Y-%m-%d') as date,
+                (SELECT COUNT(u1.id) FROM user u1 WHERE DATE_FORMAT(u1.added, '%Y-%m-%d')<=DATE_FORMAT(u.added, '%Y-%m-%d') AND u1.is_trial=0) as cnt_real_users,
+                (SELECT COUNT(u1.id) FROM user u1 WHERE DATE_FORMAT(u1.added, '%Y-%m-%d')<=DATE_FORMAT(u.added, '%Y-%m-%d') AND u1.is_trial=0 AND u1.is_deleted=1) as cnt_gone_users
+            FROM user u
+            GROUP BY DATE_FORMAT(u.added, '%Y-%m-%d')
+            ORDER BY DATE_FORMAT(u.added, '%Y-%m-%d') ASC
+        ";
+        
+        $q = $this->getEntityManager()->getConnection()->executeQuery($query, array());
+        $result = $q->fetchAll(2);
+        return $result;
+    }
+    
+    /**
+     * get percentage of used packages
+     */
+    public function getUserPackagesPercentageChart() {
+        $query = "
+            SELECT 
+                p.package_name, 
+                ROUND(COUNT(u.package_id)*100/(SELECT COUNT(id) FROM user WHERE is_deleted=0)) AS percent
+            FROM user u, package p
+            WHERE u.package_id=p.id
+            AND u.is_deleted=0
+            GROUP BY p.id
+        ";
+        
+        $q = $this->getEntityManager()->getConnection()->executeQuery($query, array());
+        $result = $q->fetchAll(2);
+        return $result;
+    }
+    
+    
 
 }
