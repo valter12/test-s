@@ -40,12 +40,12 @@
                             <b class="caret"></b>
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a href="?id={{ item.id }}"><i class="icon-edit"></i>&nbsp;Modify</a></li>
-                            <li><a href="?ann_id={{ item.id }}"><i class="icon-list-alt"></i>&nbsp;Projects</a></li>
-                            <li><a href="?ann_id={{ item.id }}"><i class="icon-tasks"></i>&nbsp;Reports</a></li>
-                            <li><a href="?ann_id={{ item.id }}"><i class="icon-gift"></i>&nbsp;Payments</a></li>
+                            <li><a href="{{ path('BackendBackendBundle_user_actions') }}?todo=modify&id={{ item.id }}"><i class="icon-edit"></i>&nbsp;Modify</a></li>
+                            <li><a href="?todo=projects&id={{ item.id }}"><i class="icon-list-alt"></i>&nbsp;Projects</a></li>
+                            <li><a href="?todo=reports&id={{ item.id }}"><i class="icon-tasks"></i>&nbsp;Reports</a></li>
+                            <li><a href="?todo=payments&id={{ item.id }}"><i class="icon-gift"></i>&nbsp;Payments</a></li>
                             <li class="divider"></li>
-                            <li><a href="?ann_id={{ item.id }}" onclick="return confirm('Confirmati?')"><i class="icon-trash"></i>&nbsp;Delete</a></li>
+                            <li><a href="?todo=delete&id={{ item.id }}" onclick="return confirm('Confirm?')"><i class="icon-trash"></i>&nbsp;Delete</a></li>
                         </ul>
                     </li>
                 </ul>
