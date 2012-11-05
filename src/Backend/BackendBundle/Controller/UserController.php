@@ -56,6 +56,7 @@ class UserController extends Controller {
                 return $this->__userProjects();
                 break;
             case 'reports':
+                return $this->redirect($this->generateUrl('account_report_list'));
                 break;
             case 'payments':
                 break;
@@ -90,5 +91,138 @@ class UserController extends Controller {
         $projects = $em->getRepository('FrontFrontBundle:Project')->getProjects($id);
         return $this->render('BackendBackendBundle:User:user_projects.html.twig', array('project_list' => $projects));
     }
-
+    
+    public function userChartsAction() {
+        if ($this->checkLogin()) {
+            return $this->checkLogin();
+        }
+        $em = $this->getDoctrine()->getEntityManager();
+        
+/**** REGISTERED USERS ****/
+        $registered_users = $em->getRepository('FrontFrontBundle:User')->getAllUsersChart();
+        
+        $dates = $final_result = array();
+        $cnt = count($registered_users);
+        for($i=0;$i<$cnt;$i++) {
+            $dates[] = $registered_users[$i]['date'];
+            $final_result[] = $registered_users[$i]['cnt_users'];
+        }
+        
+        $registered_users_params = array(
+            'cht' => 'lc',
+            'chtt' => 'Registered users over time',
+            'chs' => '700x300',
+            'chxt' => 'x,y',
+            'chd' => 't:' . implode(',', $final_result),
+            'chxl' => '0:|' . implode('|', $dates)//. '|1:||1||'.(max($final_result)+5),
+        );
+        
+        $registered_user_param = $this->__formChartUrl($registered_users_params);
+        
+/**** TRIAL VS REAL USERS (trial users and trial users that have become clients) ****/
+        $trial_vs_real = $em->getRepository('FrontFrontBundle:User')->getTrialVsRealUsersChart();
+        $dates = $trial_users = $real_users = array();
+        $cnt = count($trial_vs_real);
+        for($i=0;$i<$cnt;$i++) {
+            $dates[] = $trial_vs_real[$i]['date'];
+            $trial_users[] = $trial_vs_real[$i]['cnt_trial_users'];
+            $real_users[] = $trial_vs_real[$i]['cnt_real_users'];
+        }
+        $trial_vs_real_params = array(
+            'cht' => 'lc',
+            'chtt' => 'Trial users and Trial that become clients',
+            'chs' => '700x300',
+            'chxt' => 'x,y',
+            'chd' => 't:' . implode(',', $trial_users).'|'. implode(',', $real_users),
+            'chco' => 'FF0000,00C000',
+            'chdl' => 'trial users|trial users that became clients',
+            'chxl' => '0:|' . implode('|', $dates)//. '|1:||1||'.(max(max($real_users), max($trial_users))+5),
+        );
+        
+        $trial_vs_real_param = $this->__formChartUrl($trial_vs_real_params);
+        
+/**** TRIAL USERS AND TRIAL USERS THAT HAVE CHOSEN TO LEAVE THE SITE ****/
+        $trial_vs_gone = $em->getRepository('FrontFrontBundle:User')->getTrialVsGoneUsersChart();
+        $dates = $trial_users = $gone_users = array();
+        $cnt = count($trial_vs_gone);
+        for($i=0;$i<$cnt;$i++) {
+            $dates[] = $trial_vs_gone[$i]['date'];
+            $trial_users[] = $trial_vs_gone[$i]['cnt_trial_users'];
+            $gone_users[] = $trial_vs_gone[$i]['cnt_gone_users'];
+        }
+        $trial_vs_gone_params = array(
+            'cht' => 'lc',
+            'chtt' => 'Trial users and Trial users that didn\'t upgrade',
+            'chs' => '700x300',
+            'chxt' => 'x,y',
+            'chd' => 't:' . implode(',', $trial_users).'|'. implode(',', $gone_users),
+            'chco' => 'FF0000,00C000',
+            'chdl' => 'trial users|trial users that left the site',
+            'chxl' => '0:|' . implode('|', $dates)//. '|1:||1||'.(max(max($trial_users), max($gone_users))+5),
+        );
+        
+        $trial_vs_gone_param = $this->__formChartUrl($trial_vs_gone_params);
+        
+/**** REAL USERS AND REAL USERS THAT HAVE CHOSEN TO LEAVE THE SITE ****/
+        $real_vs_gone = $em->getRepository('FrontFrontBundle:User')->getRealVsGoneUsersChart();
+        $dates = $real_users = $gone_users = array();
+        $cnt = count($real_vs_gone);
+        for($i=0;$i<$cnt;$i++) {
+            $dates[] = $real_vs_gone[$i]['date'];
+            $real_users[] = $real_vs_gone[$i]['cnt_real_users'];
+            $gone_users[] = $real_vs_gone[$i]['cnt_gone_users'];
+        }
+        $real_vs_gone_params = array(
+            'cht' => 'lc',
+            'chtt' => 'Real users and Real users that didn\'t pay',
+            'chs' => '700x300',
+            'chxt' => 'x,y',
+            'chd' => 't:' . implode(',', $real_users).'|'. implode(',', $gone_users),
+            'chco' => 'FF0000,00C000',
+            'chdl' => 'real users|real users that left the site',
+            'chxl' => '0:|' . implode('|', $dates),
+            
+        );
+        
+        $real_vs_gone_param = $this->__formChartUrl($real_vs_gone_params);
+        
+/**** PERCENTAGE OF USED PACKAGES ****/
+        $packages = $em->getRepository('FrontFrontBundle:User')->getUserPackagesPercentageChart();
+        $percentage = $labels = array();
+        $cnt = count($packages);
+        for($i=0;$i<$cnt;$i++) {
+            $percentage[] = $packages[$i]['percent'];
+            $labels[] = $packages[$i]['package_name'].' '.$packages[$i]['percent'].'%';
+        }
+        $packages_params = array(
+            'cht' => 'p',
+            'chtt' => 'Percentage of used packages',
+            'chs' => '700x300',
+            'chxt' => 'x,y',
+            'chd' => 't:' . implode(',', $percentage),
+            'chco' => '3072F3',
+            'chdl' => implode('|', $labels),
+            'chl' => implode('|', $labels),
+            
+        );
+        
+        $packages_param = $this->__formChartUrl($packages_params);
+        return $this->render('BackendBackendBundle:User:user_charts.html.twig', array(
+                                                                                    'registered_users' => $registered_user_param,
+                                                                                    'trial_vs_real_param' => $trial_vs_real_param,
+                                                                                    'trial_vs_gone_param' => $trial_vs_gone_param,
+                                                                                    'real_vs_gone_param' => $real_vs_gone_param,
+                                                                                    'packages_param' => $packages_param,
+                                                                                ));
+    }
+    
+    protected function __formChartUrl($chart_params) {
+        $fields_string = '';
+        foreach ($chart_params as $key => $value) {
+            $fields_string .= $key . '=' . $value . '&';
+        }
+        rtrim($fields_string, '&');
+        return $fields_string;
+    }
+    
 }
