@@ -14,3 +14,7 @@ BackendBackendBundle_user:
 BackendBackendBundle_user_actions:
     pattern:  /users-actions
     defaults: { _controller: BackendBackendBundle:User:userActions }
+
+BackendBackendBundle_user_charts:
+    pattern:  /users-charts
+    defaults: { _controller: BackendBackendBundle:User:userCharts }
