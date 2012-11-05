@@ -163,6 +163,12 @@ class BackendUserRepository extends EntityRepository {
         return $result;
     }
     
-    
+    public function deleteUser($user_id, $deleted=1) {
+        $query = "
+            UPDATE user SET is_deleted=:deleted WHERE id=:id
+        ";
+        
+        $q = $this->getEntityManager()->getConnection()->executeQuery($query, array(':deleted' => $deleted, ':id' => $user_id));
+    }
 
 }
