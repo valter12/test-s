@@ -1,0 +1,16 @@
+{% extends '::backend_base.html.twig' %}
+{% block body %}
+    <img src="https://chart.googleapis.com/chart?{{ registered_users }}" />
+    <br />
+    <br />
+    <img src="https://chart.googleapis.com/chart?{{ trial_vs_real_param }}" />
+    <br />
+    <br />
+    <img src="https://chart.googleapis.com/chart?{{ trial_vs_gone_param }}" />
+    <br />
+    <br />
+    <img src="https://chart.googleapis.com/chart?{{ real_vs_gone_param }}" />
+    <br />
+    <br />
+    <img src="https://chart.googleapis.com/chart?{{ packages_param }}" />
+{% endblock %}
