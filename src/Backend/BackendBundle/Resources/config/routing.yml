@@ -12,5 +12,5 @@ BackendBackendBundle_user:
     defaults: { _controller: BackendBackendBundle:User:index }
 
 BackendBackendBundle_user_actions:
-    pattern:  /users
+    pattern:  /users-actions
     defaults: { _controller: BackendBackendBundle:User:userActions }
