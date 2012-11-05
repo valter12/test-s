@@ -1,21 +1,21 @@
 <div class="sep"></div>
+<form action="" method="get" style="margin: 0">
     <select name="" onchange="window.location='{{ path('account_keywords') }}?hash='+this.value">
        {% for item in all_projects %}
            <option value="{{ item.project_hash }}" {% if project_data.id == item.id %}selected="selected"{% endif %}>{{ item.project_name }}</option>
        {% endfor %}
     </select> 
     <i class="icon-arrow-right"></i> 
-    <select name="keyword_id" onchange="window.location='{{ path('account_keyword_stats') }}?keyword_id='+this.value">
+    <select name="keyword_id" onchange="return false;window.location='{{ path('account_keyword_stats') }}?keyword_id='+this.value">
         {% for item in all_keywords %}
             <option value="{{ item.id }}" {% if keyword_data.id == item.id %}selected="selected"{% endif %}>{{ item.keyword }}</option>
         {% endfor %}
      </select> 
     <i>(Last track on {{ keyword_data.last_track }})</i>
     <br />
-<div class="sep"></div>
-<div class="well">
-    <form action="" method="get" style="margin: 0">
-        <input type="hidden" name="keyword_id" value="{{ app.request.get('keyword_id') }}">
+    <div class="sep"></div>
+    <div class="well">
+<!--        <input type="hidden" name="keyword_id" value="{{ app.request.get('keyword_id') }}">-->
         Period from <input type="text" style="width:100px;" name="from_date" id="from_date" class="datepicker" value="{{ app.request.get('from_date') }}"> 
         to <input type="text" style="width:100px;" name="to_date" id="to_date" class="datepicker" value="{{ app.request.get('to_date') }}">
         &nbsp;&nbsp;&nbsp;Results per page: 
@@ -26,8 +26,8 @@
         {% include "FrontFrontBundle:Account:Keyword/incl_keyword_competitors.html.twig" %}
         <br />
         <input type="submit" value="Apply" class="btn btn-primary">
-    </form>
-</div>
+    </div>
+</form>
 <a class="label label-info popup_hover_simple_click" id="legend_a" href="javascript:;" data-original-title="Legend">
     <i class="icon-info-sign icon-white"></i>&nbsp;Legend
 </a>
