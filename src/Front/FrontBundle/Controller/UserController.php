@@ -219,7 +219,7 @@ class UserController extends Controller {
         }
 
         if (!preg_match("^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$^", $login_email)) {
-            $this->get('session')->setFlash('error', 'The email you provided (' . $email . ') is invalid.');
+            $this->get('session')->setFlash('error', 'The email you provided (' . $login_email . ') is invalid.');
             return $this->redirect($this->generateUrl('login_register'));
         }
 
