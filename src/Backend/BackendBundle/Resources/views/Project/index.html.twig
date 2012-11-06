@@ -1,0 +1,33 @@
+{% extends '::backend_base.html.twig' %}
+{% block body %}
+Total projects: {{ project_stats.total_project_cnt }}
+<br />
+Total reports: {{ project_stats.total_project_reports }}
+<br />
+Total users: {{ project_stats.total_user_cnt }}
+<hr />
+Total deleted projects <a href="javascript:;" title="Projects that are owned by users that dont pay any more.">?</a>: {{ project_stats.total_deleted_projects }}
+<br />
+Total deleted reports: {{ project_stats.total_deleted_reports }}
+<br />
+Total deleted users: {{ project_stats.total_deleted_users }}
+<hr />
+Total active projects: {{ project_stats.total_active_projects }}
+<br />
+Total active reports: {{ project_stats.total_active_reports }}
+<br />
+Total active users: {{ project_stats.total_active_users }}
+<hr />
+<i>(stats below are for active users)</i>
+<br />
+<br />
+Avg projects per user: {{ project_stats.avg_projects_per_user }}
+<br />
+Avg competitors per project: {{ project_stats.avg_competitors_per_project }}
+<br />
+Avg keywords per project: {{ project_stats.avg_keywords_per_project }}
+<br />
+Avg reports per project: {{ project_stats.avg_reports_per_project }}
+<br />
+
+{% endblock %}
