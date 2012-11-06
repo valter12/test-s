@@ -57,5 +57,18 @@ class BackendProjectRepository extends EntityRepository {
         $result = $q->fetch(2);
         return $result;
     }
+    
+    public function getTrialDomains() {
+        $query = "SELECT td.* FROM trial_domain td ORDER BY td.added ASC";
+        $q = $this->getEntityManager()->getConnection()->executeQuery($query, array());
+
+        $result = $q->fetchAll(2);
+        return $result;
+    }
+    
+    public function deleteTrialDomain($id) {
+        $query = "DELETE FROM trial_domain WHERE id=:id";
+        $q = $this->getEntityManager()->getConnection()->executeQuery($query, array(':id' => $id));
+    }
 
 }
