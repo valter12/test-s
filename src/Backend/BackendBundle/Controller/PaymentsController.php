@@ -37,11 +37,25 @@ class PaymentsController extends Controller {
         );
         
         $em = $this->getDoctrine()->getEntityManager();
+        
+        
+        
         $payments = $em->getRepository('FrontFrontBundle:Payments')->getAllPayments($filter_params);
         $users = $em->getRepository('FrontFrontBundle:User')->getAllUsers();
         $packages = $em->getRepository('FrontFrontBundle:User')->getAllPackages();
+        $payment_stats = $em->getRepository('FrontFrontBundle:Payments')->getPaymentsStats($filter_params);
+        $payment_stats_per_method = $em->getRepository('FrontFrontBundle:Payments')->getPaymentsStatsPerMethod();
+        $payment_method_percent = $em->getRepository('FrontFrontBundle:Payments')->getPaymentsMethodPercentage($filter_params);
         
-        return $this->render('BackendBackendBundle:Payments:index.html.twig', array('payments' => $payments, 'users' => $users, 'packages' => $packages, 'payement_methods' => $payement_methods));
+        return $this->render('BackendBackendBundle:Payments:index.html.twig', array(
+                                                                                    'payments' => $payments, 
+                                                                                    'users' => $users, 
+                                                                                    'packages' => $packages, 
+                                                                                    'payement_methods' => $payement_methods,
+                                                                                    'payment_stats' => $payment_stats,
+                                                                                    'payment_stats_per_method' => $payment_stats_per_method,
+                                                                                    'payment_method_percent' => $payment_method_percent,
+                                                                                ));
     }
 
 }
