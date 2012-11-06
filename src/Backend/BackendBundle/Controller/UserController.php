@@ -116,7 +116,7 @@ class UserController extends Controller {
             return $this->checkLogin();
         }
         $em = $this->getDoctrine()->getEntityManager();
-        
+        $project_user_stats = $em->getRepository('FrontFrontBundle:Project')->getProjectStats();
 /**** REGISTERED USERS ****/
         $registered_users = $em->getRepository('FrontFrontBundle:User')->getAllUsersChart();
         
@@ -232,6 +232,7 @@ class UserController extends Controller {
                                                                                     'trial_vs_gone_param' => $trial_vs_gone_param,
                                                                                     'real_vs_gone_param' => $real_vs_gone_param,
                                                                                     'packages_param' => $packages_param,
+                                                                                    'project_user_stats' => $project_user_stats,
                                                                                 ));
     }
     
