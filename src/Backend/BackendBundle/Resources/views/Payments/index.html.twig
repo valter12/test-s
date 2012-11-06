@@ -1,0 +1,58 @@
+{% extends '::backend_base.html.twig' %}
+{% block body %}
+<h1>Payments</h1>
+<div class="sep"></div>
+<form action="{{ path('BackendBackendBundle_all_payments') }}" method="get">
+    Between dates: <input type="text" name="from_date" value="{{ app.request.get('from_date') }}"> and <input type="text" name="to_date" value="{{ app.request.get('to_date') }}"> 
+    User: 
+    <select name="user_id">
+        <option value="">All</option>
+        {% for item in users %}
+            <option {% if app.request.get('user_id')==item.id %}selected="selected"{% endif %} value="{{ item.id }}">{{ item.id }} - {{ item.f_name }} {{ item.f_name }}</option>
+        {% endfor %}
+    </select> 
+    Package: 
+    <select name="package_id">
+        <option value="">All</option>
+        {% for item in packages %}
+            <option {% if app.request.get('package_id')==item.id %}selected="selected"{% endif %} value="{{ item.id }}">{{ item.package_name }}</option>
+        {% endfor %}
+    </select> 
+    <br />
+    Payment method: 
+    <select name="payment_method">
+        <option value="">All</option>
+        {% for item in payement_methods %}
+            <option {% if app.request.get('payment_method')==item %}selected="selected"{% endif %} value="{{ item }}">{{ item }}</option>
+        {% endfor %}
+    </select>
+    <br />
+    <input type="submit" class="btn btn-success" value="Filter">
+</form>
+<div class="sep"></div>
+<table class="table">
+    <tr>
+        <th>#</th>
+        <th>Date</th>
+        <th>User id</th>
+        <th>User</th>
+        <th>Package</th>
+        <th>Amount</th>
+        <th>Method</th>
+        <th>Payed for n months</th>
+    </tr>
+    {% for key, item in payments %}
+        <tr>
+            <td>{{ key+1 }}</td>
+            <td>{{ item.added }}</td>
+            <td>{{ item.user_id }}</td>
+            <td>{{ item.f_name }} {{ item.l_name }}</td>
+            <td>{{ item.package }}</td>
+            <td>{{ item.amount }}</td>
+            <td>{{ item.method }}</td>
+            <td>{{ item.payed_for_nr_months }}</td>
+        </tr>
+    {% endfor %}
+</table>
+
+{% endblock %}
