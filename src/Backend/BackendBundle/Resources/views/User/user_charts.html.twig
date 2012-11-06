@@ -8,7 +8,10 @@
     <br />
     Total active users: {{ project_user_stats.total_active_users }}
     <br />
-    
+    {% for item in package_stats %}
+        Users on package "{{ item.package_name }}": {{ item.cnt_users }}
+        <br />
+    {% endfor %}
     
     <hr />
     <img src="https://chart.googleapis.com/chart?{{ registered_users }}" />
