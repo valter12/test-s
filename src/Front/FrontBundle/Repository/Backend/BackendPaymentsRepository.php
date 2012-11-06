@@ -39,7 +39,21 @@ class BackendPaymentsRepository extends EntityRepository {
         }
         
         $query = "
-            
+            SELECT 
+                (SELECT SUM(pa.amount) FROM payments pa ".$conditions_str.") as money_till_now,
+                (SELECT SUM(pk.package_price)
+                    FROM package pk, user u
+                    WHERE pk.id=u.package_id
+                    AND u.is_deleted=0
+                    AND u.is_trial=0
+                    AND DATE_FORMAT(u.added, '%Y-%m-%d')<=DATE_SUB(NOW(), INTERVAL 1 month)
+                    ) as to_receive_this_month,
+                (SELECT SUM(pk.package_price)
+                    FROM package pk, user u
+                    WHERE pk.id=u.package_id
+                    AND u.is_deleted=0
+                    AND u.is_trial=0
+                    ) as to_receive_next_month
         ";
         
         $q = $this->getEntityManager()->getConnection()->executeQuery($query, array());
@@ -48,6 +62,36 @@ class BackendPaymentsRepository extends EntityRepository {
         return $result;
     }
     
+    public function getPaymentsStatsPerMethod() {
+        $query = "
+            SELECT SUM(pa.amount) as amount, pa.method
+            FROM payments pa
+            GROUP BY pa.method
+        ";
+        
+        $q = $this->getEntityManager()->getConnection()->executeQuery($query, array());
+
+        $result = $q->fetchAll(2);
+        return $result;
+    }
+    
+    public function getPaymentsMethodPercentage($filters) {
+        $conditions_str = $this->getFilters($filters);
+        if($conditions_str) {
+            $conditions_str = ' WHERE '.$conditions_str;
+        }
+        $query = "
+            SELECT count(pa.id)*100/(SELECT COUNT(pa.id) FROM payments pa ".$conditions_str.") as percent, pa.method
+            FROM payments pa
+            ".$conditions_str."
+            GROUP BY pa.method
+        ";
+        
+        $q = $this->getEntityManager()->getConnection()->executeQuery($query, array());
+
+        $result = $q->fetchAll(2);
+        return $result;
+    }
     
     /**
      * list of all payments
