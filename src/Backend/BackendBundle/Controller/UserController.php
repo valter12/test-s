@@ -59,6 +59,7 @@ class UserController extends Controller {
                 return $this->redirect($this->generateUrl('account_report_list'));
                 break;
             case 'payments':
+                return $this->__userPayments();
                 break;
             case 'delete':
                 $em = $this->getDoctrine()->getEntityManager();
@@ -71,6 +72,16 @@ class UserController extends Controller {
                 return $this->redirect($this->generateUrl('BackendBackendBundle_user'));
                 break;
         }
+    }
+
+    protected function __userPayments() {
+        $request = $this->getRequest();
+        $em = $this->getDoctrine()->getEntityManager();
+
+        $id = $request->get('id');
+
+        $user_payments = $em->getRepository('FrontFrontBundle:User')->getUserPayments($id);
+        return $this->render('BackendBackendBundle:User:user_payments.html.twig', array('user_payments' => $user_payments));
     }
 
     protected function __modifyUser() {
