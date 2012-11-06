@@ -6,7 +6,7 @@ BackendBackendBundle_logout:
     pattern:  /logout
     defaults: { _controller: BackendBackendBundle:Login:logout }
 
-###  USER
+###  USER  ###
 BackendBackendBundle_user:
     pattern:  /users
     defaults: { _controller: BackendBackendBundle:User:index }
@@ -18,3 +18,9 @@ BackendBackendBundle_user_actions:
 BackendBackendBundle_user_charts:
     pattern:  /users-charts
     defaults: { _controller: BackendBackendBundle:User:userCharts }
+    
+###  PROJECTS ###
+BackendBackendBundle_project_stats:
+    pattern:  /project-stats
+    defaults: { _controller: BackendBackendBundle:Project:index }
+
