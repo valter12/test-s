@@ -117,6 +117,7 @@ class UserController extends Controller {
         }
         $em = $this->getDoctrine()->getEntityManager();
         $project_user_stats = $em->getRepository('FrontFrontBundle:Project')->getProjectStats();
+        $package_stats = $em->getRepository('FrontFrontBundle:Project')->getPackageStats();
 /**** REGISTERED USERS ****/
         $registered_users = $em->getRepository('FrontFrontBundle:User')->getAllUsersChart();
         
@@ -233,6 +234,7 @@ class UserController extends Controller {
                                                                                     'real_vs_gone_param' => $real_vs_gone_param,
                                                                                     'packages_param' => $packages_param,
                                                                                     'project_user_stats' => $project_user_stats,
+                                                                                    'package_stats' => $package_stats,
                                                                                 ));
     }
     
