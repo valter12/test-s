@@ -28,4 +28,9 @@ BackendBackendBundle_project_stats:
 BackendBackendBundle_trial_domains:
     pattern:  /trial-domains
     defaults: { _controller: BackendBackendBundle:TrialDomains:index }
+    
+### payments  ###
+BackendBackendBundle_all_payments:
+    pattern:  /payments
+    defaults: { _controller: BackendBackendBundle:Payments:index }
 
