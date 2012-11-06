@@ -170,5 +170,22 @@ class BackendUserRepository extends EntityRepository {
         
         $q = $this->getEntityManager()->getConnection()->executeQuery($query, array(':deleted' => $deleted, ':id' => $user_id));
     }
+    
+    /**
+     * get user payments
+     */
+    public function getUserPayments($user_id) {
+        $query = "
+            SELECT pa.*, p.package_name as package, u.f_name, u.l_name
+            FROM payments pa LEFT JOIN package p ON pa.package_id=p.id, user u
+            WHERE u.id=pa.user_id
+            AND u.id=:user_id
+            ORDER BY pa.added ASC
+        ";
+        
+        $q = $this->getEntityManager()->getConnection()->executeQuery($query, array(':user_id' => $user_id));
+        $result = $q->fetchAll(2);
+        return $result;
+    }
 
 }
