@@ -4,7 +4,7 @@ namespace Front\FrontBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
 
-class ProjectRepository extends EntityRepository {
+class ProjectRepository extends Backend\BackendProjectRepository {
 
     /**
      * returns the list of projects of a user
