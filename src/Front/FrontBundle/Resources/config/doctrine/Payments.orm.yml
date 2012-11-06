@@ -1,6 +1,7 @@
 Front\FrontBundle\Entity\Payments:
   type: entity
   table: payments
+  repositoryClass: Front\FrontBundle\Repository\PaymentsRepository
   fields:
     id:
       id: true
