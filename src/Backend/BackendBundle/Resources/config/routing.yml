@@ -23,4 +23,9 @@ BackendBackendBundle_user_charts:
 BackendBackendBundle_project_stats:
     pattern:  /project-stats
     defaults: { _controller: BackendBackendBundle:Project:index }
+    
+###   ###
+BackendBackendBundle_trial_domains:
+    pattern:  /trial-domains
+    defaults: { _controller: BackendBackendBundle:TrialDomains:index }
 
