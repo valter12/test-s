@@ -1,16 +1,23 @@
 {% extends '::backend_base.html.twig' %}
 {% block body %}
+    Total users: {{ project_user_stats.total_user_cnt }}
+    <br />
+    Total deleted users: {{ project_user_stats.total_deleted_users }}
+    <br />
+    Total trial users: {{ project_user_stats.total_trial_users }}
+    <br />
+    Total active users: {{ project_user_stats.total_active_users }}
+    <br />
+    
+    
+    <hr />
     <img src="https://chart.googleapis.com/chart?{{ registered_users }}" />
-    <br />
-    <br />
+    <hr />
     <img src="https://chart.googleapis.com/chart?{{ trial_vs_real_param }}" />
-    <br />
-    <br />
+    <hr />
     <img src="https://chart.googleapis.com/chart?{{ trial_vs_gone_param }}" />
-    <br />
-    <br />
+    <hr />
     <img src="https://chart.googleapis.com/chart?{{ real_vs_gone_param }}" />
-    <br />
-    <br />
+    <hr />
     <img src="https://chart.googleapis.com/chart?{{ packages_param }}" />
 {% endblock %}
