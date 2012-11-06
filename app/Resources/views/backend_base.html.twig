@@ -24,7 +24,7 @@
                                             <a style="margin:0" href="{{ path('BackendBackendBundle_user') }}">List</a>
                                         </li>
                                         <li>
-                                            <a style="margin:0" href="{{ path('BackendBackendBundle_user_charts') }}">Graphs</a>
+                                            <a style="margin:0" href="{{ path('BackendBackendBundle_user_charts') }}">Statistics</a>
                                         </li>
                                     </ul>
                                 </div>
@@ -34,23 +34,7 @@
                                 <div style="display:none;" id="projects_submenu">
                                     <ul class="nav nav-list" style="margin-bottom:">
                                         <li>
-                                            <a style="margin:0" href="">List</a>
-                                        </li>
-                                        <li>
-                                            <a style="margin:0" href="">Graphs</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </li>
-                            <li>
-                                <a href="javascript:;" onclick="$('#reports_submenu').toggle();"><i class="icon-tasks"></i>User Reports</a>
-                                <div style="display:none;" id="reports_submenu">
-                                    <ul class="nav nav-list" style="margin-bottom:">
-                                        <li>
-                                            <a style="margin:0" href="">List</a> 
-                                        </li>
-                                        <li>
-                                            <a style="margin:0" href="">Graphs</a> 
+                                            <a style="margin:0" href="{{ path('BackendBackendBundle_project_stats') }}">Statistics</a>
                                         </li>
                                     </ul>
                                 </div>
