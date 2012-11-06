@@ -1,0 +1,32 @@
+{% extends '::backend_base.html.twig' %}
+{% block body %}
+<table class="table">
+    <tr>
+        <th>#</th>
+        <th>Domain name</th>
+        <th>Added</th>
+        <th>Options</th>
+    </tr>
+    {% for id,item in trial_domains %}
+        <tr>
+            <td>{{ id+1 }}</td>
+            <td>{{ item.domain_name }}</td>
+            <td>{{ item.added }}</td>
+            <td width="150" style="padding:0">
+                <ul class="nav nav-pills" style="margin:0">
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="javascript:;">
+                            Options
+                            <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="{{ path('BackendBackendBundle_trial_domains') }}?todo=delete&id={{ item.id }}" onclick="return confirm('Confirm?')"><i class="icon-trash"></i>&nbsp;Delete</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </td>
+        </tr>
+    {% endfor %}
+</table>
+
+{% endblock %}
