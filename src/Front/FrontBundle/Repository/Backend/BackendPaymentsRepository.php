@@ -6,7 +6,7 @@ use Doctrine\ORM\EntityRepository;
 
 class BackendPaymentsRepository extends EntityRepository {
 
-    public function getAllPayments($filters = array()) {
+    protected function getFilters($filters) {
         $conditions_str = '';
         if(!empty($filters)) {
             $conditions = array();
@@ -26,8 +26,36 @@ class BackendPaymentsRepository extends EntityRepository {
                 $conditions[] = "pa.method='".$filters['payment_method']."'";
             }
             if(!empty($conditions)) {
-                $conditions_str = ' WHERE '.implode(' AND ', $conditions);
+                $conditions_str = implode(' AND ', $conditions);
             }
+        }
+        return $conditions_str;
+    }
+    
+    public function getPaymentsStats($filters) {
+        $conditions_str = $this->getFilters($filters);
+        if($conditions_str) {
+            $conditions_str = ' WHERE '.$conditions_str;
+        }
+        
+        $query = "
+            
+        ";
+        
+        $q = $this->getEntityManager()->getConnection()->executeQuery($query, array());
+
+        $result = $q->fetch(2);
+        return $result;
+    }
+    
+    
+    /**
+     * list of all payments
+     */
+    public function getAllPayments($filters = array()) {
+        $conditions_str = $this->getFilters($filters);
+        if($conditions_str) {
+            $conditions_str = ' WHERE '.$conditions_str;
         }
         $query = "
             SELECT pa.*, u.id AS user_id, u.f_name, u.l_name, pk.package_name as package
