@@ -1,0 +1,28 @@
+{% extends '::backend_base.html.twig' %}
+{% block body %}
+    User payments
+    <table class="table">
+        <tr>
+            <th>#</th>
+            <th>Date</th>
+            <th>Userid</th>
+            <th>User</th>
+            <th>Package</th>
+            <th>Amount</th>
+            <th>Method</th>
+            <th>Payed for n months</th>
+        </tr>
+        {% for key, item in user_payments %}
+            <tr>
+                <td>{{ key+1 }}</td>
+                <td>{{ item.added }}</td>
+                <td>{{ item.user_id }}</td>
+                <td>{{ item.f_name }} {{ item.l_name }}</td>
+                <td>{{ item.package }}</td>
+                <td>{{ item.amount }}</td>
+                <td>{{ item.method }}</td>
+                <td>{{ item.payed_for_nr_months }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}
