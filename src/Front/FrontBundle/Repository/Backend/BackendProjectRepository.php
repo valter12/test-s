@@ -72,4 +72,17 @@ class BackendProjectRepository extends EntityRepository {
         $q = $this->getEntityManager()->getConnection()->executeQuery($query, array(':id' => $id));
     }
 
+    public function getPackageStats() {
+        $query = "
+            SELECT pk.package_name, COUNT(u.id) as cnt_users 
+            FROM package pk, user u
+            WHERE u.package_id=pk.id
+            GROUP BY pk.id
+        ";
+        $q = $this->getEntityManager()->getConnection()->executeQuery($query, array());
+
+        $result = $q->fetchAll(2);
+        return $result;
+    }
+    
 }
