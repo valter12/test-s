@@ -13,6 +13,7 @@ class BackendProjectRepository extends EntityRepository {
                 (SELECT COUNT(u.id) FROM user u) AS total_user_cnt,
                 (SELECT COUNT(p.id) FROM project p, user u WHERE u.id=p.user_id AND u.is_deleted=1) AS total_deleted_projects,
                 (SELECT COUNT(u.id) FROM user u WHERE u.is_deleted=1) AS total_deleted_users,
+                (SELECT COUNT(u.id) FROM user u WHERE u.is_trial=1) AS total_trial_users,
                 (SELECT COUNT(p.id) FROM project p, user u WHERE u.id=p.user_id AND (u.is_deleted=0 OR u.is_deleted IS NULL)) AS total_active_projects,
                 (SELECT COUNT(u.id) FROM user u WHERE u.is_deleted=0 OR u.is_deleted IS NULL) AS total_active_users,
                 (SELECT COUNT(p.id)/(SELECT COUNT(u.id) FROM user u WHERE u.is_deleted=0 OR u.is_deleted IS NULL)
