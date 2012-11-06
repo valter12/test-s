@@ -29,6 +29,24 @@
     <br />
     <input type="submit" class="btn btn-success" value="Filter">
 </form>
+<hr />
+Total money till now: {{ payment_stats.money_till_now }}
+<br />
+Money to receive this month: {{ payment_stats.to_receive_this_month }}
+<br />
+Money to receive next month: {{ payment_stats.to_receive_next_month }}
+<br />
+{% for item in payment_stats_per_method %}
+    {{ item.method }}: {{ item.amount }}
+    <br />
+{% endfor %}
+<br />
+{% for item in payment_method_percent %}
+    Throughout {{ item.method }}: {{ item.percent }}%
+    <br />
+{% endfor %}
+
+<div class="sep"></div>
 <div class="sep"></div>
 <table class="table">
     <tr>
