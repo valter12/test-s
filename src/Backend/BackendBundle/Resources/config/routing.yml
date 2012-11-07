@@ -33,4 +33,13 @@ BackendBackendBundle_trial_domains:
 BackendBackendBundle_all_payments:
     pattern:  /payments
     defaults: { _controller: BackendBackendBundle:Payments:index }
+    
+### cron watcher  ###
+BackendBackendBundle_cron_watcher:
+    pattern:  /cron-watcher
+    defaults: { _controller: BackendBackendBundle:CronWatcher:index }
+
+BackendBackendBundle_cron_profile:
+    pattern:  /cron-profile
+    defaults: { _controller: BackendBackendBundle:CronWatcher:cronProfile }
 
