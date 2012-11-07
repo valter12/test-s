@@ -1,0 +1,40 @@
+Front\FrontBundle\Entity\CronWatcher:
+  type: entity
+  table: cron_watcher
+  repositoryClass: Front\FrontBundle\Repository\CronWatcherRepository
+  fields:
+    id:
+      id: true
+      type: integer
+      unsigned: false
+      nullable: false
+      generator:
+        strategy: IDENTITY
+    cronName:
+      type: string
+      length: 200
+      fixed: false
+      nullable: true
+      column: cron_name
+    sessionId:
+      type: string
+      length: 150
+      fixed: false
+      nullable: true
+      column: session_id
+    cronStatus:
+      type: integer
+      nullable: false
+      column: cron_status
+    message:
+      type: text
+      nullable: true
+      column: message
+    isRead:
+      type: integer
+      nullable: false
+      column: is_read
+    added:
+      type: datetime
+      nullable: true
+  lifecycleCallbacks: {  }
