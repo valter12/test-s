@@ -1,0 +1,53 @@
+{% extends '::account_base.html.twig' %}
+{% block body %}
+    <div class="sep"></div>
+    <h2>Settings</h2>
+    <div class="sep"></div>
+    <fieldset>
+        <legend>Password change</legend>
+        <form method="post" action="{{ path('account_settings') }}">
+            <input type="hidden" name="todo" value="change_pass">
+            <label for="old_pass">Old password:</label>
+            <input type="password" name="old_pass" value="" id="old_pass">
+            <label for="new_pass">New password:</label>
+            <input type="password" name="new_pass" value="" id="new_pass">
+            <label for="renew_pass">Repeat new password:</label>
+            <input type="password" name="renew_pass" value="" id="renew_pass">
+            <br />
+            <input type="submit" class="btn btn-primary" value="Change password">
+        </form>
+    </fieldset>
+    <div class="sep"></div>
+    <fieldset>
+        <legend>Date format</legend>
+        <form method="post" action="{{ path('account_settings') }}">
+            <input type="hidden" name="todo" value="set_date_format">
+            <label for="date_format">Please choose the date format:</label>
+            <select name="date_format" value="" id="date_format">
+                <option {% if date_format == 'YYYY-mm-dd' %}selected="selected"{% endif %} value="YYYY-mm-dd">YYYY-mm-dd</option>
+                <option {% if date_format == 'dd-mm-YYYY' %}selected="selected"{% endif %} value="dd-mm-YYYY">dd-mm-YYYY</option>
+                <option {% if date_format == 'mm-dd-YYYY' %}selected="selected"{% endif %} value="mm-dd-YYYY">mm-dd-YYYY</option>
+            </select>
+            <br />
+            <input type="submit" class="btn btn-primary" value="Set date format">
+        </form>
+    </fieldset>
+    <div class="sep"></div>
+    <fieldset>
+        <legend>DELETE ACCOUNT</legend>
+        <form method="post" action="{{ path('account_settings') }}">
+            <input type="hidden" name="todo" value="delete_account">
+            <span class="site_error">This action cannot be undone!</span>
+            <br />
+            To delete your account please type "delete my account" (without quotes) and hit "Delete account" button.
+            <br />
+            <input type="text" name="delete_code" value="">
+            <br />
+            <input type="submit" class="btn btn-danger" value="DELETE ACCOUNT">
+        </form>
+    </fieldset>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('js/bootstrap-tooltip.js') }}"></script>
+{% endblock %}
