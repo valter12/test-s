@@ -32,6 +32,12 @@ class BackendProjectRepository extends EntityRepository {
                     AND p.user_id=u.id
                     AND (u.is_deleted=0 OR u.is_deleted IS NULL)
                     )AS avg_keywords_per_project,
+                (SELECT COUNT(k.id)
+                    FROM keyword k, project p, user u
+                    WHERE k.project_id=p.id
+                    AND p.user_id=u.id
+                    AND (u.is_deleted=0 OR u.is_deleted IS NULL)
+                    )AS total_active_keywords,
                 (SELECT COUNT(pr.id) FROM project_report pr) AS total_project_reports,
                 (SELECT COUNT(pr.id) 
                     FROM project_report pr, project p, user u 
