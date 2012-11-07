@@ -43,3 +43,7 @@ BackendBackendBundle_cron_profile:
     pattern:  /cron-profile
     defaults: { _controller: BackendBackendBundle:CronWatcher:cronProfile }
 
+BackendBackendBundle_logs_index:
+    pattern:  /logs
+    defaults: { _controller: BackendBackendBundle:CronWatcher:logsIndex }
+
