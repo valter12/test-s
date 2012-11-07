@@ -1,0 +1,21 @@
+{% extends '::backend_base.html.twig' %}
+{% block body %}
+<h5>Cron profile</h5>
+<div class="sep"></div>
+<table class="table">
+    <tr>
+        <th>Cron name</th>
+        <th>Status</th>
+        <th>Message</th>
+        <th>Added</th>
+    </tr>
+    {% for item in cron_profile %}
+        <tr class="{% if item.cron_status == 2 %}warning {% elseif item.cron_status == 3 %}error{% endif %}">
+            <td>{{ item.cron_name }}</td>
+            <td>{{ item.cron_status }}</td>
+            <td>{{ item.message|raw }}</td>
+            <td>{{ item.added }}</td>
+        </tr>
+    {% endfor %}
+</table>
+{% endblock %}
