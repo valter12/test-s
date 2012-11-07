@@ -113,4 +113,32 @@ class CronWatcherRepository extends EntityRepository {
         return $result;
     }
     
+    public function getCriticalErrors() {
+        $query = "
+            SELECT l.*
+            FROM logs l
+            ORDER BY l.added ASC
+        ";
+        
+        $q = $this->getEntityManager()->getConnection()->executeQuery($query, array());
+        $result = $q->fetchAll(2);
+        return $result;
+    }
+    
+    public function deleteCriticalErrorsByIds($ids) {
+        $query = "
+            DELETE FROM logs WHERE id IN(".implode(',', $ids).")
+        ";
+        
+        $q = $this->getEntityManager()->getConnection()->executeQuery($query, array());
+    }
+    
+    public function markCriticalErrorsAsReadByIds($ids) {
+        $query = "
+            UPDATE logs SET is_read=1 WHERE id IN(".implode(',', $ids).")
+        ";
+        
+        $q = $this->getEntityManager()->getConnection()->executeQuery($query, array());
+    }
+    
 }
