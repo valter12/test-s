@@ -177,3 +177,7 @@ label {
 .no-block{
     display: inline !important;
 }
+.site_error{
+    color:red;
+    font-weight: bold;
+}
