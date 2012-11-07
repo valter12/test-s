@@ -70,5 +70,32 @@ class CronWatcherController extends Controller {
         
         return $this->render('BackendBackendBundle:CronWatcher:cron_profile.html.twig', array('cron_profile' => $cron_profile));
     }
+    
+    public function logsIndexAction() {
+        if ($this->checkLogin()) {
+            return $this->checkLogin();
+        }
+        
+        $request = $this->getRequest();
+        
+        $em = $this->getDoctrine()->getEntityManager();
+        $todo = $request->get('todo');
+        switch ($todo) {
+            case 'delete':
+                $checkboxes = $request->get('checkbox');
+                $em->getRepository('FrontFrontBundle:CronWatcher')->deleteCriticalErrorsByIds(array_keys($checkboxes));
+                return $this->redirect($this->generateUrl('BackendBackendBundle_logs_index'));
+                break;
+            case 'mark_read':
+                $checkboxes = $request->get('checkbox');
+                $em->getRepository('FrontFrontBundle:CronWatcher')->markCriticalErrorsAsReadByIds(array_keys($checkboxes));
+                return $this->redirect($this->generateUrl('BackendBackendBundle_logs_index'));
+                break;
+        }
+        
+        
+        $logs = $em->getRepository('FrontFrontBundle:CronWatcher')->getCriticalErrors();
+        return $this->render('BackendBackendBundle:CronWatcher:logs_list.html.twig', array('logs' => $logs));
+    }
 
 }
