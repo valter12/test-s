@@ -1,6 +1,6 @@
 input, button::-moz-focus-inner {
-  border: 0 medium none;
-  outline : none; 
+    border: 0 medium none;
+    outline : none; 
 }
 
 * {
@@ -25,88 +25,88 @@ input, button::-moz-focus-inner {
     border-top:medium none;
 }
 .card {
-  background: none repeat scroll 0 0 #FFFFFF;
-  border-radius: 30px 30px 10px 10px;
-  box-shadow: 0 0 8px rgba(0, 0, 0, 0.4);
-  float: left;
-  font-size: 14px;
-  line-height: normal;
-  margin-left: 14px;
-  width: 220px;
-  margin-top: 63px;
+    background: none repeat scroll 0 0 #FFFFFF;
+    border-radius: 30px 30px 10px 10px;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.4);
+    float: left;
+    font-size: 14px;
+    line-height: normal;
+    margin-left: 14px;
+    width: 220px;
+    margin-top: 63px;
 }
 .card .top {
-  background: none repeat scroll 0 0 #333333;
-  border-top-left-radius: 30px;
-  border-top-right-radius: 30px;
-  box-shadow: none;
-  color: #EEEEEE;
-  padding-top: 10px;
+    background: none repeat scroll 0 0 #333333;
+    border-top-left-radius: 30px;
+    border-top-right-radius: 30px;
+    box-shadow: none;
+    color: #EEEEEE;
+    padding-top: 10px;
 }
 .card .description {
-  font-size: 12px;
-  height: 45px;
+    font-size: 12px;
+    height: 45px;
 }
 .card .price {
-  height: 45px;
-  margin-top: 0;
-  text-align: center;
+    height: 45px;
+    margin-top: 0;
+    text-align: center;
 }
 .price .currency {
-  display: inline-block;
-  font-size: 18px;
-  padding-left: 20px;
-  vertical-align: top;
+    display: inline-block;
+    font-size: 18px;
+    padding-left: 20px;
+    vertical-align: top;
 }
 .price .amount {
-  display: inline-block;
-  font-size: 40px;
-  letter-spacing: -3px;
-  line-height: 35px;
-  vertical-align: middle;
+    display: inline-block;
+    font-size: 40px;
+    letter-spacing: -3px;
+    line-height: 35px;
+    vertical-align: middle;
 }
 .price .period {
-  display: inline-block;
-  font-size: 12px;
-  vertical-align: bottom;
+    display: inline-block;
+    font-size: 12px;
+    vertical-align: bottom;
 }
 .card .select {
-  margin-top: 10px;
-  text-align: center;
+    margin-top: 10px;
+    text-align: center;
 }
 a.button {
-  background-color: #9FD968;
-  background-image: -moz-linear-gradient(center top , #FFDA80 0%, #FF7C00 100%);
-  border: 1px solid #999999;
-  border-radius: 26px 26px 26px 26px;
-  color: #000000;
-  display: inline-block;
-  font-size: 15px;
-  font-weight: bold;
-  height: 20px;
-  line-height: 20px;
-  padding: 8px 18px;
-  text-decoration: none;
-  white-space: nowrap;
+    background-color: #9FD968;
+    background-image: -moz-linear-gradient(center top , #FFDA80 0%, #FF7C00 100%);
+    border: 1px solid #999999;
+    border-radius: 26px 26px 26px 26px;
+    color: #000000;
+    display: inline-block;
+    font-size: 15px;
+    font-weight: bold;
+    height: 20px;
+    line-height: 20px;
+    padding: 8px 18px;
+    text-decoration: none;
+    white-space: nowrap;
 }
 a.button:hover {
-  box-shadow: 0 0 8px rgba(0, 0, 0, 0.6);
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.6);
 }
 .card h2 {
-  color: #EEEEEE;
-  height: 40px;
-  margin: 0;
-  text-align: center;
+    color: #EEEEEE;
+    height: 40px;
+    margin: 0;
+    text-align: center;
 }
 .highlight {
-  box-shadow: 0 0 12px rgba(0, 0, 0, 0.8);
-  width: 240px;
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.8);
+    width: 240px;
 }
 .highlight .top {
-  background: none repeat scroll 0 0 #000000;
+    background: none repeat scroll 0 0 #000000;
 }
 .pricing .item, .card .description, .card .price2 {
-  padding-left: 20px;
+    padding-left: 20px;
 }
 .sep{
     display: block;
@@ -180,4 +180,39 @@ label {
 .site_error{
     color:red;
     font-weight: bold;
+}
+body {
+    padding-top: 20px;
+    padding-bottom: 40px;
+}
+
+/* Custom container */
+.container-narrow {
+    margin: 0 auto;
+    max-width: 700px;
+}
+.container-narrow > hr {
+    margin: 30px 0;
+}
+
+/* Main marketing message and sign up button */
+.jumbotron {
+    margin: 60px 0;
+    text-align: center;
+}
+.jumbotron h1 {
+    font-size: 72px;
+    line-height: 1;
+}
+.jumbotron .btn {
+    font-size: 21px;
+    padding: 14px 24px;
+}
+
+/* Supporting marketing content */
+.marketing {
+    margin: 60px 0;
+}
+.marketing p + h4 {
+    margin-top: 28px;
 }
