@@ -148,3 +148,8 @@ account_view_email_report:
   pattern: /view-report-pdf
   defaults: { _controller: FrontFrontBundle:ProjectReport:viewPdfReport }
   
+# settings
+account_settings:
+  pattern: /user-settings
+  defaults: { _controller: FrontFrontBundle:User:settings }
+  
