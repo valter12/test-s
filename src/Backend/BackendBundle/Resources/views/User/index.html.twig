@@ -20,7 +20,7 @@
     {% for item in users %}
         <tr class="{% if item.added|date('Y-m-d') == now|date('Y-m-d') %}success{% endif %}">
             <td>{{ item.id }}</td>
-            <td>{{ item.package_id }}</td>
+            <td>{{ item.package_name }}</td>
             <td>{{ item.email }}</td>
             <td>{{ item.f_name }} {{ item.l_name }}</td>
             <td>{% if item.has_activated_email %}Yes{%else%}No{% endif %}</td>
