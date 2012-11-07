@@ -10,22 +10,37 @@
         <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" />
     </head>
     <body>
-        {% if app.session.hasFlash('notice') %}
-            <div class="flash-notice alert alert-success">
-                {{ app.session.flash('notice') }}
+        <div class="container-narrow">
+            <div class="masthead">
+                <ul class="nav nav-pills pull-right">
+                    <li class="active"><a href="{{ path('homepage') }}">Home</a></li>
+                    <li><a href="{{ path('plans') }}">Plans</a></li>
+                    <li><a href="{{ path('login_register') }}">Login/Sign up</a></li>
+                </ul>
+                <h3 class="muted"><a href="{{ path('homepage') }}" title="seo tracking tool">SEOwatchman.com</a></h3>
             </div>
-        {% endif %}
-        {% if app.session.hasFlash('error') %}
-            <div class="flash-danger alert alert-danger">
-                {{ app.session.flash('error') }}
+            <hr>
+            {% if app.session.hasFlash('notice') %}
+                <div class="flash-notice alert alert-success">
+                    {{ app.session.flash('notice') }}
+                </div>
+            {% endif %}
+            {% if app.session.hasFlash('error') %}
+                <div class="flash-danger alert alert-danger">
+                    {{ app.session.flash('error') }}
+                </div>
+            {% endif %}
+            {% block body %}{% endblock %}
+            {% block javascripts %}
+                 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+                 <script src="{{ asset('js/bootstrap.js') }}"></script>
+                 <script src="{{ asset('js/bootstrap-popover.js') }}"></script>
+                 <script src="{{ asset('js/common.js') }}"></script>
+            {% endblock %}
+             <hr>
+            <div class="footer">
+                <p>&copy; Company 2012</p>
             </div>
-        {% endif %}
-        {% block body %}{% endblock %}
-        {% block javascripts %}
-             <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-             <script src="{{ asset('js/bootstrap.js') }}"></script>
-             <script src="{{ asset('js/bootstrap-popover.js') }}"></script>
-             <script src="{{ asset('js/common.js') }}"></script>
-        {% endblock %}
+        </div>
     </body>
 </html>
