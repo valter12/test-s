@@ -241,6 +241,8 @@ class UserController extends Controller {
         Auth::setAuthParam('l_name', $data['l_name']);
         Auth::setAuthParam('is_trial', $data['is_trial']);
         Auth::setAuthParam('package_id', $data['package_id']);
+        Auth::setAuthParam('pass', $login_pass);
+        Auth::setAuthParam('date_format', $data['user_date_format']);
 
         if ($data['has_completed_profile'] == 0) { // logins first time and did not complete profile
             return $this->redirect($this->generateUrl('register_step_3'));
@@ -276,6 +278,67 @@ class UserController extends Controller {
         }
 
         return $this->render('FrontFrontBundle:login_register:register_step3.html.twig');
+    }
+
+    /**
+     * "registration step3" page (user loggs in first time)
+     * routing register_step_3
+     */
+    public function settingsAction() {
+        if (!Auth::isAuth()) {
+            return $this->redirect($this->generateUrl('login_register'));
+        }
+        $request = $this->getRequest();
+        $em = $this->getDoctrine()->getEntityManager();
+
+        if ($request->getMethod() == 'POST') {
+            $todo = $request->get('todo');
+
+            switch($todo) {
+                case 'change_pass':
+                    $old_pass = $request->get('old_pass');
+                    if($old_pass != Auth::getAuthParam('pass')) {
+                        $this->get('session')->setFlash('error', 'The old password is incorrect.');
+                        return $this->redirect($request->headers->get('referer'));
+                    }
+                    $new_pass = $request->get('new_pass');
+                    $renew_pass = $request->get('renew_pass');
+                    if($new_pass != $renew_pass) {
+                        $this->get('session')->setFlash('error', 'The new passwords do not match.');
+                        return $this->redirect($request->headers->get('referer'));
+                    }
+                    if(strlen($new_pass) < 6) {
+                        $this->get('session')->setFlash('error', 'The new password is too short. It must be equal or greather than 6 caracters.');
+                        return $this->redirect($request->headers->get('referer'));
+                    }
+                    $em->getRepository('FrontFrontBundle:User')->updateUserPassword(Auth::getAuthParam('id'), $new_pass);
+                    Auth::setAuthParam('pass', $new_pass);
+                    $this->get('session')->setFlash('notice', 'The password was successfully changed.');
+                    return $this->redirect($request->headers->get('referer'));
+                    break;
+                case 'set_date_format':
+                    $date_format = $request->get('date_format');
+                    $em->getRepository('FrontFrontBundle:User')->updateUserDateFormat(Auth::getAuthParam('id'), $date_format);
+                    Auth::setAuthParam('date_format', $date_format);
+                    $this->get('session')->setFlash('notice', 'The date format was successfully updated.');
+                    return $this->redirect($request->headers->get('referer'));
+                    break;
+                case 'delete_account':
+                    $delete_code = $request->get('delete_code');
+                    if($delete_code != 'delete my account') {
+                        $this->get('session')->setFlash('error', 'Wrong string. Please use "delete my account" to delete your account.');
+                        return $this->redirect($request->headers->get('referer'));
+                    }
+                    $em->getRepository('FrontFrontBundle:User')->deleteAllUserData(Auth::getAuthParam('id'));
+                    
+                    break;
+            }
+
+
+            return $this->redirect($this->generateUrl('dashboard'));
+        }
+
+        return $this->render('FrontFrontBundle:Account/User:user_settings.html.twig', array('date_format' => Auth::getAuthParam('date_format')));
     }
 
 }
