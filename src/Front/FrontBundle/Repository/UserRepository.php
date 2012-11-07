@@ -147,7 +147,7 @@ class UserRepository extends Backend\BackendUserRepository {
      * @return type
      */
     public function getUserAuth($login_email, $login_pass) {
-        $query = "SELECT id, f_name, l_name, is_deleted, has_activated_email, has_completed_profile, is_trial, package_id FROM user WHERE email=:email AND pass=:pass";
+        $query = "SELECT * FROM user WHERE email=:email AND pass=:pass";
         $q = $this->getEntityManager()->getConnection()->executeQuery($query, array(':email' => $login_email, ':pass' => $login_pass));
 
         $result = $q->fetch(2);
@@ -165,5 +165,20 @@ class UserRepository extends Backend\BackendUserRepository {
         $query = "UPDATE user SET f_name=:f_name, l_name=:l_name WHERE id=:id";
         $q = $this->getEntityManager()->getConnection()->executeQuery($query, array(':f_name' => $f_name, ':l_name' => $l_name, ':id' => $id));
     }
-
+    
+    public function updateUserPassword($id, $new_pass) {
+        $query = "UPDATE user SET pass=:new_pass WHERE id=:id";
+        $q = $this->getEntityManager()->getConnection()->executeQuery($query, array(':new_pass' => $new_pass, ':id' => $id));
+    }
+    
+    public function updateUserDateFormat($id, $new_format) {
+        $query = "UPDATE user SET user_date_format=:new_format WHERE id=:id";
+        $q = $this->getEntityManager()->getConnection()->executeQuery($query, array(':new_format' => $new_format, ':id' => $id));
+    }
+    
+    public function deleteAllUserData($id) {
+        $query = "UPDATE user SET is_deleted=1 WHERE id=:id";
+        $q = $this->getEntityManager()->getConnection()->executeQuery($query, array(':id' => $id));
+    }
+    
 }
