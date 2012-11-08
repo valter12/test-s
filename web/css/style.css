@@ -219,3 +219,17 @@ body {
 .text_center{
     text-align:center;
 }
+.relative{
+    position: relative;
+}
+.features_homepage h2{
+    font-size: 14px;
+}
+.all_features_link{
+    font-size: 14px;
+    font-weight: bold;
+    float: right;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+}
