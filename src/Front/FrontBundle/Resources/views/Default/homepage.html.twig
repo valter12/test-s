@@ -1,32 +1,38 @@
 {% extends '::base.html.twig' %}
 {% block body %}
-
     <div class="jumbotron">
-        <h1>Super awesome marketing speak!</h1>
-        <p class="lead">Cras justo odio, dapibus ac facilisis in, egestas eget quam. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
+        <h1>SEO tool<br />that fits your needs</h1>
+        <div class="sep"></div>
+        <p class="lead">SEOwatchman is an online collection of SEO tools that are developed for you on your <a href="">demand</a>,<br /><b>seriously</b>, on your <a href="">demand</a>.</p>
         <a class="btn btn-large btn-success" href="{{ path('login_register') }}">Sign up today</a>
     </div>
     <hr>
-    <div class="row-fluid marketing">
-        <div class="span6">
-            <h4>Subheading</h4>
-            <p>Donec id elit non mi porta gravida at eget metus. Maecenas faucibus mollis interdum.</p>
+    <div class="text_center">
+        <p class="lead">Some features available today</p>
+    </div>
+    <div class="row-fluid marketing relative">
+        <div class="span6 features_homepage">
+            <h2><a href="">Keyword position tracking</a></h2>
+            <p>We track your site's keywords daily for major search engines like Google, Bing, Yahoo. We also provide comprehensive statistics and graphs.</p>
 
-            <h4>Subheading</h4>
-            <p>Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Cras mattis consectetur purus sit amet fermentum.</p>
+            <h2><a href="">Competitor watcher</a></h2>
+            <p>We keep an eye on your competitors.</p>
 
-            <h4>Subheading</h4>
-            <p>Maecenas sed diam eget risus varius blandit sit amet non magna.</p>
+            <h2><a href="">Site uptime verifier</a></h2>
+            <p>We will check your site every 10 minutes.</p>
         </div>
-        <div class="span6">
-            <h4>Subheading</h4>
-            <p>Donec id elit non mi porta gravida at eget metus. Maecenas faucibus mollis interdum.</p>
+        <div class="span6 features_homepage">
+            <h2><a href="">Custom reports</a></h2>
+            <p>Build custom reports that will be emailed to for you and your clients.</p>
+            <br />
 
-            <h4>Subheading</h4>
-            <p>Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Cras mattis consectetur purus sit amet fermentum.</p>
-
-            <h4>Subheading</h4>
-            <p>Maecenas sed diam eget risus varius blandit sit amet non magna.</p>
+            <h2><a href="">Rank tracking</a></h2>
+            <p>Google PR, Alexa Rank etc.</p>
+            
+            <h2><a href="">Data export</a></h2>
+            <p>Export the statistics in different formats.</p>
         </div>
+        <div class="sep"></div>
+        <a class="all_features_link" href="">Sell all features>></a>
     </div>
 {% endblock %}
