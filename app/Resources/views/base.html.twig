@@ -16,7 +16,7 @@
                     <li class="active"><a href="{{ path('homepage') }}">Home</a></li>
 {#                    <li><a href="{{ path('plans') }}">Plans</a></li>#}
                     <li><a href="">Features</a></li>
-                    <li><a href="{{ path('login_register') }}">Login/Sign up</a></li>
+                    <li><a href="{{ path('login_register') }}">Login</a></li>
                 </ul>
                 <h3 class="muted"><a href="{{ path('homepage') }}" title="seo tracking tool">SEOwatchman.com</a></h3>
             </div>
@@ -40,7 +40,7 @@
             {% endblock %}
              <hr>
             <div class="footer">
-                <p>&copy; Company 2012</p>
+                <p>&copy; SEOwatchman {{ now|date("Y") }} <a href="mailto:info@seowatchman.com" style="float:right;">info@seowatchman.com</a></p>
             </div>
         </div>
     </body>
