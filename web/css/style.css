@@ -201,7 +201,7 @@ body {
     text-align: center;
 }
 .jumbotron h1 {
-    font-size: 72px;
+    font-size: 51px;
     line-height: 1;
 }
 .jumbotron .btn {
@@ -215,4 +215,7 @@ body {
 }
 .marketing p + h4 {
     margin-top: 28px;
+}
+.text_center{
+    text-align:center;
 }
