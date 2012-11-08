@@ -3,7 +3,6 @@
     <div class="sep"></div>
     <div class="sep"></div>
     <select name="hash" onchange="window.location='{{ path('account_keywords') }}?hash='+this.value">
-        <option value="0">[Choose project]</option>
         {% for item in project_list %}
             <option value="{{ item.project_hash }}" {% if app.request.get('hash')==item.project_hash %}selected="selected"{% endif %}>{{ item.project_name }}</option>
         {% endfor %}
