@@ -21,6 +21,14 @@ class DefaultController extends Controller {
     public function plansAction() {
         return $this->render('FrontFrontBundle:Default:plans.html.twig');
     }
+    
+    public function featuresAction() {
+        $em = $this->getDoctrine()->getEntityManager();
+        $site_features = $em->getRepository('FrontFrontBundle:Features')->getFeatures();
+        
+        return $this->render('FrontFrontBundle:Default:features.html.twig');
+    }
+    
 
     /**
      * generates captcha
