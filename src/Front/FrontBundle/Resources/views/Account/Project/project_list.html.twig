@@ -1,8 +1,8 @@
 {% extends '::account_base.html.twig' %}
 {% block body %}
-    Project list
-    <br />
-    You currently have {{ project_list|length }} of possible {{ max_packages }} projects.
+    <h2>Project list</h2>
+    <div class="sep"></div>
+    You currently have {{ project_list|length }} projects of possible {{ max_packages }}.
     <div class="sep"></div>
     <a href="javascript:;" onclick="addProjectModal();" class="btn btn-success">Add project</a>
     <div class="sep"></div>
@@ -38,7 +38,7 @@
                                 <li><a href="{{ path('account_keywords') }}?hash={{ item.project_hash }}"><i class="icon-screenshot"></i>&nbsp;Keywords</a></li>
                                 <li><a href="{{ path('account_competitors') }}?hash={{ item.project_hash }}"><i class="icon-random"></i>&nbsp;Competitors</a></li>
                                 <li><a href="{{ path('account_uptime') }}?hash={{ item.project_hash }}"><i class="icon-time"></i>&nbsp;Uptime</a></li>
-                                <li><a href=""><i class="icon-globe"></i>&nbsp;Google bot tracker</a></li>
+{#                                <li><a href=""><i class="icon-globe"></i>&nbsp;Google bot tracker</a></li>#}
                                 <li class="divider"></li>
                                 <li><a href="{{ path('account_delete_project') }}?hash={{ item.project_hash }}" onclick="return confirm('Please confirm you want to delete this project. (The keywords and all statistics associated with it will be deleted also)')"><i class="icon-trash"></i>&nbsp;Delete</a></li>
                             </ul>
