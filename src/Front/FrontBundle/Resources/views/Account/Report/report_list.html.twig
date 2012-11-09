@@ -26,8 +26,8 @@
                 <td>{{ item.report_title }}</td>
                 <td>{{ item.report_desc }}</td>
                 <td>{{ item.frequency }}</td>
-                <td>{{ item.last_sent|next_report(item.frequency) }}</td>
-                <td>{{ item.added|date('Y-m-d') }}</td>
+                <td>{{ format_date(item.last_sent|next_report(item.frequency)) }}</td>
+                <td>{{ format_date(item.added) }}</td>
                 <td>
                     <a href="{{ path('account_modify_add_report') }}?hash={{ item.project_hash }}&report_id={{ item.id }}">Edit</a> |
                     <a href="{{ path('account_delete_report') }}?hash={{ item.project_hash }}&report_id={{ item.id }}" onclick="return confirm('Please confirm');">Delete</a>
