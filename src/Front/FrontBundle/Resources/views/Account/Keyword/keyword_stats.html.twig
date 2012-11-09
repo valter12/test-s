@@ -19,7 +19,7 @@
         </tr>
         {% for item in keyword_stats %}
             <tr>
-                <td>{{ item.track_date }}</td>
+                <td>{{ format_date(item.track_date) }}</td>
                 <td {% if item.google_change != 0 %}style="background-color:{% if item.google_change > 0 %}#96FF47{% else %}#FFA5A5{% endif %}"{% endif %}>
                     {% if item.google_position %}{{ item.google_position }}{% else %}-{% endif %}
                     {% if item.google_change != 0 %}
