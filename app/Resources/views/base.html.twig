@@ -13,10 +13,10 @@
         <div class="container-narrow">
             <div class="masthead">
                 <ul class="nav nav-pills pull-right">
-                    <li class="active"><a href="{{ path('homepage') }}">Home</a></li>
+                    <li {% if app.request.attributes.get('_route') == 'homepage' %}class="active"{% endif %}><a href="{{ path('homepage') }}">Home</a></li>
 {#                    <li><a href="{{ path('plans') }}">Plans</a></li>#}
-                    <li><a href="{{ path('features') }}">Features</a></li>
-                    <li><a href="{{ path('login_register') }}">Login/Register</a></li>
+                    <li {% if app.request.attributes.get('_route') == 'features' or app.request.attributes.get('_route') == 'feature_details' %}class="active"{% endif %}><a href="{{ path('features') }}">Features</a></li>
+                    <li {% if app.request.attributes.get('_route') == 'login_register' %}class="active"{% endif %}><a href="{{ path('login_register') }}">Login/Register</a></li>
                 </ul>
                 <h3 class="muted"><a href="{{ path('homepage') }}" title="seo tracking tool">SEOwatchman.com</a></h3>
             </div>
