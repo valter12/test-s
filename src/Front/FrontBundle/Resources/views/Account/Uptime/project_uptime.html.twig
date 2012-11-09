@@ -17,7 +17,7 @@
             </tr>
         {% for key, item in project_uptime %}
             <tr>
-                <td width="100">{{ item.summary_date }}</td>
+                <td width="100">{{ format_date(item.summary_date) }}</td>
                 <td>
                     <div class="uptime_all">
                         {% for summary_data in item.summary %}
