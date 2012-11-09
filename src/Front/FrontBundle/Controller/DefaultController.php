@@ -11,7 +11,9 @@ class DefaultController extends Controller {
      * @return type
      */
     public function homepageAction() {
-        return $this->render('FrontFrontBundle:Default:homepage.html.twig');
+        $em = $this->getDoctrine()->getEntityManager();
+        $homepage_features = $em->getRepository('FrontFrontBundle:Features')->getFeatures(true, true, 5);
+        return $this->render('FrontFrontBundle:Default:homepage.html.twig', array('homepage_features' => $homepage_features));
     }
 
     /**
