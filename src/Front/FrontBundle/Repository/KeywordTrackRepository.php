@@ -59,12 +59,12 @@ class KeywordTrackRepository extends EntityRepository {
 
         // setting filter params
         if ($from_date) {
-            $sql_date[] = "track_date<=:from_date";
-            $params[':from_date'] = $from_date;
+            $sql_date[] = "track_date>=:from_date";
+            $params[':from_date'] = date("Y-m-d", strtotime($from_date));
         }
         if ($to_date) {
-            $sql_date[] = "track_date>=:to_date";
-            $params[':to_date'] = $to_date;
+            $sql_date[] = "track_date<=:to_date";
+            $params[':to_date'] = date("Y-m-d", strtotime($to_date));
         }
         if (!empty($params)) {
             $sql_date_str = " AND " . implode(' AND ', $sql_date);
