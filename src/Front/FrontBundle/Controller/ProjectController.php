@@ -5,10 +5,6 @@ namespace Front\FrontBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Front\FrontBundle\Security\Auth as Auth;
 
-/**
- * User controller.
- *
- */
 class ProjectController extends Controller {
 
     /**
@@ -97,7 +93,7 @@ class ProjectController extends Controller {
                 }
             }
             $em->getRepository('FrontFrontBundle:Project')->createProject(Auth::getAuthParam('id'), $project_name, $project_desc, $project_domain, $project_category);
-            $this->get('session')->setFlash('notice', 'The project was created.');
+            $this->get('session')->setFlash('notice', 'The project was created. Now you can add keywords by clicking on "Options"');
         } elseif($todo == 'modify') {
             $em->getRepository('FrontFrontBundle:Project')->modifyProject(Auth::getAuthParam('id'), $project_hash, $project_name, $project_desc, $project_category);
             $this->get('session')->setFlash('notice', 'The project was updated.');
