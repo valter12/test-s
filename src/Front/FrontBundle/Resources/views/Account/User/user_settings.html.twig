@@ -24,9 +24,9 @@
             <input type="hidden" name="todo" value="set_date_format">
             <label for="date_format">Please choose the date format:</label>
             <select name="date_format" value="" id="date_format">
-                <option {% if date_format == 'YYYY-mm-dd' %}selected="selected"{% endif %} value="YYYY-mm-dd">YYYY-mm-dd</option>
-                <option {% if date_format == 'dd-mm-YYYY' %}selected="selected"{% endif %} value="dd-mm-YYYY">dd-mm-YYYY</option>
-                <option {% if date_format == 'mm-dd-YYYY' %}selected="selected"{% endif %} value="mm-dd-YYYY">mm-dd-YYYY</option>
+                <option {% if date_format == 'Y-m-d' %}selected="selected"{% endif %} value="Y-m-d">YYYY-mm-dd</option>
+                <option {% if date_format == 'd-m-Y' %}selected="selected"{% endif %} value="d-m-Y">dd-mm-YYYY</option>
+                <option {% if date_format == 'm-d-Y' %}selected="selected"{% endif %} value="m-d-Y">mm-dd-YYYY</option>
             </select>
             <br />
             <input type="submit" class="btn btn-primary" value="Set date format">
