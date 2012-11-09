@@ -31,6 +31,14 @@ class DefaultController extends Controller {
         return $this->render('FrontFrontBundle:Default:features.html.twig', array('site_features' => $site_features));
     }
     
+    public function featureDetailsAction() {
+        $request = $this->getRequest();
+        $em = $this->getDoctrine()->getEntityManager();
+        $feature_details = $em->getRepository('FrontFrontBundle:Features')->getFeature($request->get('id'));
+        
+        return $this->render('FrontFrontBundle:Default:feature_details.html.twig', array('feature_details' => $feature_details));
+    }
+    
 
     /**
      * generates captcha
