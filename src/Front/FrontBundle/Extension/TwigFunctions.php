@@ -22,9 +22,12 @@ class TwigFunctions extends \Twig_Extension {
     
     
 
-    public function format_date($date, $with_minutes_seconds=false) {
+    public function format_date($date, $with_minutes_seconds=false, $only_format=false) {
         $minutes_seconds = '';
         $date_format = \Front\FrontBundle\Security\Auth::getAuthParam('date_format');
+        if($only_format) {
+            return strtolower(str_replace(array('Y', 'm', 'd'), array('YY', 'mm', 'dd'), $date_format));
+        }
         if($with_minutes_seconds) {
             $minutes_seconds = ' H:i:s';
         }
