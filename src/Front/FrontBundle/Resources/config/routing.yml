@@ -6,6 +6,16 @@ homepage:
     pattern:  /
     defaults: { _controller: FrontFrontBundle:Default:homepage }
     
+features:
+    pattern:  /features
+    defaults: { _controller: FrontFrontBundle:Default:features }
+    
+feature_details:
+    pattern:  /features/{id}/{feature_title}
+    defaults: { _controller: FrontFrontBundle:Default:features }
+    requirements:
+      id: \d+
+    
 plans:
     pattern:  /plans
     defaults: { _controller: FrontFrontBundle:Default:plans }
