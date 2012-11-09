@@ -19,6 +19,11 @@ class UserController extends Controller {
     public function loginRegisterAction() {
         return $this->render('FrontFrontBundle:login_register:login_register.html.twig');
     }
+    
+    public function logoutAction() {
+        Auth::setAuth(false);
+        return $this->redirect($this->generateUrl('homepage'));
+    }
 
     /**
      * "registration process"
