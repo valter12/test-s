@@ -12,25 +12,14 @@
     </div>
     <div class="row-fluid marketing relative">
         <div class="span6 features_homepage">
-            <h2><a href="">Keyword position tracking</a></h2>
-            <p>We track your site's keywords daily for major search engines like Google, Bing, Yahoo. We also provide comprehensive statistics and graphs.</p>
-
-            <h2><a href="">Competitor watcher</a></h2>
-            <p>We keep an eye on your competitors.</p>
-
-            <h2><a href="">Site uptime verifier</a></h2>
-            <p>We will check your site every 10 minutes.</p>
-        </div>
-        <div class="span6 features_homepage">
-            <h2><a href="">Custom reports</a></h2>
-            <p>Build custom reports that will be emailed to for you and your clients.</p>
-            <br />
-
-            <h2><a href="">Rank tracking</a></h2>
-            <p>Google PR, Alexa Rank etc.</p>
-            
-            <h2><a href="">Data export</a></h2>
-            <p>Export the statistics in different formats.</p>
+        {% for id,item in homepage_features %}
+            <h2><a href="{{ path('feature_details', {'id':item.id, 'feature_title':item.feature_link}) }}" title="{{ item.link_title }}">{{ item.feature_title }}</a></h2>
+            <p>{{ item.short_desc }}</p>
+            {% if id==2 %}
+                </div>
+                <div class="span6 features_homepage">
+            {% endif %}
+        {% endfor %}
         </div>
         <div class="sep"></div>
         <a class="all_features_link" href="{{ path('features') }}">Sell all features>></a>
