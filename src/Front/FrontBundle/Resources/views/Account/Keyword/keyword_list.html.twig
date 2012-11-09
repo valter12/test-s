@@ -1,6 +1,6 @@
 {% extends '::account_base.html.twig' %}
 {% block body %}
-    <div class="sep"></div>
+    <h2>List of keywords</h2>
     <div class="sep"></div>
     <select name="hash" onchange="window.location='{{ path('account_keywords') }}?hash='+this.value">
         {% for item in project_list %}
