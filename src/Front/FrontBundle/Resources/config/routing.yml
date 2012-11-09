@@ -12,7 +12,7 @@ features:
     
 feature_details:
     pattern:  /features/{id}/{feature_title}
-    defaults: { _controller: FrontFrontBundle:Default:features }
+    defaults: { _controller: FrontFrontBundle:Default:featureDetails }
     requirements:
       id: \d+
     
