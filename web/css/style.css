@@ -233,3 +233,7 @@ body {
     right: 0;
     bottom: 0;
 }
+.features_div a {
+    font-size: 14px;
+    font-weight: bold;
+}
