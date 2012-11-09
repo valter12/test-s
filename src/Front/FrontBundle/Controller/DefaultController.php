@@ -26,7 +26,7 @@ class DefaultController extends Controller {
         $em = $this->getDoctrine()->getEntityManager();
         $site_features = $em->getRepository('FrontFrontBundle:Features')->getFeatures();
         
-        return $this->render('FrontFrontBundle:Default:features.html.twig');
+        return $this->render('FrontFrontBundle:Default:features.html.twig', array('site_features' => $site_features));
     }
     
 
