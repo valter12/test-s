@@ -1,5 +1,6 @@
 {% extends '::account_base.html.twig' %}
 {% block body %}
+    <h2>Project Competitor</h2>
     <div class="sep"></div>
     <select name="" onchange="window.location='{{ path('account_competitors') }}?hash='+this.value">
         {% for item in project_list %}
