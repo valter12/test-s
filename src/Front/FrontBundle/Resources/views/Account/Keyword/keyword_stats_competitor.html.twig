@@ -22,7 +22,7 @@
         {% set i = 0 %}
         {% for date, item in keyword_stats %}
             <tr class="data_tr">
-                <td rowspan="{{ item|length+1 }}">{{ date }}</td>
+                <td rowspan="{{ item|length+1 }}">{{ format_date(date) }}</td>
                 {% set additional_td = 'show' %}
                 {% for stats in item %}
                         <td>{{ stats.competitor_name }}</td>
