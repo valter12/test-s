@@ -1,9 +1,10 @@
 {% extends '::account_base.html.twig' %}
 {% block body %}
 {% if report_data.id %}
-    <h1>Modify report</h1>
+    <h2>Modify report</h2>
 {% else %}
-    <h1>Create report</h1>
+    <h2>Create report</h2>
+    <div class="sep"></div>
     Change project: 
     <select name="project_hash" onchange="window.location='{{ path('account_modify_add_report') }}?hash='+this.value">
         {% for item in project_list %}
