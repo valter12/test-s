@@ -26,7 +26,7 @@
                 <td>{{ key+1 }}</td>
                 <td>{{ item.competitor_name }}</td>
                 <td>{{ item.competitor_domain }}</td>
-                <td>{{ item.added }}</td>
+                <td>{{ format_date(item.added) }}</td>
                 <td>
                     <a href="javascript:;" onclick="showModifyModal('{{ item.id }}', '{{ project_data.project_hash }}')">Modify</a>
                     <br />
