@@ -1,4 +1,13 @@
 {% extends '::account_base.html.twig' %}
 {% block body %}
-    Dashboard
+    <h2>Dashboard</h2>
+    <div class="sep"></div>
+    You are using <b>{{ percentage }}</b>% of your SEOwatchman account.
+    <br/>
+    <b>Projects:</b> {{ projects.cnt_projects }} of possible {{ projects.total_allowed }}
+    <br/>
+    <b>Reports:</b> {{ cnt_reports }}
+    <br/>
+    <br/>
+    <i>Some new items are about to come on this dashboard soon...</i>
 {% endblock %}
