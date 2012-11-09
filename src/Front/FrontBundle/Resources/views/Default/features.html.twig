@@ -1,0 +1,19 @@
+{% extends '::base.html.twig' %}
+{% block body %}
+    <h2>Features</h2>
+    <div class="sep"></div>
+    <div class="sep"></div>
+    <div class="sep"></div>
+    <div class="features_div">
+        {% for item in site_features %}
+            <a href="{{ path('feature_details', {'id':item.id, 'feature_title':item.feature_link}) }}" title="{{ item.link_title }}" class="">{{ item.feature_title }}</a>
+            <sup>{{ item.added|date('Y-m-d') }}</sup>
+            <br />
+            {{ item.short_desc }}
+            <div class="sep"></div>
+            <div class="sep"></div>
+            <div class="sep"></div>
+        {% endfor %}
+        <div class="sep"></div>
+    </div>
+{% endblock %}
