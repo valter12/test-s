@@ -39,6 +39,33 @@ class DefaultController extends Controller {
         return $this->render('FrontFrontBundle:Default:feature_details.html.twig', array('feature_details' => $feature_details));
     }
     
+    public function featureDemandAction() {
+        $request = $this->getRequest();
+        $todo = $request->get('todo');
+        if($todo) {
+            switch ($todo) {
+                case 'save_feature_demand':
+                    $title = $request->get('title');
+                    $content = $request->get('content');
+                    $email = $request->get('email');
+                    
+                    if(trim($title) == '' || trim($content) == '' || trim($email) == '') {
+                        $this->get('session')->setFlash('error', 'All fields are mandatory.');
+                        return $this->redirect($request->headers->get('referer'));
+                    }
+                    
+                    $em = $this->getDoctrine()->getEntityManager();
+                    $em->getRepository('FrontFrontBundle:UserSuggestions')->saveSuggestion($title, $content, $email);
+                    
+                    $this->get('session')->setFlash('notice', 'We\'ve got your request. Thank you.');
+                    mail('terramda@gmail.com', 'SEOwatchman new "feature request"');
+                    return $this->redirect($request->headers->get('referer'));
+                    
+                    break;
+            }
+        }
+        return $this->render('FrontFrontBundle:Default:feature_demand_form.html.twig');
+    }
 
     /**
      * generates captcha
