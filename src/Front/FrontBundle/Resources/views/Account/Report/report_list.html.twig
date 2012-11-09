@@ -1,6 +1,6 @@
 {% extends '::account_base.html.twig' %}
 {% block body %}
-    <h1>Report list</h1>
+    <h2>Report list</h2>
     <br />
     Choose project: 
     <select name="hash" onchange="window.location='{{ path('account_report_list') }}?hash='+this.value">
@@ -12,29 +12,36 @@
     <div class="sep"></div>
     <a href="{{ path('account_modify_add_report') }}?hash={{ app.request.get('hash') }}" class="btn btn-success">Create report</a>
     <div class="sep"></div>
-    <table class="table">
-        <tr>
-            <th>Report title</th>
-            <th>Report description</th>
-            <th>Frequency</th>
-            <th>Next Report</th>
-            <th>Created</th>
-            <th>Actions</th>
-        </tr>
-        {% for key, item in reports %}
+    {% if reports|length %}
+        <table class="table">
             <tr>
-                <td>{{ item.report_title }}</td>
-                <td>{{ item.report_desc }}</td>
-                <td>{{ item.frequency }}</td>
-                <td>{{ format_date(item.last_sent|next_report(item.frequency)) }}</td>
-                <td>{{ format_date(item.added) }}</td>
-                <td>
-                    <a href="{{ path('account_modify_add_report') }}?hash={{ item.project_hash }}&report_id={{ item.id }}">Edit</a> |
-                    <a href="{{ path('account_delete_report') }}?hash={{ item.project_hash }}&report_id={{ item.id }}" onclick="return confirm('Please confirm');">Delete</a>
-                </td>
+                <th>Report title</th>
+                <th>Report description</th>
+                <th>Frequency</th>
+                <th>Next Report</th>
+                <th>Created</th>
+                <th>Actions</th>
             </tr>
-        {% endfor %}
-    </table>
+            {% for key, item in reports %}
+                <tr>
+                    <td>{{ item.report_title }}</td>
+                    <td>{{ item.report_desc }}</td>
+                    <td>{{ item.frequency }}</td>
+                    <td>{{ format_date(item.last_sent|next_report(item.frequency)) }}</td>
+                    <td>{{ format_date(item.added) }}</td>
+                    <td>
+                        <a href="{{ path('account_modify_add_report') }}?hash={{ item.project_hash }}&report_id={{ item.id }}">Edit</a> |
+                        <a href="{{ path('account_delete_report') }}?hash={{ item.project_hash }}&report_id={{ item.id }}" onclick="return confirm('Please confirm');">Delete</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        You have no reports for this project.
+    {% endif %}
+    <div class="sep"></div>
+    <a href="{{ path('account_modify_add_report') }}?hash={{ app.request.get('hash') }}" class="btn btn-success">Create report</a>
+    <div class="sep"></div>
 {% endblock %}
 {% block javascripts %}
     {{ parent() }}
