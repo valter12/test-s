@@ -32,6 +32,10 @@ execute_login:
   pattern: /execute-login
   defaults: { _controller: FrontFrontBundle:User:executeLogin }
 
+logout:
+  pattern: /logout
+  defaults: { _controller: FrontFrontBundle:User:logout }
+
 execute_register_1:
   pattern: /register
   defaults: { _controller: FrontFrontBundle:User:registerStep2 }
