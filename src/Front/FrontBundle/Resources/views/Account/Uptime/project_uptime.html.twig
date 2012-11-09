@@ -1,5 +1,6 @@
 {% extends '::account_base.html.twig' %}
 {% block body %}
+    <h2>Site uptime</h2>
     <div class="sep"></div>
     <select name="" onchange="window.location='{{ path('account_uptime') }}?hash='+this.value">
         {% for item in project_list %}
@@ -9,28 +10,32 @@
     <br />
     Uptime stats for "{{ project_data.project_name }}" project.
     <div class="sep"></div>
-    <table>
-            <tr>
-                <th>Date</th>
-                <th>&nbsp;</th>
-                <th align="right">Total offline</th>
-            </tr>
-        {% for key, item in project_uptime %}
-            <tr>
-                <td width="100">{{ format_date(item.summary_date) }}</td>
-                <td>
-                    <div class="uptime_all">
-                        {% for summary_data in item.summary %}
-                            <div class="uptime_{% if summary_data.site_status=='DOWN' %}UP {% else %}DOWN tooltip_el{% endif %}" data-original-title="Site down between {{ summary_data.between_hours }}" style="width:{{ summary_data.width_percent }}%"></div>
-                        {% endfor %}
-                    </div>
-                </td>
-                <td width="100" align="right">
-                    {{ item.total_down }} hours ({{ item.total_down_percent }}%)
-                </td>
-            </tr>
-        {% endfor %}
-    </table>
+    {% if project_uptime|length %}
+        <table>
+                <tr>
+                    <th>Date</th>
+                    <th>&nbsp;</th>
+                    <th align="right">Total offline</th>
+                </tr>
+            {% for key, item in project_uptime %}
+                <tr>
+                    <td width="100">{{ format_date(item.summary_date) }}</td>
+                    <td>
+                        <div class="uptime_all">
+                            {% for summary_data in item.summary %}
+                                <div class="uptime_{% if summary_data.site_status=='DOWN' %}UP {% else %}DOWN tooltip_el{% endif %}" data-original-title="Site down between {{ summary_data.between_hours }}" style="width:{{ summary_data.width_percent }}%"></div>
+                            {% endfor %}
+                        </div>
+                    </td>
+                    <td width="100" align="right">
+                        {{ item.total_down }} hours ({{ item.total_down_percent }}%)
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        Your site was UP all the time.
+    {% endif %}
 {% endblock %}
 {% block javascripts %}
     {{ parent() }}
