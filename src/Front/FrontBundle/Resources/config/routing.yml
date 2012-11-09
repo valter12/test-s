@@ -16,6 +16,10 @@ feature_details:
     requirements:
       id: \d+
     
+feature_demand:
+    pattern:  /feature-demand
+    defaults: { _controller: FrontFrontBundle:Default:featureDemand }
+    
 plans:
     pattern:  /plans
     defaults: { _controller: FrontFrontBundle:Default:plans }
