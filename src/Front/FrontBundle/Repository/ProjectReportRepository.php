@@ -51,6 +51,18 @@ class ProjectReportRepository extends EntityRepository {
         $q = $this->getEntityManager()->getConnection()->executeQuery($query, $params);
     }
     
+    public function cntReports($user_id) {
+        $query = "
+            SELECT COUNT(r.id) AS cnt 
+            FROM project_report r, project p
+            WHERE r.project_id=p.id
+            AND p.user_id=:user_id
+        ";
+        $q = $this->getEntityManager()->getConnection()->executeQuery($query, array(':user_id' => $user_id));
+        $result = $q->fetch(2);
+        return $result['cnt'];
+    }
+    
     public function updateReport($report_id, $report_title, $report_desc, $frequency, $send_me, $rest) {
         $query = "
             UPDATE project_report
