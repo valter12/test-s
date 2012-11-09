@@ -237,3 +237,9 @@ body {
     font-size: 14px;
     font-weight: bold;
 }
+.or_word{
+    text-align: center;
+    font-size: 40px;
+    font-weight: bold;
+    color: #5A5A5A;
+}
