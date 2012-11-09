@@ -13,7 +13,24 @@ class TwigFunctions extends \Twig_Extension {
             'clear_class' => new \Twig_Filter_Method($this, 'clear_class'),
         );
     }
+    
+    public function getFunctions() {
+        return array(
+            'format_date' => new \Twig_Function_Method($this, 'format_date'),
+        );
+    }
+    
+    
 
+    public function format_date($date, $with_minutes_seconds=false) {
+        $minutes_seconds = '';
+        $date_format = \Front\FrontBundle\Security\Auth::getAuthParam('date_format');
+        if($with_minutes_seconds) {
+            $minutes_seconds = ' H:i:s';
+        }
+        return date($date_format.$minutes_seconds, strtotime($date));
+    }
+    
     public function next_report($last_sent, $frequency) {
         $return = false;
         switch($frequency) {
