@@ -30,9 +30,17 @@ class FeaturesRepository extends EntityRepository {
         return $result;
     }
 
-    public function getFeature($feature_id, $is_active=1) {
-        $query = "SELECT f.* FROM features f WHERE is_active=:is_active AND f.id=:feature_id";
-        $q = $this->getEntityManager()->getConnection()->executeQuery($query, array(':is_active' => $is_active, ':feature_id' => $feature_id));
+    public function getFeature($feature_id, $is_active=NULL) {
+        $params = array();
+        $condition_str = '';
+        if(is_numeric($is_active)) {
+            $params[':is_active'] = 1;
+            $condition_str .= ' AND f.is_active=:is_active';
+        }
+        $params[':feature_id'] = $feature_id;
+        
+        $query = "SELECT f.* FROM features f WHERE f.id=:feature_id ".$condition_str;
+        $q = $this->getEntityManager()->getConnection()->executeQuery($query, $params);
         $result = $q->fetch(2);
         return $result;
     }
