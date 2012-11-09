@@ -6,7 +6,7 @@
     <div class="sep"></div>
     <div class="features_div">
         {% for item in site_features %}
-            <a href="{{ path('feature_details', {'id':item.id, 'feature_title':item.feature_link}) }}" title="{{ item.link_title }}" class="">{{ item.feature_title }}</a>
+            <a href="{{ path('feature_details', {'id':item.id, 'feature_title':item.feature_link}) }}" title="{{ item.link_title }}">{{ item.feature_title }}</a>
             <sup>{{ item.added|date('Y-m-d') }}</sup>
             <br />
             {{ item.short_desc }}
