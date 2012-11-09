@@ -1,0 +1,30 @@
+{% extends '::base.html.twig' %}
+{% block body %}
+    <h2>Feature demand</h2>
+    <div class="sep"></div>
+    <div class="sep"></div>
+    <div class="text_center">
+        <p class="alert alert-notice" style="text-align: left;font-size:13px;">
+            Want to track your keywords in a search engine that is not in our list? <b>OR</b> need a custom report? <b>OR</b> ... something else?
+            <br />
+            Tell us about it!
+            <br />
+            And if we consider it usefull for the majority of our users we will develop it in <b>WEEKS!</b> <i>(no kidding)</i>
+        </p>
+    </div>
+    <div class="sep"></div>
+    <form method="post" action="">
+        <input type="hidden" name="todo" value="save_feature_demand">
+        <label for="title">Title<sup class="site_error">*</sup></label>
+        <input type="text" name="title" id="title" value="" required="true" style="width:500px;">
+        
+        <label for="content">Description<sup class="site_error">*</sup></label>
+        <textarea name="content" id="content" style="width:500px;height:250px;"  required="true"></textarea>
+        
+        <label for="email">Email<sup class="site_error">*</sup></label>
+        <input type="email" name="email" id="email" value="" required="true"> <i>(just in case we will have questions, will <b>NOT</b> be published!)</i>
+        
+        <div class="sep"></div>
+        <input type="submit" class="btn btn-success" value="Send">
+    </form>
+{% endblock %}
