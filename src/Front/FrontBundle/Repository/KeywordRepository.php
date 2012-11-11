@@ -43,7 +43,7 @@ class KeywordRepository extends EntityRepository {
 
     public function createKeyword($project_id, $keyword) {
         $query = "INSERT INTO keyword(project_id, keyword, added) VALUES(:project_id, :keyword, NOW())";
-        $q = $this->getEntityManager()->getConnection()->executeQuery($query, array(':project_id' => $project_id, ':keyword' => $keyword));
+        $q = $this->getEntityManager()->getConnection()->executeQuery($query, array(':project_id' => $project_id, ':keyword' => trim($keyword)));
     }
 
     public function deleteKeywordById($keyword_id) {
