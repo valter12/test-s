@@ -264,3 +264,8 @@ body {
     margin:0 auto;
     padding-left:16px;
 }
+#apply_changes_hint {
+    font-style: italic;
+    color: #FF0000;
+    display: none;
+}
