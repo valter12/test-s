@@ -28,11 +28,20 @@
         </form>
     </div>
     <div class="sep"></div>
-    <table class="table">
+    <table class="table with_stats">
         <tr>
             <th>#</th>
             <th>Keyword</th>
             <th>Last track <a href="javascript:;" data-original-title="Track frequency" data-content="We track keyword positions on a daily basis." class="popup_hover"><i class="icon-question-sign"></i></a></th>
+            <th style="padding-bottom:0;width:100px;">
+                Last position
+                <br />
+                <div class="se_div">
+                    <div class="g">G</div>
+                    <div class="b">B</div>
+                    <div class="y">Y</div>
+                </div>
+            </th>
             <th>Creation date</th>
             <th style="padding-left:20px;text-align:left !important">Options</th>
         </tr>
@@ -41,6 +50,13 @@
                 <td>{{ key+1 }}</td>
                 <td><a title="Show keyword stats" href="{{ path('account_keyword_stats') }}?keyword_id={{ item.id }}">{{ item.keyword }}</a></td>
                 <td>{{ format_date(item.last_track) }}</td>
+                <td>
+                    <div class="se_div">
+                        <div class="g">{{ item.google_position }}</div>
+                        <div class="b">{{ item.bing_position }}</div>
+                        <div class="y">{{ item.yahoo_position }}</div>
+                    </div>
+                </td>
                 <td>{{ format_date(item.added) }}</td>
                 <td width="150" style="padding:0">
                     <ul class="nav nav-pills" style="margin:0">
