@@ -10,6 +10,7 @@ function addCompetitor(competitor_id) {
     } else {
         var competitor_id = $('#competitors').val();
         var competitor_name = $("#competitors option:selected").text();
+        applyChangesHint();
     }
     var html = '<span class="label label-info" style="margin-left:5px;"><span class="option_id" rel="'+competitor_id+'"></span><input type="hidden" value="'+competitor_id+'" name="competitor_ids[]"><span class="option_text">'+competitor_name+'</span> <a href="javascript:;" onclick="removeCompetitor(this)"><i class="icon-remove-sign"></i></a></span>';
     $('#competitor_containter').append(html);
@@ -22,6 +23,7 @@ function removeCompetitor(obj) {
     
     $('#competitors').append('<option value="'+option_value+'">'+option_text+'</option>');
     $(obj).parent().remove();
+    applyChangesHint();
 }
 
 function getChangesModal(id, c_id) {
@@ -50,6 +52,11 @@ function notes(keyword_id, for_date) {
             $('#modal_box').modal('show');
         }
     });
+}
+
+function applyChangesHint() {
+    jQuery('#filter_apply_changes').removeClass('btn-primary').addClass('btn-danger');
+    jQuery('#apply_changes_hint').show();
 }
 
 jQuery(document).ready(function(){
