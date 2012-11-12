@@ -7,7 +7,15 @@ use Doctrine\ORM\EntityRepository;
 class KeywordRepository extends EntityRepository {
 
     public function getKeywordsByProject($project_id) {
-        $query = "SELECT * FROM keyword WHERE project_id=:project_id";
+        $query = "
+            SELECT k.*, 
+            (SELECT kt.google_position FROM keyword_track kt WHERE kt.keyword_id=k.id ORDER BY kt.track_date DESC LIMIT 1) AS google_position,
+            (SELECT kt.bing_position FROM keyword_track kt WHERE kt.keyword_id=k.id ORDER BY kt.track_date DESC LIMIT 1) AS bing_position,
+            (SELECT kt.yahoo_position FROM keyword_track kt WHERE kt.keyword_id=k.id ORDER BY kt.track_date DESC LIMIT 1) AS yahoo_position
+            FROM keyword k 
+            WHERE k.project_id=:project_id
+            GROUP BY k.id
+        ";
         $q = $this->getEntityManager()->getConnection()->executeQuery($query, array(':project_id' => $project_id));
         $result = $q->fetchAll(2);
         return $result;
