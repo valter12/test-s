@@ -304,4 +304,39 @@ class KeywordTrackRepository extends EntityRepository {
         return $result;
     }
     
+    public function getAvgStatsPerProject($user_id) {
+        $date_periods = "DATE_FORMAT(kt.track_date, '%Y-%m-%d') = DATE_FORMAT(NOW(), '%Y-%m-%d')";
+        $query = "
+            SELECT 
+                p.project_name, 
+                COUNT(kt.id) as flotation,
+                'rises' as `type`
+            FROM 
+                project p,
+                keyword k LEFT JOIN keyword_track kt ON kt.keyword_id=k.id AND (kt.google_change > 0 OR kt.bing_change > 0 OR kt.yahoo_change > 0) AND ".$date_periods."
+            WHERE 
+                k.project_id=p.id
+                AND p.user_id=:user_id
+                AND DATE_FORMAT(k.last_track, '%Y%m%d') = DATE_FORMAT(NOW(), '%Y%m%d')
+            GROUP BY p.id
+            UNION 
+            SELECT 
+                p.project_name, 
+                COUNT(kt.id) as flotation,
+                'drops' as `type`
+            FROM 
+                project p,
+                keyword k LEFT JOIN keyword_track kt ON kt.keyword_id=k.id AND (kt.google_change < 0 OR kt.bing_change < 0 OR kt.yahoo_change < 0) AND ".$date_periods."
+            WHERE 
+                k.project_id=p.id
+                AND p.user_id=:user_id
+                AND DATE_FORMAT(k.last_track, '%Y%m%d') = DATE_FORMAT(NOW(), '%Y%m%d')
+            GROUP BY p.id
+        ";
+        
+        $q = $this->getEntityManager()->getConnection()->executeQuery($query, array(':user_id' => $user_id));
+        $result = $q->fetchAll(2);
+        return $result;
+    }
+    
 }
