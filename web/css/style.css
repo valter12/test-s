@@ -244,21 +244,18 @@ body {
     color: #5A5A5A;
 }
 .with_stats div.g,.with_stats div.b, .with_stats div.y {
-    background-color:#BABBFF;
     height: 20px;
     width:20px;
     float:left;
 }
 .with_stats div.g{
-    background-color:#4c8ffc;
-    color:#FFF;
+    color:#4c8ffc;
 }
 .with_stats div.b{
-    background-color:#ed922f;
+    color:#ed922f;
 }
 .with_stats div.y{
-    color:#FFF;
-    background-color:#7b0099;
+    color:#7b0099;
 }
 .with_stats div.se_div{
     margin:0 auto;
