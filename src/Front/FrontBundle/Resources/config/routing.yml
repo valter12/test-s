@@ -73,6 +73,10 @@ account_execute_modify_project:
   pattern: /execute-modify-project
   defaults: { _controller: FrontFrontBundle:Project:executeModify }
 
+account_project_details:
+  pattern: /project-details
+  defaults: { _controller: FrontFrontBundle:Project:projectDetails }
+
 # ajax
 ajax:
   pattern: /ajax
