@@ -151,23 +151,113 @@
     </ul>
     <div class="tab-content">
         <div class="tab-pane active" id="ups_downs">
-            <div class="top10_sectors">
+            <div class="ups_downs_sector">
                 <div class="widget-box">
                     <div class="widget-title"><h5>Ups</h5></div>
                     <div class="widget-content">
-                        
+                        {% if keyword_ups_downs.up_keywords|length %}
+                            <table class="up_down_stats">
+                                <tr>
+                                    <th>
+                                        keyword
+                                    </th>
+                                    <th>
+                                        Google
+                                    </th>
+                                    <th>
+                                        Bing
+                                    </th>
+                                    <th>
+                                        Yahoo
+                                    </th>
+                                </tr>
+                                {% for item in keyword_ups_downs.up_keywords %}
+                                    <tr>
+                                        <td>
+                                            <a href="{{ path('account_keyword_stats') }}?keyword_id={{ item.id }}">{{ item.keyword }}</a>
+                                        </td>
+                                        <td>
+                                            {% if item.google_change>0 %}<b>{% endif %}
+                                                {{ item.google_position }} 
+                                            {% if item.google_change>0 %}</b>{% endif %}
+                                            {% if item.google_change>0 %}(<span class="change_plus">+{{ item.google_change }}</span>){% endif %}
+                                        </td>
+                                        <td>
+                                            {% if item.bing_change>0 %}<b>{% endif %}
+                                                {{ item.bing_position }} 
+                                            {% if item.bing_change>0 %}</b>{% endif %}
+                                            {% if item.bing_change>0 %}(<span class="change_plus">+{{ item.bing_change }}</span>){% endif %}
+                                        </td>
+                                        <td>
+                                            {% if item.yahoo_change>0 %}<b>{% endif %}
+                                                {{ item.yahoo_position }} 
+                                            {% if item.yahoo_change>0 %}</b>{% endif %}
+                                            {% if item.yahoo_change>0 %}(<span class="change_plus">+{{ item.yahoo_change }}</span>){% endif %}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </table>
+                        {% else %}
+                            No changes here yet..
+                        {% endif %}
                     </div>
                 </div>
             </div>
-            <div class="top10_sectors">
+            <div class="ups_downs_sector">
                 <div class="widget-box">
                     <div class="widget-title"><h5>Downs</h5></div>
                     <div class="widget-content">
-                        
+                        {% if keyword_ups_downs.down_keywords|length %}
+                            <table class="up_down_stats">
+                                <tr>
+                                    <th>
+                                        keyword
+                                    </th>
+                                    <th>
+                                        Google
+                                    </th>
+                                    <th>
+                                        Bing
+                                    </th>
+                                    <th>
+                                        Yahoo
+                                    </th>
+                                </tr>
+                                {% for item in keyword_ups_downs.down_keywords %}
+                                    <tr>
+                                        <td>
+                                            <a href="{{ path('account_keyword_stats') }}?keyword_id={{ item.id }}">{{ item.keyword }}</a>
+                                        </td>
+                                        <td>
+                                            {% if item.google_change<0 %}<b>{% endif %}
+                                                {{ item.google_position }} 
+                                            {% if item.google_change<0 %}</b>{% endif %}
+                                            {% if item.google_change<0 %}(<span class="change_minus">{{ item.google_change }}</span>){% endif %}
+                                        </td>
+                                        <td>
+                                            {% if item.bing_change<0 %}<b>{% endif %}
+                                                {{ item.bing_position }} 
+                                            {% if item.bing_change<0 %}</b>{% endif %}
+                                            {% if item.bing_change<0 %}(<span class="change_minus">{{ item.bing_change }}</span>){% endif %}
+                                        </td>
+                                        <td>
+                                            {% if item.yahoo_change<0 %}<b>{% endif %}
+                                                {{ item.yahoo_position }} 
+                                            {% if item.yahoo_change<0 %}</b>{% endif %}
+                                            {% if item.yahoo_change<0 %}(<span class="change_minus">{{ item.yahoo_change }}</span>){% endif %}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </table>
+                        {% else %}
+                            No changes here, and lets hope it remains like this ;)
+                        {% endif %}
                     </div>
                 </div>
             </div>
-            <div class="top10_sectors">
+        </div>
+        <div class="tab-pane" id="top10_stats">
+            <div class="top10_sector">
                 <div class="widget-box">
                     <div class="widget-title"><h5>Top 10 keywords</h5></div>
                     <div class="widget-content">
@@ -175,7 +265,7 @@
                     </div>
                 </div>
             </div>
-            <div class="top10_sectors">
+            <div class="top10_sector">
                 <div class="widget-box">
                     <div class="widget-title"><h5>New in Top 10</h5></div>
                     <div class="widget-content">
@@ -183,7 +273,7 @@
                     </div>
                 </div>
             </div>
-            <div class="top10_sectors">
+            <div class="top10_sector">
                 <div class="widget-box">
                     <div class="widget-title"><h5>Out of Top 10</h5></div>
                     <div class="widget-content">
@@ -191,9 +281,6 @@
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="tab-pane" id="top10_stats">
-            
         </div>
         <div class="tab-pane" id="competitor_overview">pffff</div>
     </div>
