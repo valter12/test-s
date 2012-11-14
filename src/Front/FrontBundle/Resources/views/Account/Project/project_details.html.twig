@@ -1,0 +1,206 @@
+{% extends '::account_base.html.twig' %}
+{% block body %}
+    <h2>Project details</h2>
+    <div class="sep"></div>
+    <table class="table">
+        <tr>
+            <th>
+                Project name
+            </th>
+            <th>
+                Project domain
+            </th>
+            <th>
+                Category
+            </th>
+            <th>
+                Project hash
+            </th>
+            <th>
+                Project description
+            </th>
+            <th>
+                Keyword count
+            </th>
+            <th>
+                Competitors
+            </th>
+            <th>
+                Site uptime <a href="javascript:;" data-original-title="Site uptime" data-content="This section will alert you if your site was down for some reason." class="popup_hover_simple"><i class="icon-question-sign"></i></a>
+            </th>
+            <th>
+                Created
+            </th>
+            <th>
+                Options
+            </th>
+        </tr>
+        <tr>
+            <td>
+                {{ project_details.project_name }}
+            </td>
+            <td>
+                <a href="http://{{ project_details.project_domain }}" target="_blank">{{ project_details.project_domain }}</a>
+            </td>
+            <td>
+                <a href="" title="See all projects of this category">{{ project_details.category_name }}</a>
+            </td>
+            <td>
+                {{ project_details.project_hash }}
+            </td>
+            <td style="font-size: 11px;">
+                {{ project_details.project_description }}
+            </td>
+            <td>
+                <a href="{{ path('account_keywords') }}?hash={{ project_details.project_hash }}" title="See all keywords for this project">{{ keyword_cnt }}</a>
+            </td>
+            <td>
+                <a href="{{ path('account_competitors') }}?hash={{ project_details.project_hash }}" title="See all competitors for this project">{{ competitor_cnt }}</a>
+            </td>
+            <td>
+                {% if project_uptime|length %}
+                    {{ project_uptime.0.total_down/60 }} hours
+                    <br />
+                    <a href="{{ path('account_uptime') }}?hash={{ project_details.project_hash }}">Details</a>
+                {% else %}
+                    Up all the time
+                {% endif %}
+            </td>
+            <td>
+                {{ format_date(project_details.added) }}
+            </td>
+            <td>
+                Options
+            </td>
+        </tr>
+    </table>
+    <div class="sep"></div>
+    <hr />
+    <i class="icon-info-sign"></i> Some general stats for today <i style="font-size: 11px;">(the shown differences are between today and yesterday)</i>
+    <div class="sep"></div>
+    <table class="project_stats_tbs">
+        <tr>
+            <th>
+                Average position
+                <a href="javascript:;" data-original-title="Average position" data-content="Shows the average position of ALL keywords of this project in ALL search engines.<br />1 = all keywords are on position 1 in all search engines<br />100 = all keywords had been found on position 100 or not found at all<br /><i style='font-size:11px;'>If some of the keywords were not found in first 10 pages then position 100 is automaticaly assinged.</i>" class="popup_hover_simple"><i class="icon-question-sign"></i></a>
+            </th>
+            <th>
+                Keywords in Top 10
+            </th>
+            <th>
+                Positions up
+            </th>
+            <th>
+                Positions down
+            </th>
+            <th>
+                Keyword count
+            </th>
+        </tr>
+        <tr>
+            <td>
+                {{ avg_position.avg_today }} 
+                <span class="font12">(
+                    {% if avg_position.diff_from_yesterday>0 %}
+                        <span class="change_plus">
+                            +{{ avg_position.diff_from_yesterday }}
+                        </span>
+                    {% elseif avg_position.diff_from_yesterday<0 %}
+                        <span class="change_minus">
+                            {{ avg_position.diff_from_yesterday }}
+                        </span>
+                    {% elseif avg_position.diff_from_yesterday==0 %}
+                        {{ avg_position.diff_from_yesterday }}
+                    {% endif %})
+                </span>
+            </td>
+            <td>
+                {{ top10.top10_today }} 
+                <span class="font12">(
+                    {% if top10.diff_from_yesterday>0 %}
+                        <span class="change_plus">
+                            +{{ top10.diff_from_yesterday }}
+                        </span>
+                    {% elseif top10.diff_from_yesterday<0 %}
+                        <span class="change_minus">
+                            {{ top10.diff_from_yesterday }}
+                        </span>
+                    {% elseif top10.diff_from_yesterday==0 %}
+                        {{ top10.diff_from_yesterday }}
+                    {% endif %})
+                </span>
+            </td>
+            <td>
+                <img src="/images/up.png" /> {{ fluctuations.rises }}
+            </td>
+            <td>
+                <img src="/images/down.png" /> {{ fluctuations.drops }}
+            </td>
+            <td>
+                {{ keyword_cnt }}
+            </td>
+        </tr>
+    </table>
+    <div class="sep"></div>
+    <hr />
+    <div class="sep"></div>
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="#ups_downs" data-toggle="tab">Ups & Downs</a></li>
+        <li><a href="#top10_stats" data-toggle="tab">Top10 stats</a></li>
+        <li><a href="#competitor_overview" data-toggle="tab">Competitor overview</a></li>
+    </ul>
+    <div class="tab-content">
+        <div class="tab-pane active" id="ups_downs">
+            <div class="top10_sectors">
+                <div class="widget-box">
+                    <div class="widget-title"><h5>Ups</h5></div>
+                    <div class="widget-content">
+                        
+                    </div>
+                </div>
+            </div>
+            <div class="top10_sectors">
+                <div class="widget-box">
+                    <div class="widget-title"><h5>Downs</h5></div>
+                    <div class="widget-content">
+                        
+                    </div>
+                </div>
+            </div>
+            <div class="top10_sectors">
+                <div class="widget-box">
+                    <div class="widget-title"><h5>Top 10 keywords</h5></div>
+                    <div class="widget-content">
+                        
+                    </div>
+                </div>
+            </div>
+            <div class="top10_sectors">
+                <div class="widget-box">
+                    <div class="widget-title"><h5>New in Top 10</h5></div>
+                    <div class="widget-content">
+                        
+                    </div>
+                </div>
+            </div>
+            <div class="top10_sectors">
+                <div class="widget-box">
+                    <div class="widget-title"><h5>Out of Top 10</h5></div>
+                    <div class="widget-content">
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane" id="top10_stats">
+            
+        </div>
+        <div class="tab-pane" id="competitor_overview">pffff</div>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('js/bootstrap-modal.js') }}"></script>
+    <script src="{{ asset('js/bootstrap-dropdown.js') }}"></script>
+    <script src="{{ asset('js/pages/projects.js') }}"></script>
+{% endblock %}
