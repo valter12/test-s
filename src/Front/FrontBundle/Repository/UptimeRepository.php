@@ -9,11 +9,11 @@ class UptimeRepository extends EntityRepository {
     public function getProjectUptime($user_id, $project_id, $from_date, $to_date) {
         $sql_date_str = false;
         if ($from_date) {
-            $sql_date[] = "summary_date<=:from_date";
+            $sql_date[] = "summary_date>=:from_date";
             $params[':from_date'] = $from_date;
         }
         if ($to_date) {
-            $sql_date[] = "summary_date>=:to_date";
+            $sql_date[] = "summary_date<=:to_date";
             $params[':to_date'] = $to_date;
         }
         if (!empty($params)) {
