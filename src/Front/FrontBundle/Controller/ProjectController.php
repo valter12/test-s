@@ -100,5 +100,60 @@ class ProjectController extends Controller {
         }
         return $this->redirect($this->generateUrl('account_projects'));
     }
+    
+    public function projectDetailsAction() {
+        if (!Auth::isAuth()) {
+            return $this->redirect($this->generateUrl('login_register'));
+        }
+        $request = $this->getRequest();
+        $em = $this->getDoctrine()->getEntityManager();
+
+        $project_hash = $request->get('hash');
+        if (!$project_hash) {
+            $this->get('session')->setFlash('error', 'The request is incorrect.');
+            return $this->redirect($this->generateUrl('account_projects'));
+        }
+        
+        // project details
+        $project_details = $em->getRepository('FrontFrontBundle:Project')->getProjectByHash(Auth::getAuthParam('id'), $project_hash);
+        if(empty($project_details)) {
+            $this->get('session')->setFlash('error', 'The request is incorrect.');
+            return $this->redirect($this->generateUrl('account_projects'));
+        }
+        
+        // keyword count
+        $keyword_cnt = $em->getRepository('FrontFrontBundle:Keyword')->getProjectKeywordCount($project_details['id']);
+
+        // project uptime
+        $project_uptime = $em->getRepository('FrontFrontBundle:Uptime')->getProjectUptime(Auth::getAuthParam('id'), $project_details['id'], date('Y-m-d'), date('Y-m-d', strtotime('-1 day', time())));
+
+        // avg keyword position
+        $avg_keyword_position_today = $em->getRepository('FrontFrontBundle:KeywordTrack')->getProjectAvgPosition($project_details['id'], date('Y-m-d'));
+        $avg_keyword_position_yesterday = $em->getRepository('FrontFrontBundle:KeywordTrack')->getProjectAvgPosition($project_details['id'], date('Y-m-d', strtotime('-1 day', time())));
+        // devide by 3 because we have 3 search engines for now
+        $avg_today = array_sum($avg_keyword_position_today)/3;
+        $avg_yesterday = array_sum($avg_keyword_position_yesterday)/3;
+        
+        // keywords in Top10
+        $top10_today = $em->getRepository('FrontFrontBundle:KeywordTrack')->getTop10keywordCntByProjectId($project_details['id'], date('Y-m-d'));
+        $top10_yesterday = $em->getRepository('FrontFrontBundle:KeywordTrack')->getTop10keywordCntByProjectId($project_details['id'], date('Y-m-d', strtotime('-1 day', time())));
+        
+        // positions up
+        $positions_up_today = $em->getRepository('FrontFrontBundle:KeywordTrack')->getCntPositionsByProjectId($project_details['id'], date('Y-m-d'), 'up');
+        $positions_down_today = $em->getRepository('FrontFrontBundle:KeywordTrack')->getCntPositionsByProjectId($project_details['id'], date('Y-m-d', strtotime('-1 day', time())), 'down');
+        
+        // competitor cnt
+        $competitor_cnt = $em->getRepository('FrontFrontBundle:Competitor')->getCntProjectCompetitorsById($project_details['id']);
+        
+        $params = array();
+        $params['project_details'] = $project_details;
+        $params['keyword_cnt'] = $keyword_cnt;
+        $params['project_uptime'] = $project_uptime;
+        $params['avg_position'] = array('avg_today' => number_format($avg_today, 1), 'diff_from_yesterday' => number_format(($avg_today - $avg_yesterday),1));
+        $params['top10'] = array('top10_today' => $top10_today, 'diff_from_yesterday' => ($top10_today - $top10_yesterday));
+        $params['fluctuations'] = array('rises' => $positions_up_today, 'drops' => $positions_down_today);
+        $params['competitor_cnt'] = $competitor_cnt;
+        return $this->render('FrontFrontBundle:Account:Project/project_details.html.twig', $params);
+    }
 
 }
