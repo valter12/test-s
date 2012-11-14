@@ -309,6 +309,7 @@ class KeywordTrackRepository extends EntityRepository {
         $query = "
             SELECT 
                 p.project_name, 
+                p.project_hash,
                 COUNT(kt.id) as flotation,
                 'rises' as `type`
             FROM 
@@ -322,6 +323,7 @@ class KeywordTrackRepository extends EntityRepository {
             UNION 
             SELECT 
                 p.project_name, 
+                p.project_hash,
                 COUNT(kt.id) as flotation,
                 'drops' as `type`
             FROM 
@@ -337,6 +339,112 @@ class KeywordTrackRepository extends EntityRepository {
         $q = $this->getEntityManager()->getConnection()->executeQuery($query, array(':user_id' => $user_id));
         $result = $q->fetchAll(2);
         return $result;
+    }
+    
+    /**
+     * gets avg position for all keywords of a project
+     */
+    public function getProjectAvgPosition($project_id, $date=false) {
+        $params = array();
+        $str_cond = '';
+        
+        if($date) {
+            $params[':date'] = $date;
+            $cond[] = "DATE_FORMAT(kt.track_date, '%Y-%m-%d') = :date";
+        }
+        
+        if(!empty($cond)) {
+            $str_cond = implode(' AND ', $cond);
+            if(count($cond)==1) {
+                $str_cond = ' AND '.$str_cond;
+            }
+        }
+        
+        $query = "
+            SELECT 
+                ((SUM(CASE WHEN kt.google_position > 0 THEN kt.google_position ELSE 100 END)+(((SELECT COUNT(id) FROM keyword WHERE project_id=:project_id)-COUNT(kt.id))*100)))/((SELECT COUNT(id) FROM keyword WHERE project_id=:project_id)) as avg_google_position,
+                ((SUM(CASE WHEN kt.bing_position > 0 THEN kt.google_position ELSE 100 END)+(((SELECT COUNT(id) FROM keyword WHERE project_id=:project_id)-COUNT(kt.id))*100)))/((SELECT COUNT(id) FROM keyword WHERE project_id=:project_id)) as avg_bing_position,
+                ((SUM(CASE WHEN kt.yahoo_position > 0 THEN kt.google_position ELSE 100 END)+(((SELECT COUNT(id) FROM keyword WHERE project_id=:project_id)-COUNT(kt.id))*100)))/((SELECT COUNT(id) FROM keyword WHERE project_id=:project_id)) as avg_yahoo_position
+            FROM keyword_track kt, keyword k
+            WHERE kt.keyword_id=k.id
+            AND k.project_id=:project_id ".$str_cond."
+        ";
+        
+        $params[':project_id'] = $project_id;
+        
+        $q = $this->getEntityManager()->getConnection()->executeQuery($query, $params);
+        
+        $result = $q->fetch(2);
+        return $result;
+    }
+    
+    public function getTop10keywordCntByProjectId($project_id, $date=false) {
+        $params = array();
+        $str_cond = '';
+        
+        if($date) {
+            $params[':date'] = $date;
+            $cond[] = "DATE_FORMAT(kt.track_date, '%Y-%m-%d') = :date";
+        }
+        
+        if(!empty($cond)) {
+            $str_cond = implode(' AND ', $cond);
+            $str_cond = ' AND '.$str_cond;
+        }
+        
+        $query = "
+            SELECT 
+                COUNT(kt.id) AS cnt
+            FROM keyword_track kt, keyword k
+            WHERE kt.keyword_id=k.id
+            AND (kt.google_position BETWEEN 1 AND 10 OR kt.bing_position BETWEEN 1 AND 10 OR kt.yahoo_position BETWEEN 1 AND 10)
+            AND k.project_id=:project_id ".$str_cond."
+        ";
+        
+        $params[':project_id'] = $project_id;
+        
+        $q = $this->getEntityManager()->getConnection()->executeQuery($query, $params);
+        
+        $result = $q->fetch(2);
+        return $result['cnt'];
+    }
+    
+    public function getCntPositionsByProjectId($project_id, $date=false, $direction='up') {
+        $params = array();
+        $str_cond = '';
+        
+        if($date) {
+            $params[':date'] = $date;
+            $cond[] = "DATE_FORMAT(kt.track_date, '%Y-%m-%d') = :date";
+        }
+        
+        if($direction) {
+            if($direction == 'up') {
+                $sign = '>';
+            } elseif($direction == 'down') {
+                $sign = '<';
+            }
+            $cond[] = "(kt.google_change ".$sign." 0 OR kt.bing_change ".$sign." 0 OR kt.yahoo_change ".$sign." 0)";
+        }
+        
+        if(!empty($cond)) {
+            $str_cond = implode(' AND ', $cond);
+            $str_cond = ' AND '.$str_cond;
+        }
+        
+        $query = "
+            SELECT 
+                COUNT(kt.id) AS cnt
+            FROM keyword_track kt, keyword k
+            WHERE kt.keyword_id=k.id
+            AND k.project_id=:project_id ".$str_cond."
+        ";
+        
+        $params[':project_id'] = $project_id;
+        $q = $this->getEntityManager()->getConnection()->executeQuery($query, $params);
+        
+        $result = $q->fetch(2);
+        return $result['cnt'];
     }
     
 }
