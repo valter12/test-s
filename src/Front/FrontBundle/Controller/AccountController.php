@@ -35,6 +35,7 @@ class AccountController extends Controller {
             $flotation = $project_keyword_stats[$i]['flotation'];
             $type = $project_keyword_stats[$i]['type'];
             $project_avg_stats[$project_name][$type] = $flotation;
+            $project_avg_stats[$project_name]['project_hash'] = $project_keyword_stats[$i]['project_hash'];
         }
 //        \Backend\BackendBundle\Additional\Debug::d1($project_avg_stats);
         
