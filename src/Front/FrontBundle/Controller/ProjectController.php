@@ -145,6 +145,12 @@ class ProjectController extends Controller {
         // competitor cnt
         $competitor_cnt = $em->getRepository('FrontFrontBundle:Competitor')->getCntProjectCompetitorsById($project_details['id']);
         
+        // keyword's ups & downs
+        $up_keywords = $em->getRepository('FrontFrontBundle:KeywordTrack')->getProjectUps($project_details['id'], '2012-11-14', 'up');
+        $down_keywords = $em->getRepository('FrontFrontBundle:KeywordTrack')->getProjectUps($project_details['id'], '2012-11-14', 'down');
+        
+        
+        
         $params = array();
         $params['project_details'] = $project_details;
         $params['keyword_cnt'] = $keyword_cnt;
@@ -153,6 +159,7 @@ class ProjectController extends Controller {
         $params['top10'] = array('top10_today' => $top10_today, 'diff_from_yesterday' => ($top10_today - $top10_yesterday));
         $params['fluctuations'] = array('rises' => $positions_up_today, 'drops' => $positions_down_today);
         $params['competitor_cnt'] = $competitor_cnt;
+        $params['keyword_ups_downs'] = array('up_keywords' => $up_keywords, 'down_keywords' => $down_keywords);
         return $this->render('FrontFrontBundle:Account:Project/project_details.html.twig', $params);
     }
 
