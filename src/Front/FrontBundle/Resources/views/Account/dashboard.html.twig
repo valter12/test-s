@@ -22,7 +22,7 @@
         </tr>
         {% for key,item in project_keyword_stats %}
             <tr>
-                <td>{{ key }}</td>
+                <td><a href="{{ path('account_project_details') }}?hash={{ item.project_hash }}">{{ key }}</a></td>
                 <td><img src="/images/up.png" />&nbsp;{{ item.rises }}</td>
                 <td><img src="/images/down.png" />&nbsp;{{ item.drops }}</td>
                 <td>{{ format_date(now|date('Y-m-d')) }}</td>
