@@ -20,7 +20,7 @@
         {% for key, item in project_list %}
             <tr>
                 <td>{{ key+1 }}</td>
-                <td>{{ item.project_name }}</td>
+                <td><a href="{{ path('account_project_details') }}?hash={{ item.project_hash }}">{{ item.project_name }}</a></td>
                 <td>{{ item.category_name }}</td>
                 <td>{{ item.project_domain }}</td>
                 <td>{{ item.project_hash }}</td>
@@ -34,6 +34,7 @@
                                 <b class="caret"></b>
                             </a>
                             <ul class="dropdown-menu">
+                                <li><a href="{{ path('account_project_details') }}?hash={{ item.project_hash }}"><i class="icon-eye-open"></i>&nbsp;Details</a></li>
                                 <li><a href="javascript:;" onclick="showModifyModal('{{ item.project_hash }}')"><i class="icon-edit"></i>&nbsp;Modify</a></li>
                                 <li><a href="{{ path('account_keywords') }}?hash={{ item.project_hash }}"><i class="icon-screenshot"></i>&nbsp;Keywords</a></li>
                                 <li><a href="{{ path('account_competitors') }}?hash={{ item.project_hash }}"><i class="icon-random"></i>&nbsp;Competitors</a></li>
