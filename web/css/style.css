@@ -266,3 +266,70 @@ body {
     color: #FF0000;
     display: none;
 }
+.project_stats_tbs{
+    width: 100%;
+}
+.project_stats_tbs th {
+    color: #6B6B6B;
+    font-size: .9em;
+    font-weight: normal;
+    text-align: left;
+}
+.project_stats_tbs td {
+    color: #3C3C3C;
+    font-size: 1.8em;
+    font-weight: normal;
+    text-align: left;
+    vertical-align: middle;
+    padding-top: 5px;
+}
+.font12{
+    font-size: 12px;
+}
+.change_plus{
+    color:green;
+}
+.change_minus{
+    color:red;
+}
+.widget-title{
+    background-color: #EFEFEF;
+    background-image: -webkit-gradient(linear, 0 0%, 0 100%, from(#FDFDFD), to(#EAEAEA));
+    background-image: -webkit-linear-gradient(top, #FDFDFD 0%, #EAEAEA 100%);
+    background-image: -moz-linear-gradient(top, #FDFDFD 0%, #EAEAEA 100%);
+    background-image: -ms-linear-gradient(top, #FDFDFD 0%, #EAEAEA 100%);
+    background-image: -o-linear-gradient(top, #FDFDFD 0%, #EAEAEA 100%);
+    background-image: -linear-gradient(top, #FDFDFD 0%, #EAEAEA 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fdfdfd', endColorstr='#eaeaea',GradientType=0 );
+    border-bottom: 1px solid #CDCDCD;
+    height: 36px;
+}
+.widget-box {
+    background: none repeat scroll 0 0 #F9F9F9;
+    border-top: 1px solid #CDCDCD;
+    border-left: 1px solid #CDCDCD;
+    border-right: 1px solid #CDCDCD;
+    clear: both;
+    margin-top: 16px;
+    margin-bottom: 16px;
+    position: relative;
+}
+.widget-title h5 {
+    color: #666;
+    text-shadow: 0 1px 0 white;
+    float: left;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 12px;
+    line-height: 12px;
+    margin: 0;
+}
+.top10_sectors {
+    float: left;
+    width:19%;
+    margin-right: 1%;
+}
+.widget-content {
+    padding: 12px 15px;
+    border-bottom: 1px solid #CDCDCD;
+}
