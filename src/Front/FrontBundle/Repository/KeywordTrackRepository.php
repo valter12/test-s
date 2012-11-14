@@ -447,4 +447,45 @@ class KeywordTrackRepository extends EntityRepository {
         return $result['cnt'];
     }
     
+    public function getProjectUps($project_id, $date=false, $direction='up') {
+        $params = array();
+        $str_cond = '';
+        
+        if($date) {
+            $params[':date'] = $date;
+            $cond[] = "DATE_FORMAT(kt.track_date, '%Y-%m-%d') = :date";
+        }
+        
+        if($direction) {
+            if($direction == 'up') {
+                $sign = '>';
+            } elseif($direction == 'down') {
+                $sign = '<';
+            }
+            $cond[] = "(kt.google_change ".$sign." 0 OR kt.bing_change ".$sign." 0 OR kt.yahoo_change ".$sign." 0)";
+        }
+        
+        if(!empty($cond)) {
+            $str_cond = implode(' AND ', $cond);
+            $str_cond = ' AND '.$str_cond;
+        }
+        
+        $query = "
+            SELECT 
+                k.id, k.keyword,
+                kt.google_position, kt.bing_position, kt.yahoo_position, 
+                kt.google_change, kt.bing_change, kt.yahoo_change
+            FROM keyword_track kt, keyword k
+            WHERE kt.keyword_id=k.id
+            AND k.project_id=:project_id ".$str_cond."
+            GROUP BY k.id
+        ";
+        
+        $params[':project_id'] = $project_id;
+        $q = $this->getEntityManager()->getConnection()->executeQuery($query, $params);
+        
+        $result = $q->fetchAll(2);
+        return $result;
+    }
+    
 }
