@@ -37,9 +37,10 @@ class ProjectRepository extends Backend\BackendProjectRepository {
 
     public function getProjectByHash($user_id, $project_hash) {
         $query = "
-            SELECT * FROM project
-            WHERE project_hash=:project_hash
-            AND user_id=:user_id
+            SELECT p.*, pr.category_name
+            FROM project p LEFT JOIN project_category pr ON p.category_id = pr.id
+            WHERE p.project_hash=:project_hash
+            AND p.user_id=:user_id
         ";
 
         $q = $this->getEntityManager()->getConnection()->executeQuery($query, array(':user_id' => $user_id, ':project_hash' => $project_hash));
