@@ -1,6 +1,12 @@
 {% extends '::account_base.html.twig' %}
 {% block body %}
     <h2>Project details</h2>
+    Change project: 
+    <select name="hash" onchange="window.location='{{ path('account_project_details') }}?hash='+this.value">
+        {% for item in project_list %}
+            <option value="{{ item.project_hash }}" {% if app.request.get('hash')==item.project_hash %}selected="selected"{% endif %}>{{ item.project_name }}</option>
+        {% endfor %}
+    </select>
     <div class="sep"></div>
     <table class="table">
         <tr>
@@ -143,14 +149,18 @@
     </table>
     <div class="sep"></div>
     <hr />
+    <i class="icon-info-sign"></i> Some more detailed stats <i style="font-size: 11px;">(the shown differences are between today and yesterday)</i>
+    <div class="sep"></div>
     <div class="sep"></div>
     <ul class="nav nav-tabs">
         <li class="active"><a href="#ups_downs" data-toggle="tab">Ups & Downs</a></li>
-        <li><a href="#top10_stats" data-toggle="tab">Top10 stats</a></li>
+        <li><a href="#top10_stats" data-toggle="tab">Top 10 stats</a></li>
         <li><a href="#competitor_overview" data-toggle="tab">Competitor overview</a></li>
     </ul>
     <div class="tab-content">
         <div class="tab-pane active" id="ups_downs">
+            <i class="icon-info-sign"></i> In this area you can see the keywords that gained and lost positions since yesterday.
+            <div class="sep"></div>
             <div class="ups_downs_sector">
                 <div class="widget-box">
                     <div class="widget-title"><h5>Ups</h5></div>
@@ -159,7 +169,7 @@
                             <table class="up_down_stats">
                                 <tr>
                                     <th>
-                                        keyword
+                                        Keyword
                                     </th>
                                     <th>
                                         Google
@@ -223,7 +233,7 @@
                             <table class="up_down_stats">
                                 <tr>
                                     <th>
-                                        keyword
+                                        Keyword
                                     </th>
                                     <th>
                                         Google
@@ -282,6 +292,8 @@
             </div>
         </div>
         <div class="tab-pane" id="top10_stats">
+            <i class="icon-info-sign"></i> Some Top 10 stats <i style="font-size: 11px;">("Top 10" means first 10 results in a search engine)</i>
+            <div class="sep"></div>
             <div class="top10_sector">
                 <div class="widget-box">
                     <div class="widget-title"><h5>Top 10 keywords</h5></div>
@@ -290,7 +302,7 @@
                             <table class="up_down_stats">
                                 <tr>
                                     <th>
-                                        keyword
+                                        Keyword
                                     </th>
                                     <th>
                                         Google
@@ -339,13 +351,13 @@
             </div>
             <div class="top10_sector">
                 <div class="widget-box">
-                    <div class="widget-title"><h5>New in Top 10</h5></div>
+                    <div class="widget-title"><h5>New in Top 10 <a href="javascript:;" data-original-title="New in Top 10" data-content="Shows the list of keywords that are in top 10 today but were NOT in top 10 yesterday." class="popup_hover_simple"><i class="icon-question-sign"></i></a></h5></div>
                     <div class="widget-content">
                         {% if new_top10_keyword_list|length %}
                             <table class="up_down_stats">
                                 <tr>
                                     <th>
-                                        keyword
+                                        Keyword
                                     </th>
                                     <th>
                                          Google
@@ -416,13 +428,13 @@
             </div>
             <div class="top10_sector">
                 <div class="widget-box">
-                    <div class="widget-title"><h5>Out of Top 10</h5></div>
+                    <div class="widget-title"><h5>Out of Top 10 <a href="javascript:;" data-original-title="Out of Top 10" data-content="Shows the list of keywords that were in top 10 yesterday but are NOT in top 10 today." class="popup_hover_simple"><i class="icon-question-sign"></i></a></h5></div>
                     <div class="widget-content">
                         {% if out_of_top10_keyword_list.out_of_top10_keyword_list|length %}
                             <table class="up_down_stats">
                                 <tr>
                                     <th>
-                                        keyword
+                                        Keyword
                                     </th>
                                     <th width="50">
                                          Google
