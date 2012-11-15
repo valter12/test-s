@@ -349,3 +349,6 @@ body {
     text-align: left;
     padding-left: 10px;
 }
+.no_wrap{
+    white-space: nowrap;
+}
