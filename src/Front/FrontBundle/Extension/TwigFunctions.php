@@ -17,10 +17,13 @@ class TwigFunctions extends \Twig_Extension {
     public function getFunctions() {
         return array(
             'format_date' => new \Twig_Function_Method($this, 'format_date'),
+            'is_numeric' => new \Twig_Function_Method($this, 'tw_is_numeric'),
         );
     }
     
-    
+    public function tw_is_numeric($value) {
+        return is_numeric($value);
+    }
 
     public function format_date($date, $with_minutes_seconds=false, $only_format=false) {
         $minutes_seconds = '';
