@@ -171,6 +171,8 @@ class ProjectController extends Controller {
             $cnt_result[$ex_top10_keyword_id] = $today_ranks_or_ex_top10[$i];
         }
         
+        // getting project list for select
+        $project_list = $em->getRepository('FrontFrontBundle:Project')->getProjects(Auth::getAuthParam('id'));
         
         $params = array();
         $params['project_details'] = $project_details;
@@ -184,6 +186,7 @@ class ProjectController extends Controller {
         $params['top10_keyword_list'] = $top10_keyword_list;
         $params['new_top10_keyword_list'] = $new_top10_keyword_list;
         $params['out_of_top10_keyword_list'] = array('out_of_top10_keyword_list' => $out_of_top10_keyword_list, 'today_ranks_or_ex_top10' => $ex_top10_formatted);
+        $params['project_list'] = $project_list;
         return $this->render('FrontFrontBundle:Account:Project/project_details.html.twig', $params);
     }
 
