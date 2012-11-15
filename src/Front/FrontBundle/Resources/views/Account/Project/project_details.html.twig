@@ -178,19 +178,31 @@
                                         </td>
                                         <td>
                                             {% if item.google_change>0 %}<b>{% endif %}
-                                                {{ item.google_position }} 
+                                                {% if item.google_position != 0 %}
+                                                    {{ item.google_position }} 
+                                                {% else %}
+                                                    -
+                                                {% endif %}
                                             {% if item.google_change>0 %}</b>{% endif %}
                                             {% if item.google_change>0 %}(<span class="change_plus">+{{ item.google_change }}</span>){% endif %}
                                         </td>
                                         <td>
                                             {% if item.bing_change>0 %}<b>{% endif %}
-                                                {{ item.bing_position }} 
+                                                {% if item.bing_position != 0 %}
+                                                    {{ item.bing_position }} 
+                                                {% else %}
+                                                    -
+                                                {% endif %}
                                             {% if item.bing_change>0 %}</b>{% endif %}
                                             {% if item.bing_change>0 %}(<span class="change_plus">+{{ item.bing_change }}</span>){% endif %}
                                         </td>
                                         <td>
                                             {% if item.yahoo_change>0 %}<b>{% endif %}
-                                                {{ item.yahoo_position }} 
+                                                {% if item.yahoo_position != 0 %}
+                                                    {{ item.yahoo_position }} 
+                                                {% else %}
+                                                    -
+                                                {% endif %}
                                             {% if item.yahoo_change>0 %}</b>{% endif %}
                                             {% if item.yahoo_change>0 %}(<span class="change_plus">+{{ item.yahoo_change }}</span>){% endif %}
                                         </td>
@@ -230,19 +242,32 @@
                                         </td>
                                         <td>
                                             {% if item.google_change<0 %}<b>{% endif %}
-                                                {{ item.google_position }} 
+                                                {% if item.google_position != 0 %}
+                                                    {{ item.google_position }} 
+                                                {% else %}
+                                                    -
+                                                {% endif %}
+                                                
                                             {% if item.google_change<0 %}</b>{% endif %}
                                             {% if item.google_change<0 %}(<span class="change_minus">{{ item.google_change }}</span>){% endif %}
                                         </td>
                                         <td>
                                             {% if item.bing_change<0 %}<b>{% endif %}
-                                                {{ item.bing_position }} 
+                                                {% if item.bing_position != 0 %}
+                                                    {{ item.bing_position }} 
+                                                {% else %}
+                                                    -
+                                                {% endif %}
                                             {% if item.bing_change<0 %}</b>{% endif %}
                                             {% if item.bing_change<0 %}(<span class="change_minus">{{ item.bing_change }}</span>){% endif %}
                                         </td>
                                         <td>
                                             {% if item.yahoo_change<0 %}<b>{% endif %}
-                                                {{ item.yahoo_position }} 
+                                                {% if item.yahoo_position != 0 %}
+                                                    {{ item.yahoo_position }} 
+                                                {% else %}
+                                                    -
+                                                {% endif %}
                                             {% if item.yahoo_change<0 %}</b>{% endif %}
                                             {% if item.yahoo_change<0 %}(<span class="change_minus">{{ item.yahoo_change }}</span>){% endif %}
                                         </td>
@@ -261,7 +286,54 @@
                 <div class="widget-box">
                     <div class="widget-title"><h5>Top 10 keywords</h5></div>
                     <div class="widget-content">
-                        
+                        {% if top10_keyword_list|length %}
+                            <table class="up_down_stats">
+                                <tr>
+                                    <th>
+                                        keyword
+                                    </th>
+                                    <th>
+                                        Google
+                                    </th>
+                                    <th>
+                                        Bing
+                                    </th>
+                                    <th>
+                                        Yahoo
+                                    </th>
+                                </tr>
+                                {% for item in top10_keyword_list %}
+                                    <tr>
+                                        <td>
+                                            <a href="{{ path('account_keyword_stats') }}?keyword_id={{ item.id }}">{{ item.keyword }}</a>
+                                        </td>
+                                        <td class="no_wrap">
+                                            {% if item.google_position != 0 %}
+                                                {{ item.google_position }} 
+                                            {% else %}
+                                                -
+                                            {% endif %}
+                                        </td>
+                                        <td class="no_wrap">
+                                            {% if item.bing_position != 0 %}
+                                                {{ item.bing_position }} 
+                                            {% else %}
+                                                -
+                                            {% endif %}
+                                        </td>
+                                        <td class="no_wrap">
+                                            {% if item.yahoo_position != 0 %}
+                                                {{ item.yahoo_position }} 
+                                            {% else %}
+                                                -
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </table>
+                        {% else %}
+                            No changes here yet..
+                        {% endif %}
                     </div>
                 </div>
             </div>
@@ -269,6 +341,75 @@
                 <div class="widget-box">
                     <div class="widget-title"><h5>New in Top 10</h5></div>
                     <div class="widget-content">
+                        {% if new_top10_keyword_list|length %}
+                            <table class="up_down_stats">
+                                <tr>
+                                    <th>
+                                        keyword
+                                    </th>
+                                    <th>
+                                         Google
+                                    </th>
+                                    <th>
+                                        Bing
+                                    </th>
+                                    <th>
+                                        Yahoo
+                                    </th>
+                                </tr>
+                                {% for item in new_top10_keyword_list %}
+                                    <tr>
+                                        <td>
+                                            <a href="{{ path('account_keyword_stats') }}?keyword_id={{ item.id }}">{{ item.keyword }}</a>
+                                        </td>
+                                        <td class="no_wrap">
+                                            {% if item.google_change!=0 %}<b>{% endif %}
+                                                {% if item.google_position != 0 %}
+                                                    {{ item.google_position }} 
+                                                {% else %}
+                                                    -
+                                                {% endif %}
+                                            {% if item.google_change!=0 %}</b>{% endif %}
+                                            {% if item.google_change<0 %}
+                                                (<span class="change_minus">{{ item.google_change }}</span>)
+                                            {% elseif item.google_change>0 %}
+                                                (<span class="change_plus">+{{ item.google_change }}</span>)
+                                            {% endif %}
+                                        </td>
+                                        <td class="no_wrap">
+                                            {% if item.bing_change!=0 %}<b>{% endif %}
+                                                {% if item.bing_position != 0 %}
+                                                    {{ item.bing_position }} 
+                                                {% else %}
+                                                    -
+                                                {% endif %}
+                                            {% if item.bing_change!=0 %}</b>{% endif %}
+                                            {% if item.bing_change<0 %}
+                                                (<span class="change_minus">{{ item.bing_change }}</span>)
+                                            {% elseif item.bing_change>0 %}
+                                                (<span class="change_plus">+{{ item.bing_change }}</span>)
+                                            {% endif %}
+                                        </td>
+                                        <td class="no_wrap">
+                                            {% if item.yahoo_change!=0 %}<b>{% endif %}
+                                                {% if item.yahoo_position != 0 %}
+                                                    {{ item.yahoo_position }} 
+                                                {% else %}
+                                                    -
+                                                {% endif %}
+                                            {% if item.yahoo_change!=0 %}</b>{% endif %}
+                                            {% if item.yahoo_change<0 %}
+                                                (<span class="change_minus">{{ item.yahoo_change }}</span>)
+                                            {% elseif item.yahoo_change>0 %}
+                                                (<span class="change_plus">+{{ item.yahoo_change }}</span>)
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </table>
+                        {% else %}
+                            No changes here.
+                        {% endif %}
                         
                     </div>
                 </div>
@@ -277,6 +418,72 @@
                 <div class="widget-box">
                     <div class="widget-title"><h5>Out of Top 10</h5></div>
                     <div class="widget-content">
+                        {% if out_of_top10_keyword_list.out_of_top10_keyword_list|length %}
+                            <table class="up_down_stats">
+                                <tr>
+                                    <th>
+                                        keyword
+                                    </th>
+                                    <th width="50">
+                                         Google
+                                    </th>
+                                    <th width="50">
+                                        Bing
+                                    </th>
+                                    <th width="50">
+                                        Yahoo
+                                    </th>
+                                </tr>
+                                {% for item in out_of_top10_keyword_list.out_of_top10_keyword_list %}
+                                    <tr>
+                                        <td>
+                                            <a href="{{ path('account_keyword_stats') }}?keyword_id={{ item.id }}">{{ item.keyword }}</a>
+                                        </td>
+                                        <td class="no_wrap">
+                                            {% if not is_numeric(out_of_top10_keyword_list.today_ranks_or_ex_top10[item.id].google_position) or out_of_top10_keyword_list.today_ranks_or_ex_top10[item.id].google_position==0 %}
+                                                - 
+                                                {% if item.google_position>0 %}
+                                                    (<span class="change_minus">-{{ 100 - item.google_position }}</span>)
+                                                {% endif %}
+                                            {% else %}
+                                                {{ out_of_top10_keyword_list.today_ranks_or_ex_top10[item.id].google_position }} 
+                                                {% if item.google_position>0 %}
+                                                    (<span class="change_minus">-{{ item.google_position-out_of_top10_keyword_list.today_ranks_or_ex_top10[item.id].google_position }}</span>)
+                                                {% endif %}
+                                            {% endif %}
+                                        </td>
+                                        <td class="no_wrap">
+                                            {% if not is_numeric(out_of_top10_keyword_list.today_ranks_or_ex_top10[item.id].bing_position) or out_of_top10_keyword_list.today_ranks_or_ex_top10[item.id].bing_position==0 %}
+                                                - 
+                                                {% if item.bing_position>0 %}
+                                                    (<span class="change_minus">-{{ 100 - item.bing_position }}</span>)
+                                                {% endif %}
+                                            {% else %}
+                                                {{ out_of_top10_keyword_list.today_ranks_or_ex_top10[item.id].bing_position }} 
+                                                {% if item.bing_position>0 %}
+                                                    (<span class="change_minus">-{{ item.bing_position-out_of_top10_keyword_list.today_ranks_or_ex_top10[item.id].bing_position }}</span>)
+                                                {% endif %}
+                                            {% endif %}
+                                        </td>
+                                        <td class="no_wrap">
+                                            {% if not is_numeric(out_of_top10_keyword_list.today_ranks_or_ex_top10[item.id].yahoo_position) or out_of_top10_keyword_list.today_ranks_or_ex_top10[item.id].yahoo_position==0 %}
+                                                - 
+                                                {% if item.yahoo_position>0 %}
+                                                    (<span class="change_minus">-{{ 100 - item.yahoo_position }}</span>)
+                                                {% endif %}
+                                            {% else %}
+                                                {{ out_of_top10_keyword_list.today_ranks_or_ex_top10[item.id].yahoo_position }} 
+                                                {% if item.yahoo_position>0 %}
+                                                    (<span class="change_minus">-{{ item.yahoo_position-out_of_top10_keyword_list.today_ranks_or_ex_top10[item.id].bing_position }}</span>)
+                                                {% endif %}
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </table>
+                        {% else %}
+                            No changes here.
+                        {% endif %}
                         
                     </div>
                 </div>
