@@ -138,28 +138,52 @@ class ProjectController extends Controller {
         $top10_today = $em->getRepository('FrontFrontBundle:KeywordTrack')->getTop10keywordCntByProjectId($project_details['id'], date('Y-m-d'));
         $top10_yesterday = $em->getRepository('FrontFrontBundle:KeywordTrack')->getTop10keywordCntByProjectId($project_details['id'], date('Y-m-d', strtotime('-1 day', time())));
         
-        // positions up
+        // positions up/down
         $positions_up_today = $em->getRepository('FrontFrontBundle:KeywordTrack')->getCntPositionsByProjectId($project_details['id'], date('Y-m-d'), 'up');
-        $positions_down_today = $em->getRepository('FrontFrontBundle:KeywordTrack')->getCntPositionsByProjectId($project_details['id'], date('Y-m-d', strtotime('-1 day', time())), 'down');
-        
+        $positions_down_today = $em->getRepository('FrontFrontBundle:KeywordTrack')->getCntPositionsByProjectId($project_details['id'], date('Y-m-d'), 'down');
+
         // competitor cnt
         $competitor_cnt = $em->getRepository('FrontFrontBundle:Competitor')->getCntProjectCompetitorsById($project_details['id']);
         
         // keyword's ups & downs
-        $up_keywords = $em->getRepository('FrontFrontBundle:KeywordTrack')->getProjectUps($project_details['id'], '2012-11-14', 'up');
-        $down_keywords = $em->getRepository('FrontFrontBundle:KeywordTrack')->getProjectUps($project_details['id'], '2012-11-14', 'down');
+        $up_keywords = $em->getRepository('FrontFrontBundle:KeywordTrack')->getProjectUps($project_details['id'], date('Y-m-d'), 'up');
+        $down_keywords = $em->getRepository('FrontFrontBundle:KeywordTrack')->getProjectUps($project_details['id'], date('Y-m-d'), 'down');
         
+        // top 10 keyword list
+        $top10_keyword_list = $em->getRepository('FrontFrontBundle:KeywordTrack')->getTop10KeywordsByProjectId($project_details['id'], date('Y-m-d'));
+        
+        // new in top 10 keyword list
+        $new_top10_keyword_list = $em->getRepository('FrontFrontBundle:KeywordTrack')->getNewTop10KeywordsByProjectId($project_details['id'], date('Y-m-d'), '1 day');
+        
+        // out of top 10 keyword list
+        $out_of_top10_keyword_list = $em->getRepository('FrontFrontBundle:KeywordTrack')->getOutOfTop10KeywordsByProjectId($project_details['id'], date('Y-m-d'), '1 day');
+        $cnt_out = count($out_of_top10_keyword_list);
+        $out_ids = array();
+        for($i=0;$i<$cnt_out;$i++) {
+            $out_ids[] = $out_of_top10_keyword_list[$i]['id'];
+        }
+        // getting current ranks for selected keywords
+        $today_ranks_or_ex_top10 = $em->getRepository('FrontFrontBundle:KeywordTrack')->getKeywordRanksForCertainDate($out_ids, date('Y-m-d'));
+        $ex_top10_formatted = array();
+        $cnt_result = count($today_ranks_or_ex_top10);
+        for($i=0;$i<$cnt_result;$i++) {
+            $ex_top10_keyword_id = $today_ranks_or_ex_top10[$i]['keyword_id'];
+            $cnt_result[$ex_top10_keyword_id] = $today_ranks_or_ex_top10[$i];
+        }
         
         
         $params = array();
         $params['project_details'] = $project_details;
         $params['keyword_cnt'] = $keyword_cnt;
         $params['project_uptime'] = $project_uptime;
-        $params['avg_position'] = array('avg_today' => number_format($avg_today, 1), 'diff_from_yesterday' => number_format(($avg_today - $avg_yesterday),1));
+        $params['avg_position'] = array('avg_today' => number_format($avg_today, 1), 'diff_from_yesterday' => number_format(($avg_yesterday - $avg_today),1));
         $params['top10'] = array('top10_today' => $top10_today, 'diff_from_yesterday' => ($top10_today - $top10_yesterday));
         $params['fluctuations'] = array('rises' => $positions_up_today, 'drops' => $positions_down_today);
         $params['competitor_cnt'] = $competitor_cnt;
         $params['keyword_ups_downs'] = array('up_keywords' => $up_keywords, 'down_keywords' => $down_keywords);
+        $params['top10_keyword_list'] = $top10_keyword_list;
+        $params['new_top10_keyword_list'] = $new_top10_keyword_list;
+        $params['out_of_top10_keyword_list'] = array('out_of_top10_keyword_list' => $out_of_top10_keyword_list, 'today_ranks_or_ex_top10' => $ex_top10_formatted);
         return $this->render('FrontFrontBundle:Account:Project/project_details.html.twig', $params);
     }
 
