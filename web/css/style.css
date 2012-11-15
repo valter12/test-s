@@ -352,3 +352,6 @@ body {
 .no_wrap{
     white-space: nowrap;
 }
+.tab-content{
+    margin-left:10px;
+}
