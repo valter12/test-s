@@ -439,7 +439,6 @@ class KeywordTrackRepository extends EntityRepository {
             WHERE kt.keyword_id=k.id
             AND k.project_id=:project_id ".$str_cond."
         ";
-        
         $params[':project_id'] = $project_id;
         $q = $this->getEntityManager()->getConnection()->executeQuery($query, $params);
         
@@ -488,4 +487,124 @@ class KeywordTrackRepository extends EntityRepository {
         return $result;
     }
     
+    public function getTop10KeywordsByProjectId($project_id) {
+        $params = array();
+        
+        $query = "
+            SELECT 
+                k.id, k.keyword,
+                kt.google_position, kt.bing_position, kt.yahoo_position, 
+                kt.google_change, kt.bing_change, kt.yahoo_change
+            FROM keyword_track kt, keyword k,
+            (
+                SELECT MAX(kt1.track_date) as track_date, kt1.keyword_id
+                FROM keyword_track kt1, keyword k1
+                WHERE kt1.keyword_id=k1.id
+                AND k1.project_id=:project_id
+                GROUP BY k1.id
+            ) q
+            WHERE kt.keyword_id=k.id
+            AND k.project_id=:project_id 
+            AND (kt.google_position BETWEEN 1 AND 10 OR kt.bing_position BETWEEN 1 AND 10 OR kt.yahoo_position BETWEEN 1 AND 10)
+            AND kt.keyword_id=q.keyword_id
+            AND kt.track_date=q.track_date
+            GROUP BY k.id
+        ";
+        
+        $params[':project_id'] = $project_id;
+        $q = $this->getEntityManager()->getConnection()->executeQuery($query, $params);
+        
+        $result = $q->fetchAll(2);
+        return $result;
+    }
+    
+    public function getNewTop10KeywordsByProjectId($project_id, $date, $interval) {
+        $params = array();
+        
+        $params[':date'] = $date;
+        $params[':interval'] = $interval;
+        
+        $query = "
+            SELECT 
+                k.id, k.keyword,
+                kt.google_position, kt.bing_position, kt.yahoo_position, 
+                kt.google_change, kt.bing_change, kt.yahoo_change
+            FROM keyword_track kt, keyword k
+            WHERE kt.keyword_id=k.id
+            AND k.project_id=:project_id AND DATE_FORMAT(kt.track_date, '%Y-%m-%d') = :date
+            AND (kt.google_position BETWEEN 1 AND 10 OR kt.bing_position BETWEEN 1 AND 10 OR kt.yahoo_position BETWEEN 1 AND 10)
+            AND kt.keyword_id NOT IN
+            (
+                SELECT 
+                    k1.id
+                FROM keyword_track kt1, keyword k1
+                WHERE kt1.keyword_id=k1.id
+                AND k1.project_id=:project_id AND DATE_FORMAT(kt1.track_date, '%Y-%m-%d') = DATE_SUB(:date, INTERVAL :interval DAY)
+                AND (kt1.google_position BETWEEN 1 AND 10 OR kt1.bing_position BETWEEN 1 AND 10 OR kt1.yahoo_position BETWEEN 1 AND 10)
+            )
+            GROUP BY k.id
+        ";
+        
+        $params[':project_id'] = $project_id;
+        $q = $this->getEntityManager()->getConnection()->executeQuery($query, $params);
+        
+        $result = $q->fetchAll(2);
+        return $result;
+    }
+    
+    public function getOutOfTop10KeywordsByProjectId($project_id, $date, $interval) {
+        $params = array();
+        
+        $params[':date'] = $date;
+        $params[':interval'] = $interval;
+        
+        $query = "
+            SELECT 
+                k.id, k.keyword,
+                kt.google_position, kt.bing_position, kt.yahoo_position, 
+                kt.google_change, kt.bing_change, kt.yahoo_change
+            FROM keyword_track kt, keyword k
+            WHERE kt.keyword_id=k.id
+            AND k.project_id=:project_id AND DATE_FORMAT(kt.track_date, '%Y-%m-%d') = DATE_SUB(:date, INTERVAL :interval DAY)
+            AND (kt.google_position BETWEEN 1 AND 10 OR kt.bing_position BETWEEN 1 AND 10 OR kt.yahoo_position BETWEEN 1 AND 10)
+            AND kt.keyword_id NOT IN
+            (
+                SELECT 
+                    k1.id
+                FROM keyword_track kt1, keyword k1
+                WHERE kt1.keyword_id=k1.id
+                AND k1.project_id=:project_id AND DATE_FORMAT(kt1.track_date, '%Y-%m-%d') = :date
+                AND (kt1.google_position BETWEEN 1 AND 10 OR kt1.bing_position BETWEEN 1 AND 10 OR kt1.yahoo_position BETWEEN 1 AND 10)
+            )
+            GROUP BY k.id
+        ";
+        
+        $params[':project_id'] = $project_id;
+        $q = $this->getEntityManager()->getConnection()->executeQuery($query, $params);
+        
+        $result = $q->fetchAll(2);
+        return $result;
+    }
+    
+    public function getKeywordRanksForCertainDate($keyword_ids, $date) {
+        $params = array();
+        
+        $params[':date'] = $date;
+        
+        $query = "
+            SELECT 
+                kt.keyword_id,
+                kt.google_position,
+                kt.bing_position,
+                kt.yahoo_position
+            FROM keyword_track kt
+            WHERE DATE_FORMAT(kt.track_date, '%Y-%m-%d') = :date
+            AND kt.keyword_id IN (".implode(',', $keyword_ids).")
+        ";
+        
+        $q = $this->getEntityManager()->getConnection()->executeQuery($query, $params);
+        
+        $result = $q->fetchAll(2);
+        return $result;
+    }
 }
