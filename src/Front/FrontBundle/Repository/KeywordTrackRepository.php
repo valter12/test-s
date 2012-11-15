@@ -616,7 +616,9 @@ class KeywordTrackRepository extends EntityRepository {
     
     public function getKeywordRanksForCertainDate($keyword_ids, $date) {
         $params = array();
-        
+        if(empty($keyword_ids)) {
+            return;
+        }
         $params[':date'] = $date;
         
         $query = "
