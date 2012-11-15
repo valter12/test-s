@@ -359,7 +359,8 @@ class KeywordTrackRepository extends EntityRepository {
                 $str_cond = ' AND '.$str_cond;
             }
         }
-        
+      
+        // old query, seems to be wrong
         $query = "
             SELECT 
                 ((SUM(CASE WHEN kt.google_position > 0 THEN kt.google_position ELSE 100 END)+(((SELECT COUNT(id) FROM keyword WHERE project_id=:project_id)-COUNT(kt.id))*100)))/((SELECT COUNT(id) FROM keyword WHERE project_id=:project_id)) as avg_google_position,
@@ -368,6 +369,24 @@ class KeywordTrackRepository extends EntityRepository {
             FROM keyword_track kt, keyword k
             WHERE kt.keyword_id=k.id
             AND k.project_id=:project_id ".$str_cond."
+        ";
+        
+        $query = "
+            SELECT 
+                ((SUM(CASE WHEN kt.google_position > 0 THEN kt.google_position ELSE 100 END)+(((SELECT COUNT(id) FROM keyword WHERE project_id=:project_id)-COUNT(kt.id))*100)))/((SELECT COUNT(id) FROM keyword WHERE project_id=:project_id)) as avg_google_position,
+                ((SUM(CASE WHEN kt.bing_position > 0 THEN kt.google_position ELSE 100 END)+(((SELECT COUNT(id) FROM keyword WHERE project_id=:project_id)-COUNT(kt.id))*100)))/((SELECT COUNT(id) FROM keyword WHERE project_id=:project_id)) as avg_bing_position,
+                ((SUM(CASE WHEN kt.yahoo_position > 0 THEN kt.google_position ELSE 100 END)+(((SELECT COUNT(id) FROM keyword WHERE project_id=:project_id)-COUNT(kt.id))*100)))/((SELECT COUNT(id) FROM keyword WHERE project_id=:project_id)) as avg_yahoo_position
+            FROM keyword_track kt
+            WHERE 
+            kt.id IN (
+                SELECT 
+                    MAX(kt1.id) as id
+                FROM keyword_track kt1, keyword k1
+                WHERE kt1.keyword_id=k1.id
+                AND k1.project_id=:project_id
+                GROUP BY k1.id
+            )
+            AND DATE_FORMAT(kt.track_date, '%Y-%m-%d') <= :date
         ";
         
         $params[':project_id'] = $project_id;
@@ -384,7 +403,7 @@ class KeywordTrackRepository extends EntityRepository {
         
         if($date) {
             $params[':date'] = $date;
-            $cond[] = "DATE_FORMAT(kt.track_date, '%Y-%m-%d') = :date";
+            $cond[] = "DATE_FORMAT(kt.track_date, '%Y-%m-%d') <= :date";
         }
         
         if(!empty($cond)) {
@@ -394,11 +413,20 @@ class KeywordTrackRepository extends EntityRepository {
         
         $query = "
             SELECT 
-                COUNT(kt.id) AS cnt
-            FROM keyword_track kt, keyword k
+                COUNT(k.id) as cnt
+            FROM keyword_track kt, keyword k,
+            (
+                SELECT MAX(kt1.track_date) as track_date, kt1.keyword_id
+                FROM keyword_track kt1, keyword k1
+                WHERE kt1.keyword_id=k1.id
+                AND k1.project_id=:project_id
+                GROUP BY k1.id
+            ) q
             WHERE kt.keyword_id=k.id
+            AND k.project_id=:project_id 
             AND (kt.google_position BETWEEN 1 AND 10 OR kt.bing_position BETWEEN 1 AND 10 OR kt.yahoo_position BETWEEN 1 AND 10)
-            AND k.project_id=:project_id ".$str_cond."
+            AND kt.keyword_id=q.keyword_id
+            AND kt.track_date=q.track_date ".$str_cond."
         ";
         
         $params[':project_id'] = $project_id;
