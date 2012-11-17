@@ -403,7 +403,7 @@ class KeywordTrackRepository extends EntityRepository {
         
         if($date) {
             $params[':date'] = $date;
-            $cond[] = "DATE_FORMAT(kt.track_date, '%Y-%m-%d') <= :date";
+            $cond[] = "DATE_FORMAT({tbl_holder}.track_date, '%Y-%m-%d') <= :date";
         }
         
         if(!empty($cond)) {
@@ -419,14 +419,14 @@ class KeywordTrackRepository extends EntityRepository {
                 SELECT MAX(kt1.track_date) as track_date, kt1.keyword_id
                 FROM keyword_track kt1, keyword k1
                 WHERE kt1.keyword_id=k1.id
-                AND k1.project_id=:project_id
+                AND k1.project_id=:project_id ".str_replace('{tbl_holder}', 'kt1', $str_cond)."
                 GROUP BY k1.id
             ) q
             WHERE kt.keyword_id=k.id
             AND k.project_id=:project_id 
             AND (kt.google_position BETWEEN 1 AND 10 OR kt.bing_position BETWEEN 1 AND 10 OR kt.yahoo_position BETWEEN 1 AND 10)
             AND kt.keyword_id=q.keyword_id
-            AND kt.track_date=q.track_date ".$str_cond."
+            AND kt.track_date=q.track_date ".str_replace('{tbl_holder}', 'kt', $str_cond)."
         ";
         
         $params[':project_id'] = $project_id;
@@ -549,26 +549,42 @@ class KeywordTrackRepository extends EntityRepository {
     public function getNewTop10KeywordsByProjectId($project_id, $date, $interval) {
         $params = array();
         
-        $params[':date'] = $date;
-        $params[':interval'] = $interval;
-        
         $query = "
             SELECT 
                 k.id, k.keyword,
                 kt.google_position, kt.bing_position, kt.yahoo_position, 
                 kt.google_change, kt.bing_change, kt.yahoo_change
-            FROM keyword_track kt, keyword k
-            WHERE kt.keyword_id=k.id
-            AND k.project_id=:project_id AND DATE_FORMAT(kt.track_date, '%Y-%m-%d') = :date
-            AND (kt.google_position BETWEEN 1 AND 10 OR kt.bing_position BETWEEN 1 AND 10 OR kt.yahoo_position BETWEEN 1 AND 10)
-            AND kt.keyword_id NOT IN
+            FROM keyword_track kt, keyword k,
             (
-                SELECT 
-                    k1.id
+                SELECT MAX(kt1.track_date) as track_date, kt1.keyword_id
                 FROM keyword_track kt1, keyword k1
                 WHERE kt1.keyword_id=k1.id
-                AND k1.project_id=:project_id AND DATE_FORMAT(kt1.track_date, '%Y-%m-%d') = DATE_SUB(:date, INTERVAL :interval DAY)
-                AND (kt1.google_position BETWEEN 1 AND 10 OR kt1.bing_position BETWEEN 1 AND 10 OR kt1.yahoo_position BETWEEN 1 AND 10)
+                AND k1.project_id=:project_id
+                GROUP BY k1.id
+            ) q
+            WHERE kt.keyword_id=k.id
+            AND k.project_id=:project_id
+            AND (kt.google_position BETWEEN 1 AND 10 OR kt.bing_position BETWEEN 1 AND 10 OR kt.yahoo_position BETWEEN 1 AND 10)
+            AND kt.keyword_id=q.keyword_id
+            AND kt.track_date=q.track_date
+            AND kt.keyword_id NOT IN 
+            (
+                SELECT 
+                ks.id
+                FROM keyword_track kts, keyword ks,
+                (
+                    SELECT MAX(kt1s.track_date) as track_date, kt1s.keyword_id
+                    FROM keyword_track kt1s, keyword k1s
+                    WHERE kt1s.keyword_id=k1s.id
+                    AND k1s.project_id=:project_id
+                    AND DATE_FORMAT(kt1s.track_date, '%Y-%m-%d')<'".$date."'
+                    GROUP BY k1s.id
+                ) qs
+                WHERE kts.keyword_id=ks.id
+                AND ks.project_id=:project_id
+                AND (kts.google_position BETWEEN 1 AND 10 OR kts.bing_position BETWEEN 1 AND 10 OR kts.yahoo_position BETWEEN 1 AND 10)
+                AND kts.keyword_id=qs.keyword_id
+                AND kts.track_date=qs.track_date
             )
             GROUP BY k.id
         ";
