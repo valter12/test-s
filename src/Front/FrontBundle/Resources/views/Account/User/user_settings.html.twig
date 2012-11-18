@@ -23,6 +23,8 @@
         <form method="post" action="{{ path('account_settings') }}">
             <input type="hidden" name="todo" value="set_date_format">
             <label for="date_format">Please choose the date format:</label>
+            <i style="font-size:11px;">(this format will be used everywhere in the site)</i>
+            <br />
             <select name="date_format" value="" id="date_format">
                 <option {% if date_format == 'Y-m-d' %}selected="selected"{% endif %} value="Y-m-d">YYYY-mm-dd</option>
                 <option {% if date_format == 'd-m-Y' %}selected="selected"{% endif %} value="d-m-Y">dd-mm-YYYY</option>
