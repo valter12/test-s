@@ -1,5 +1,8 @@
 {% extends '::base.html.twig' %}
 {% block body %}
+    <h2>Tell us your name..</h2>
+    <div class="sep"></div>
+    <div class="sep"></div>
     <form action="{{ path('register_step_3') }}" method="post">
         <label for="f_name">First name:</label>
         <input type="text" name="f_name" id="f_name" required="required">
