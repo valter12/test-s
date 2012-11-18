@@ -42,15 +42,19 @@ class UserController extends Controller {
         $captcha = $request->get('captcha');
         $package_id = $request->get('package_id');
         $is_trial = $request->get('is_trial', 0);
-        if ($is_trial && $is_trial != 1) { // this variable must be 0 or 1
-            $is_trial = 0;
-        } else {
-            $package_id = 1; // set this package for trial version
+        if ($is_trial) { // this variable must be 0 or 1
+            $package_id = 2;
         }
 
+        /**
+         * @TODO
+         * for testing period the package will be 2
+         * remove this when in production and payment system implemented
+         */
+        $package_id = 2;
 
         if (!in_array($package_id, $allowed_package_ids)) {
-            $package_id = 3;
+            $package_id = 2;
         }
 
         $email_exists = $em->getRepository('FrontFrontBundle:User')->checkEmailExists($email);
@@ -279,7 +283,7 @@ class UserController extends Controller {
             $em->getRepository('FrontFrontBundle:User')->getAddUserData(Auth::getAuthParam('id'), $f_name, $l_name);
             $em->getRepository('FrontFrontBundle:User')->setHasCompletedProfile(Auth::getAuthParam('id'));
 
-            return $this->redirect($this->generateUrl('dashboard'));
+            return $this->redirect($this->generateUrl('account_dashboard'));
         }
 
         return $this->render('FrontFrontBundle:login_register:register_step3.html.twig');
