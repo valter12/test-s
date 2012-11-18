@@ -653,4 +653,20 @@ class KeywordTrackRepository extends EntityRepository {
         $result = $q->fetchAll(2);
         return $result;
     }
+    
+    public function isProjectParsed($project_id) {
+        $params[':project_id'] = $project_id;
+        
+        $query = "
+            SELECT 
+                (SELECT COUNT(id) FROM keyword WHERE project_id=:project_id AND DATE_FORMAT(last_track, '%Y-%m-%d') = DATE_FORMAT(NOW(), '%Y-%m-%d')) as keywords_tracked,
+                (SELECT COUNT(id) FROM keyword WHERE project_id=:project_id) as total_keywords
+        ";
+        
+        $q = $this->getEntityManager()->getConnection()->executeQuery($query, $params);
+        
+        $result = $q->fetch(2);
+
+        return $result['keywords_tracked'] == $result['total_keywords'];
+    }
 }
