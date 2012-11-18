@@ -26,7 +26,13 @@ class AccountController extends Controller {
         $percentage = $cnt_projects+100/Auth::getMaxDomains();
         $cnt_reports = $em->getRepository('FrontFrontBundle:ProjectReport')->cntReports(Auth::getAuthParam('id'));
 
-        $project_keyword_stats = $em->getRepository('FrontFrontBundle:KeywordTrack')->getAvgStatsPerProject(Auth::getAuthParam('id'));
+        $project_keyword_stats = $em->getRepository('FrontFrontBundle:KeywordTrack')->getAvgStatsPerProject(Auth::getAuthParam('id'), date('Y-m-d'));
+        $expl_str = 'UPs and Downs for the last 2 days';
+        if(empty($project_keyword_stats)) {
+            $yesterday = date('Y-m-d', strtotime('-1 day', time()));
+            $project_keyword_stats = $em->getRepository('FrontFrontBundle:KeywordTrack')->getAvgStatsPerProject(Auth::getAuthParam('id'), $yesterday);
+            $expl_str = 'UPs and Downs for <b>'.$yesterday.'</b> and <b>'.date('Y-m-d').'</b>';
+        }
         
         $cnt_project_keyword_stats = count($project_keyword_stats);
         $project_avg_stats = array();
@@ -44,6 +50,7 @@ class AccountController extends Controller {
             'projects' => array('cnt_projects' => $cnt_projects, 'total_allowed' => Auth::getMaxDomains()), 
             'cnt_reports' => $cnt_reports,
             'project_keyword_stats' => $project_avg_stats,
+            'expl_str' => $expl_str,
         );
         return $this->render('FrontFrontBundle:Account:dashboard.html.twig', $params);
     }
