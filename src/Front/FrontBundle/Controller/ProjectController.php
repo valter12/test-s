@@ -98,7 +98,8 @@ class ProjectController extends Controller {
             $em->getRepository('FrontFrontBundle:Project')->modifyProject(Auth::getAuthParam('id'), $project_hash, $project_name, $project_desc, $project_category);
             $this->get('session')->setFlash('notice', 'The project was updated.');
         }
-        return $this->redirect($this->generateUrl('account_projects'));
+        return $this->redirect($request->headers->get('referer'));
+//        return $this->redirect($this->generateUrl('account_projects'));
     }
     
     public function projectDetailsAction() {
