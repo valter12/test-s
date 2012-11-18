@@ -304,8 +304,8 @@ class KeywordTrackRepository extends EntityRepository {
         return $result;
     }
     
-    public function getAvgStatsPerProject($user_id) {
-        $date_periods = "DATE_FORMAT(kt.track_date, '%Y-%m-%d') = DATE_FORMAT(NOW(), '%Y-%m-%d')";
+    public function getAvgStatsPerProject($user_id, $date) {
+        $date_periods = "DATE_FORMAT(kt.track_date, '%Y-%m-%d') = :date";
         $query = "
             SELECT 
                 p.project_name, 
@@ -318,7 +318,7 @@ class KeywordTrackRepository extends EntityRepository {
             WHERE 
                 k.project_id=p.id
                 AND p.user_id=:user_id
-                AND DATE_FORMAT(k.last_track, '%Y%m%d') = DATE_FORMAT(NOW(), '%Y%m%d')
+                AND DATE_FORMAT(k.last_track, '%Y%m%d') = DATE_FORMAT(:date, '%Y%m%d')
             GROUP BY p.id
             UNION 
             SELECT 
@@ -332,11 +332,11 @@ class KeywordTrackRepository extends EntityRepository {
             WHERE 
                 k.project_id=p.id
                 AND p.user_id=:user_id
-                AND DATE_FORMAT(k.last_track, '%Y%m%d') = DATE_FORMAT(NOW(), '%Y%m%d')
+                AND DATE_FORMAT(k.last_track, '%Y%m%d') = DATE_FORMAT(:date, '%Y%m%d')
             GROUP BY p.id
         ";
         
-        $q = $this->getEntityManager()->getConnection()->executeQuery($query, array(':user_id' => $user_id));
+        $q = $this->getEntityManager()->getConnection()->executeQuery($query, array(':user_id' => $user_id, ':date' => $date));
         $result = $q->fetchAll(2);
         return $result;
     }
