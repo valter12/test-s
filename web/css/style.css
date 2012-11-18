@@ -355,3 +355,7 @@ body {
 .tab-content{
     margin-left:10px;
 }
+.report_textarea{
+    width: 357px;
+    height: 177px;
+}
