@@ -7,7 +7,7 @@
             <h3>Modify project "{{ project_data.project_name }}"</h3>
         {% endif %}
     </div>
-    <form action="{{ path('account_execute_modify_project') }}" method="post" style="margin:0">
+    <form action="{{ path('account_execute_modify_project') }}" method="post" onsubmit="return checkDomain();" style="margin:0">
         <div class="modal-body">
             <label for="project_category">Project category</label>
             <select name="project_category" id="project_category">
@@ -22,6 +22,8 @@
                 <div class="sep"></div>
                 <label for="project_domain">Project domain</label>
                 <input type="text" name="project_domain" value="" id="project_domain" class="popup_focus" data-original-title="ATTENTION!" data-content="Please double check the domain name, after the system will begin to track it you will not be able to change it." required="required" >
+                No http:// or www
+                
             {% endif %}
             <div class="sep"></div>
             <label for="project_desc">Project description</label>
@@ -37,6 +39,23 @@
     </form>
 </div>
 <script>
+    function checkDomain() {
+        if(jQuery('#project_domain').length) {
+           var project_domain = jQuery('#project_domain').val(); 
+           if(!project_domain.match(/http:\/\/www\..*/) && !project_domain.match(/www\..*/)) {
+               if(project_domain.match(/.*\..*/)) {
+                   return true;
+               } else {
+                   alert("Incorrect format of Project domain.\nThe domain name should not contain \"http://\" or \"www\"\nExample of CORRECT project domain: domain.com");
+               }
+           } else {
+               alert("Incorrect format of Project domain.\nThe domain name should not contain \"http://\" or \"www\"\nExample of CORRECT project domain: domain.com");
+           }
+           return false;
+        } else {
+            return true;
+        }
+    }
     jQuery(document).ready(function(){
         $('.popup_focus').popover({
             'trigger': 'focus'
