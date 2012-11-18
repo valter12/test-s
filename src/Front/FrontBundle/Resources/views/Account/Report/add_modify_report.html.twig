@@ -78,7 +78,7 @@
                             <label for="ranking_summary_title">Title of section to display on report <i>(seen in the email)</i>:</label>
                             <input type="text" name="ranking_summary[title]" value="{{ report_settings.ranking_summary.title }}" id="ranking_summary_title">
                             <label for="ranking_summary_desc">Description of section to display on report <i>(seen in the email)</i>:</label>
-                            <textarea name="ranking_summary[desc]" value="{{ report_settings.ranking_summary.desc }}" id="ranking_summary_desc">{{ report_settings.ranking_summary.desc }}</textarea>
+                            <textarea name="ranking_summary[desc]" class="report_textarea" value="{{ report_settings.ranking_summary.desc }}" id="ranking_summary_desc">{{ report_settings.ranking_summary.desc }}</textarea>
                             <br />
                             <b>Search engines:</b>
                             <br />
@@ -108,7 +108,7 @@
                                 <label for="competitor_summary_title">Title of section to display on report <i>(seen in the email)</i>:</label>
                                 <input type="text" name="competitor_summary[title]" value="{{ report_settings.competitor_summary.title }}" id="competitor_summary_title">
                                 <label for="competitor_summary_desc">Description of section to display on report <i>(seen in the email)</i>:</label>
-                                <textarea name="competitor_summary[desc]" id="competitor_summary_desc">{{ report_settings.competitor_summary.desc }}</textarea>
+                                <textarea name="competitor_summary[desc]" class="report_textarea" id="competitor_summary_desc">{{ report_settings.competitor_summary.desc }}</textarea>
                                 <br />
                                 <b>Competitors:</b>
                                 <br />
@@ -137,7 +137,7 @@
                                 <label for="site_ranks_title">Title of section to display on report <i>(seen in the email)</i>:</label>
                                 <input type="text" name="site_ranks[title]" id="site_ranks_title" value="{{ report_settings.site_ranks.title }}">
                                 <label for="site_ranks_desc">Description of section to display on report <i>(seen in the email)</i>:</label>
-                                <textarea name="site_ranks[desc]" id="site_ranks_desc">{{ report_settings.site_ranks.desc }}</textarea>
+                                <textarea name="site_ranks[desc]" class="report_textarea" id="site_ranks_desc">{{ report_settings.site_ranks.desc }}</textarea>
                             </div>
                         </div>
                         <div class="sep"></div>
@@ -159,7 +159,7 @@
                                 <label for="detailed_keyword_ranks_title">Title of section to display on report <i>(seen in the email)</i>:</label>
                                 <input type="text" name="detailed_keyword_ranks[title]" id="detailed_keyword_ranks_title" value="{{ report_settings.detailed_keyword_ranks.title }}">
                                 <label for="detailed_keyword_ranks_desc">Description of section to display on report <i>(seen in the email)</i>:</label>
-                                <textarea name="detailed_keyword_ranks[desc]" id="detailed_keyword_ranks_desc">{{ report_settings.detailed_keyword_ranks.desc }}</textarea>
+                                <textarea name="detailed_keyword_ranks[desc]" class="report_textarea" id="detailed_keyword_ranks_desc">{{ report_settings.detailed_keyword_ranks.desc }}</textarea>
                                 <br />
                                 <b>Competitors:</b>
                                 <br />
@@ -196,7 +196,7 @@
                                 <label for="overall_competitor_graph_title">Title of section to display on report <i>(seen in the email)</i>:</label>
                                 <input type="text" name="overall_competitor_graph[title]" value="{{ report_settings.overall_competitor_graph.title }}" id="overall_competitor_graph_title">
                                 <label for="overall_competitor_graph_desc">Description of section to display on report <i>(seen in the email)</i>:</label>
-                                <textarea name="overall_competitor_graph[desc]" id="overall_competitor_graph_desc">{{ report_settings.overall_competitor_graph.desc }}</textarea>
+                                <textarea name="overall_competitor_graph[desc]" class="report_textarea" id="overall_competitor_graph_desc">{{ report_settings.overall_competitor_graph.desc }}</textarea>
                                 <br />
                                 <b>Competitors:</b>
                                 <br />
@@ -233,7 +233,7 @@
                                 <label for="site_uptime_title">Title of section to display on report <i>(seen in the email)</i>:</label>
                                 <input type="text" name="site_uptime[title]" id="site_uptime_title" value="{{ report_settings.site_uptime.title }}">
                                 <label for="site_uptime_desc">Description of section to display on report <i>(seen in the email)</i>:</label>
-                                <textarea name="site_uptime[desc]" id="site_uptime_desc">{{ report_settings.site_uptime.desc }}</textarea>
+                                <textarea name="site_uptime[desc]" class="report_textarea" id="site_uptime_desc">{{ report_settings.site_uptime.desc }}</textarea>
                             </div>
                         </div>
                     </div>
