@@ -171,6 +171,14 @@ class BackendUserRepository extends EntityRepository {
         $q = $this->getEntityManager()->getConnection()->executeQuery($query, array(':deleted' => $deleted, ':id' => $user_id));
     }
     
+    public function deleteUserCompletely($user_id) {
+        $query = "
+            DELETE FROM user WHERE id=:id
+        ";
+        
+        $q = $this->getEntityManager()->getConnection()->executeQuery($query, array(':id' => $user_id));
+    }
+    
     /**
      * get user payments
      */
