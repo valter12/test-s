@@ -23,7 +23,7 @@ class AccountController extends Controller {
         if (!$cnt_projects) {
             return $this->render('FrontFrontBundle:Account:dashboard_void.html.twig');
         }
-        $percentage = $cnt_projects+100/Auth::getMaxDomains();
+        $percentage = (int)($cnt_projects+100/Auth::getMaxDomains());
         $cnt_reports = $em->getRepository('FrontFrontBundle:ProjectReport')->cntReports(Auth::getAuthParam('id'));
 
         $project_keyword_stats = $em->getRepository('FrontFrontBundle:KeywordTrack')->getAvgStatsPerProject(Auth::getAuthParam('id'), date('Y-m-d'));
