@@ -42,7 +42,7 @@
     function checkDomain() {
         if(jQuery('#project_domain').length) {
            var project_domain = jQuery('#project_domain').val(); 
-           if(!project_domain.match(/http:\/\/www\..*/) && !project_domain.match(/www\..*/)) {
+           if(!project_domain.match(/http:\/\/www\..*/) && !project_domain.match(/www\..*/) && !project_domain.match(/http:\/\/.*/)) {
                if(project_domain.match(/.*\..*/)) {
                    return true;
                } else {
