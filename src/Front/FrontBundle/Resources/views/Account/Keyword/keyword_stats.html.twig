@@ -4,50 +4,58 @@
     {% include "FrontFrontBundle:Account:Keyword/incl_keyword_stats_filter.html.twig" %}
     {% include "FrontFrontBundle:Account:Keyword/keyword_stats_pagination.html.twig" %}
     <div class="sep"></div>
-    <a href="{{ path('account_keyword_charts') }}{{ chart_page }}&show_chart=1&all_search_engines=1">See chart</a>
-    <div class="sep"></div>
-    <table class="table">
-        <tr>
-            <th>Track date <a href="javascript:;" class="popup_hover_simple" data-original-title="Track date" data-content="The date and time when the keyword was tracked."><i class="icon-question-sign"></i></a></th>
-            <th>Google <a href="javascript:;" class="popup_hover_simple" data-original-title="Position in search engines" data-content="Shows the position in a search engine and the fluctuations from last time."><i class="icon-question-sign"></i></a></th>
-            <th>Bing</th>
-            <th>Yahoo</th>
-            <th>Google link</th>
-            <th>Bing link</th>
-            <th>Yahoo link</th>
-            <th>Other</th>
-        </tr>
-        {% for item in keyword_stats %}
+    {% if keyword_stats|length %}
+        <a href="{{ path('account_keyword_charts') }}{{ chart_page }}&show_chart=1&all_search_engines=1">See chart</a>
+        <div class="sep"></div>
+        <table class="table">
             <tr>
-                <td>{{ format_date(item.track_date) }}</td>
-                <td {% if item.google_change != 0 %}style="background-color:{% if item.google_change > 0 %}#96FF47{% else %}#FFA5A5{% endif %}"{% endif %}>
-                    {% if item.google_position %}{{ item.google_position }}{% else %}-{% endif %}
-                    {% if item.google_change != 0 %}
-                        /
-                        {% if item.google_change > 0 %}+{{ item.google_change }}{% else %}{{ item.google_change }}{% endif %}
-                    {% endif %}
-                </td>
-                <td {% if item.bing_change != 0 %}style="background-color:{% if item.bing_change > 0 %}#96FF47{% else %}#FFA5A5{% endif %}"{% endif %}>
-                    {% if item.bing_position %}{{ item.bing_position }}{% else %}-{% endif %}
-                    {% if item.bing_change != 0 %}
-                        /
-                        {% if item.bing_change > 0 %}+{{ item.bing_change }}{% elseif item.bing_change < 0 %}{{ item.bing_change }}{% endif %}
-                    {% endif %}
-                </td>
-                <td {% if item.yahoo_change != 0 %}style="background-color:{% if item.yahoo_change > 0 %}#96FF47{% else %}#FFA5A5{% endif %}"{% endif %}>
-                    {% if item.yahoo_position %}{{ item.yahoo_position }}{% else %}-{% endif %}
-                    {% if item.yahoo_change != 0 %}
-                        /
-                        {% if item.yahoo_change > 0 %}+{{ item.yahoo_change }}{% elseif item.yahoo_change < 0 %}{{ item.yahoo_change }}{% endif %}
-                    {% endif %}
-                </td>
-                <td>{% if item.page_link_google %}{{ item.page_link_google }}{% else %}-{% endif %}</td>
-                <td>{% if item.page_link_bing %}{{ item.page_link_bing }}{% else %}-{% endif %}</td>
-                <td>{% if item.page_link_yahoo %}{{ item.page_link_yahoo }}{% else %}-{% endif %}</td>
-                <td>{% if item.google_description_change or item.bing_description_change or item.yahoo_description_change %}<a href="javascript:;" onclick="getChangesModal({{ item.track_id }}, 0)" class="popup_hover_simple_left" data-original-title="Record contains changes" data-content="You have some changes on this record. Click the icon to see them."><i class="icon-asterisk"></i></a>{% else %}&nbsp;{% endif %}</td>
+                <th>Track date <a href="javascript:;" class="popup_hover_simple" data-original-title="Track date" data-content="The date and time when the keyword was tracked."><i class="icon-question-sign"></i></a></th>
+                <th>Google <a href="javascript:;" class="popup_hover_simple" data-original-title="Position in search engines" data-content="Shows the position in a search engine and the fluctuations from last time."><i class="icon-question-sign"></i></a></th>
+                <th>Bing</th>
+                <th>Yahoo</th>
+                <th>Google link</th>
+                <th>Bing link</th>
+                <th>Yahoo link</th>
+                <th>Other</th>
             </tr>
-        {% endfor %}
-    </table>
+            {% for item in keyword_stats %}
+                <tr>
+                    <td>{{ format_date(item.track_date) }}</td>
+                    <td {% if item.google_change != 0 %}style="background-color:{% if item.google_change > 0 %}#96FF47{% else %}#FFA5A5{% endif %}"{% endif %}>
+                        {% if item.google_position %}{{ item.google_position }}{% else %}-{% endif %}
+                        {% if item.google_change != 0 %}
+                            /
+                            {% if item.google_change > 0 %}+{{ item.google_change }}{% else %}{{ item.google_change }}{% endif %}
+                        {% endif %}
+                    </td>
+                    <td {% if item.bing_change != 0 %}style="background-color:{% if item.bing_change > 0 %}#96FF47{% else %}#FFA5A5{% endif %}"{% endif %}>
+                        {% if item.bing_position %}{{ item.bing_position }}{% else %}-{% endif %}
+                        {% if item.bing_change != 0 %}
+                            /
+                            {% if item.bing_change > 0 %}+{{ item.bing_change }}{% elseif item.bing_change < 0 %}{{ item.bing_change }}{% endif %}
+                        {% endif %}
+                    </td>
+                    <td {% if item.yahoo_change != 0 %}style="background-color:{% if item.yahoo_change > 0 %}#96FF47{% else %}#FFA5A5{% endif %}"{% endif %}>
+                        {% if item.yahoo_position %}{{ item.yahoo_position }}{% else %}-{% endif %}
+                        {% if item.yahoo_change != 0 %}
+                            /
+                            {% if item.yahoo_change > 0 %}+{{ item.yahoo_change }}{% elseif item.yahoo_change < 0 %}{{ item.yahoo_change }}{% endif %}
+                        {% endif %}
+                    </td>
+                    <td>{% if item.page_link_google %}{{ item.page_link_google }}{% else %}-{% endif %}</td>
+                    <td>{% if item.page_link_bing %}{{ item.page_link_bing }}{% else %}-{% endif %}</td>
+                    <td>{% if item.page_link_yahoo %}{{ item.page_link_yahoo }}{% else %}-{% endif %}</td>
+                    <td>{% if item.google_description_change or item.bing_description_change or item.yahoo_description_change %}<a href="javascript:;" onclick="getChangesModal({{ item.track_id }}, 0)" class="popup_hover_simple_left" data-original-title="Record contains changes" data-content="You have some changes on this record. Click the icon to see them."><i class="icon-asterisk"></i></a>{% else %}&nbsp;{% endif %}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        {% if keyword_data.last_track %}
+            This keyword has not found in first 100 results.
+        {% else %}
+            This keyword has not been tracked yet.
+        {% endif %}
+    {% endif %}
     {% include "FrontFrontBundle:Account:Keyword/keyword_stats_pagination.html.twig" %}
 {% endblock %}
 {% block stylesheets %}
