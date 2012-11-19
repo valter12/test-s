@@ -59,7 +59,7 @@
 {% block inline_javascripts %}
     <script>
         jQuery(document).ready(function(){
-            jQuery('.datepicker').datepicker({dateFormat: '{{ format_date('', 0, 1)}}', altFormat: 'yy-mm-dd'});
+            jQuery('.datepicker').datepicker({dateFormat: '{{ format_date('', 0, 1)}}'});
             {% if app.request.get('show_chart') %}
                 
                 {% for key, item in axes %}
