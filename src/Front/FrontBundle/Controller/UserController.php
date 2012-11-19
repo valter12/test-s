@@ -170,7 +170,7 @@ class UserController extends Controller {
                 $this->get('session')->setFlash('error', 'You do not need activation email because your accound is active. If you think you lost your password please use "Password recovery" function.');
                 return $this->redirect($this->generateUrl('resend_activation_hash'));
             }
-            $this->sendActivationEmail();
+            $this->sendActivationEmail($email, $secret_hash['activation_hash']);
             $this->get('session')->setFlash('notice', 'The activation email had been send to you. Please check "spam" folder also.');
             return $this->redirect($this->generateUrl('resend_activation_hash'));
         }
