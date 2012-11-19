@@ -7,7 +7,7 @@
             <h3>Modify competitor "{{ competitor_data.competitor_name }}"</h3>
         {% endif %}
     </div>
-    <form action="{{ path('account_execute_modify_project_competitor') }}" method="post" style="margin:0">
+    <form action="{{ path('account_execute_modify_project_competitor') }}" method="post" onsubmit="return checkDomain();" style="margin:0">
         <div class="modal-body">
             Project name: {{ project_data.project_name }}
             <div class="sep"></div>
@@ -16,7 +16,7 @@
             {% if action == 'new' %}
                 <div class="sep"></div>
                 <label for="competitor_domain">Competitor domain</label>
-                <input type="text" name="competitor_domain" value="" id="competitor_domain" class="popup_focus" data-original-title="ATTENTION!" data-content="Please double check the domain name, after the system will begin to track it you will not be able to change it." required="required" >
+                <input type="text" name="competitor_domain" value="" id="competitor_domain" class="popup_focus" data-original-title="ATTENTION!" data-content="Please double check the domain name, after the system will begin to track it you will not be able to change it." required="required" > No http:// or www
             {% endif %}
             <div class="sep"></div>
             <input type="hidden" name="project_hash" value="{{ project_data.project_hash }}">
@@ -37,4 +37,21 @@
             'trigger': 'focus'
         });
     });
+    function checkDomain() {
+        if(jQuery('#competitor_domain').length) {
+           var project_domain = jQuery('#competitor_domain').val(); 
+           if(!project_domain.match(/http:\/\/www\..*/) && !project_domain.match(/www\..*/)) {
+               if(project_domain.match(/.*\..*/)) {
+                   return true;
+               } else {
+                   alert("Incorrect format of Competitor domain.\nThe domain name should not contain \"http://\" or \"www\"\nExample of CORRECT competitor domain: domain.com");
+               }
+           } else {
+               alert("Incorrect format of Competitor domain.\nThe domain name should not contain \"http://\" or \"www\"\nExample of CORRECT competitor domain: domain.com");
+           }
+           return false;
+        } else {
+            return true;
+        }
+    }
 </script>
