@@ -26,8 +26,8 @@ class KeywordController extends Controller {
         $project_list = $em->getRepository('FrontFrontBundle:Project')->getProjects(Auth::getAuthParam('id'));
         $project_hash = $request->get('hash', $project_list[0]['project_hash']);
         if (empty($project_list)) {
-            $this->get('session')->setFlash('error', 'The request is incorrect.');
-            return $this->redirect($request->headers->get('referer'));
+            $this->get('session')->setFlash('error', 'You have no projects. Please create one.');
+            return $this->redirect($this->generateUrl('account_projects'));
         }
 
         $project_data = $em->getRepository('FrontFrontBundle:Project')->getProjectByHash(Auth::getAuthParam('id'), $project_hash);
