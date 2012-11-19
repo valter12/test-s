@@ -58,7 +58,7 @@ class DefaultController extends Controller {
                     $em->getRepository('FrontFrontBundle:UserSuggestions')->saveSuggestion($title, $content, $email);
                     
                     $this->get('session')->setFlash('notice', 'We\'ve got your request. Thank you.');
-                    mail('terramda@gmail.com', 'SEOwatchman new "feature request"');
+                    mail('terramda@gmail.com', 'SEOwatchman new "feature request"', '');
                     return $this->redirect($request->headers->get('referer'));
                     
                     break;
@@ -77,7 +77,7 @@ class DefaultController extends Controller {
           You can replace that image with another of the
           same size.
          */
-        $img = imagecreatefromjpeg("../web/images/texture.jpg");
+        $img = imagecreatefromjpeg("images/texture.jpg");
         /*
           defines the text we use in our image,
           in our case the security number defined
