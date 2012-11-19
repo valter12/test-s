@@ -105,8 +105,13 @@ class UserController extends Controller {
      * @param string $activation_hash
      */
     private function sendActivationEmail($email, $activation_hash) {
-        echo $this->renderView('FrontFrontBundle:Emails:email_confirmation.html.twig', array('activation_link' => 'http://www.seowatchman.com/activate-email?hash=' . $activation_hash));
-        return '';
+	$headers  = 'MIME-Version: 1.0' . "\r\n";
+        $headers .= 'Content-type: text/html; charset=utf-8' . "\r\n";
+        $headers .= 'From: SEOwatchman.com <noreply@seowatchman.com>' . "\r\n";
+
+        // Mail it
+        mail($email, 'SEOwatchman.com - email confirmation', $this->renderView('FrontFrontBundle:Emails:email_confirmation.html.twig', array('activation_link' => 'http://www.seowatchman.com/activate-email?hash=' . $activation_hash)), $headers);
+        return;
         $message = \Swift_Message::newInstance()
                 ->setSubject('SEOwatchman.com - email confirmation')
                 ->setFrom('noreply@seowatchman.com')
@@ -117,7 +122,13 @@ class UserController extends Controller {
     }
 
     private function sendPasswordEmail($email, $password) {
-        return '';
+	$headers  = 'MIME-Version: 1.0' . "\r\n";
+        $headers .= 'Content-type: text/html; charset=utf-8' . "\r\n";
+        $headers .= 'From: SEOwatchman.com <noreply@seowatchman.com>' . "\r\n";
+
+        // Mail it
+        mail($email, 'SEOwatchman.com - password recovery', $this->renderView('FrontFrontBundle:Emails:password_recovery.html.twig', array('email' => $email, 'password' => $password)), $headers);
+	return;
         $message = \Swift_Message::newInstance()
                 ->setSubject('SEOwatchman.com - password recovery')
                 ->setFrom('noreply@seowatchman.com')
