@@ -26,7 +26,7 @@ class TwigFunctions extends \Twig_Extension {
     }
 
     public function format_date($date, $with_minutes_seconds=false, $only_format=false) {
-        if(!$date) {
+        if(!$date && !$only_format) {
             return '';
         }
         $minutes_seconds = '';
