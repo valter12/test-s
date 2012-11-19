@@ -116,7 +116,6 @@ class KeywordTrackRepository extends EntityRepository {
             ORDER BY DATE_FORMAT(track_date, '%Y-%m-%d') ".$order."
             ".$limit_str."
         ";
-
         $params[':keyword_id'] = $keyword_id;
         $q = $this->getEntityManager()->getConnection()->executeQuery($query, $params);
         $result_dates = $q->fetchAll(2);
