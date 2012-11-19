@@ -28,8 +28,8 @@ class CompetitorController extends Controller {
         
         $project_data = $em->getRepository('FrontFrontBundle:Project')->getProjectByHash(Auth::getAuthParam('id'), $project_hash);
         if(empty($project_data)) {
-            $this->get('session')->setFlash('error', 'The request is incorrect.');
-            return $this->redirect($this->generateUrl('account_competitors'));
+            $this->get('session')->setFlash('error', 'You have no projects. Please create one.');
+            return $this->redirect($this->generateUrl('account_projects'));
         }
         
         $project_competitors = $em->getRepository('FrontFrontBundle:Competitor')->getCompetitorByProjectHash(Auth::getAuthParam('id'), $project_hash);
