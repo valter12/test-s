@@ -20,18 +20,13 @@ class ChartController extends Controller {
         $show_chart = $request->get('show_chart', 0);
         $keyword_id = $request->get('keyword_id');
 
-        if ($show_chart && empty($search_engines)) {
-            $this->get('session')->setFlash('error', 'Please select a search engine.');
-            return $this->redirect($request->headers->get('referer'));
-        }
-
         if (count($competitor_ids) > 20) { // more than allowed in the biggest package
             $this->get('session')->setFlash('error', 'The request is incorrect.');
             return $this->redirect($request->headers->get('referer'));
         }
 
         if ($show_chart && !is_numeric($keyword_id)) {
-            $this->get('session')->setFlash('error', 'The request is incorrect.');
+            $this->get('session')->setFlash('error', 'Please select a keyword.');
             return $this->redirect($request->headers->get('referer'));
         }
 
