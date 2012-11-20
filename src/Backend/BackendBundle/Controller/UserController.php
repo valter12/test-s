@@ -38,7 +38,6 @@ class UserController extends Controller {
         $data = $em->getRepository('FrontFrontBundle:User')->getUserDataById($id);
         
         Auth::setAuth();
-        
         Auth::setAuthParam('id', $data['id']);
         Auth::setAuthParam('f_name', $data['f_name']);
         Auth::setAuthParam('l_name', $data['l_name']);
