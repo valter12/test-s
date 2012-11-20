@@ -3,7 +3,7 @@
     <h2>Charts</h2>
     <div class="sep"></div>
     <form action="" method="GET">
-        <select name="project" onchange="getProjectKeywords(this.value);getKeywordCompetitors(this.value);">
+        <select name="project" onchange="getProjectKeywords(this.value);getKeywordCompetitors(this.value);applyChangesHint()">
             <option value="0">[Choose project]</option>
             {% for item in project_list %}
                 <option value="{{ item.project_hash }}" {% if app.request.get('project')==item.project_hash %}selected="selected"{% endif %}>{{ item.project_name }}</option>
@@ -13,16 +13,16 @@
         <div class="sep"></div>
         <span id="competitor_list_placeholder"></span>
         <div class="sep"></div>
-        Period from <input type="text" style="width:100px;" name="from_date" id="from_date" class="datepicker" value="{{ app.request.get('from_date') }}"> 
-        to <input type="text" style="width:100px;" name="to_date" id="to_date" class="datepicker" value="{{ app.request.get('to_date') }}">
+        Period from <input type="text" style="width:100px;" name="from_date" id="from_date" class="datepicker" onchange="applyChangesHint();" value="{{ app.request.get('from_date') }}"> 
+        to <input type="text" style="width:100px;" name="to_date" id="to_date" class="datepicker" onchange="applyChangesHint();" value="{{ app.request.get('to_date') }}">
         <div class="sep"></div>
-        <input type="checkbox" name="search_engine[]" id="se_google" {% if 'google' in app.request.get('search_engine') or app.request.get('all_search_engines') %}checked="checked"{% endif %} value="google"> <label class="no-block" for="se_google">Google</label><br />
-        <input type="checkbox" name="search_engine[]" id="se_bing" {% if 'bing' in app.request.get('search_engine') or app.request.get('all_search_engines') %}checked="checked"{% endif %} value="bing"> <label class="no-block" for="se_bing">Bing</label><br />
-        <input type="checkbox" name="search_engine[]" id="se_yahoo" {% if 'yahoo' in app.request.get('search_engine') or app.request.get('all_search_engines') %}checked="checked"{% endif %} value="yahoo"> <label class="no-block" for="se_yahoo">Yahoo</label><br />
+        <input type="checkbox" name="search_engine[]" onchange="applyChangesHint();" id="se_google" {% if 'google' in app.request.get('search_engine') or app.request.get('all_search_engines') %}checked="checked"{% endif %} value="google"> <label class="no-block" for="se_google">Google</label><br />
+        <input type="checkbox" name="search_engine[]" onchange="applyChangesHint();" id="se_bing" {% if 'bing' in app.request.get('search_engine') or app.request.get('all_search_engines') %}checked="checked"{% endif %} value="bing"> <label class="no-block" for="se_bing">Bing</label><br />
+        <input type="checkbox" name="search_engine[]" onchange="applyChangesHint();" id="se_yahoo" {% if 'yahoo' in app.request.get('search_engine') or app.request.get('all_search_engines') %}checked="checked"{% endif %} value="yahoo"> <label class="no-block" for="se_yahoo">Yahoo</label><br />
         
         <input type="hidden" value="1" name="show_chart">
         <div class="sep"></div>
-        <input type="submit" value="Apply" class="btn btn-primary">
+        <input type="submit" value="Apply" id="filter_apply_changes" class="btn btn-primary"> <span id="apply_changes_hint">- don't forget to apply the changes</span>
     </form>
     <div class="sep"></div>
     <a href="{{ path('account_keyword_stats') }}?{{ stats_link }}">See stats for this page</a>
