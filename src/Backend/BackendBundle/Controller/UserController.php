@@ -38,11 +38,14 @@ class UserController extends Controller {
         $data = $em->getRepository('FrontFrontBundle:User')->getUserDataById($id);
         
         Auth::setAuth();
+        
         Auth::setAuthParam('id', $data['id']);
         Auth::setAuthParam('f_name', $data['f_name']);
         Auth::setAuthParam('l_name', $data['l_name']);
         Auth::setAuthParam('is_trial', $data['is_trial']);
         Auth::setAuthParam('package_id', $data['package_id']);
+        Auth::setAuthParam('date_format', $data['user_date_format']);
+
         
         if (!is_numeric($id) || !$todo) {
             die('Request must have an id and todo variable.');
