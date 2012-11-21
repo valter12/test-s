@@ -358,17 +358,24 @@ class KeywordTrackRepository extends EntityRepository {
                 $str_cond = ' AND '.$str_cond;
             }
         }
-      
-        // old query, seems to be wrong
-        $query = "
+        $params[':project_id'] = $project_id;
+        
+        $primary_query = "
             SELECT 
-                ((SUM(CASE WHEN kt.google_position > 0 THEN kt.google_position ELSE 100 END)+(((SELECT COUNT(id) FROM keyword WHERE project_id=:project_id)-COUNT(kt.id))*100)))/((SELECT COUNT(id) FROM keyword WHERE project_id=:project_id)) as avg_google_position,
-                ((SUM(CASE WHEN kt.bing_position > 0 THEN kt.google_position ELSE 100 END)+(((SELECT COUNT(id) FROM keyword WHERE project_id=:project_id)-COUNT(kt.id))*100)))/((SELECT COUNT(id) FROM keyword WHERE project_id=:project_id)) as avg_bing_position,
-                ((SUM(CASE WHEN kt.yahoo_position > 0 THEN kt.google_position ELSE 100 END)+(((SELECT COUNT(id) FROM keyword WHERE project_id=:project_id)-COUNT(kt.id))*100)))/((SELECT COUNT(id) FROM keyword WHERE project_id=:project_id)) as avg_yahoo_position
-            FROM keyword_track kt, keyword k
-            WHERE kt.keyword_id=k.id
-            AND k.project_id=:project_id ".$str_cond."
+                MAX(kt1.id) as id
+            FROM keyword_track kt1, keyword k1
+            WHERE kt1.keyword_id=k1.id
+            AND k1.project_id=".$project_id."
+            GROUP BY k1.id
         ";
+        
+        $q_primary = $this->getEntityManager()->getConnection()->executeQuery($primary_query, array());
+        $primary_result = $q_primary->fetchAll(2);
+        $cnt = count($primary_result);
+        $ids = array();
+        for($i=0;$i<$cnt;$i++) {
+            $ids[] = $primary_result[$i]['id'];
+        }
         
         $query = "
             SELECT 
@@ -378,17 +385,11 @@ class KeywordTrackRepository extends EntityRepository {
             FROM keyword_track kt
             WHERE 
             kt.id IN (
-                SELECT 
-                    MAX(kt1.id) as id
-                FROM keyword_track kt1, keyword k1
-                WHERE kt1.keyword_id=k1.id
-                AND k1.project_id=:project_id
-                GROUP BY k1.id
+                ".implode(',', $ids)."
             )
             AND DATE_FORMAT(kt.track_date, '%Y-%m-%d') <= :date
         ";
         
-        $params[':project_id'] = $project_id;
         
         $q = $this->getEntityManager()->getConnection()->executeQuery($query, $params);
         
