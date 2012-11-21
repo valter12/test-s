@@ -17,7 +17,6 @@ class ProjectController extends Controller {
             return $this->redirect($this->generateUrl('login_register'));
         }
         
-        
         $request = $this->getRequest();
         $em = $this->getDoctrine()->getEntityManager();
         $project_list = $em->getRepository('FrontFrontBundle:Project')->getProjects(Auth::getAuthParam('id'));
@@ -109,7 +108,10 @@ class ProjectController extends Controller {
         $request = $this->getRequest();
         $em = $this->getDoctrine()->getEntityManager();
 
-        $project_hash = $request->get('hash');
+        // getting project list for select
+        $project_list = $em->getRepository('FrontFrontBundle:Project')->getProjects(Auth::getAuthParam('id'));
+        
+        $project_hash = $request->get('hash', $project_list[0]['project_hash']);
         if (!$project_hash) {
             $this->get('session')->setFlash('error', 'The request is incorrect.');
             return $this->redirect($this->generateUrl('account_projects'));
@@ -133,7 +135,7 @@ class ProjectController extends Controller {
             $yesterday = date('Y-m-d', strtotime('-2 day', time()));
             $expl_str = 'the shown differences are between '.$yesterday.' and '.$today.'';
         }
-        
+
         // keyword count
         $keyword_cnt = $em->getRepository('FrontFrontBundle:Keyword')->getProjectKeywordCount($project_details['id']);
 
@@ -154,7 +156,6 @@ class ProjectController extends Controller {
         // positions up/down
         $positions_up_today = $em->getRepository('FrontFrontBundle:KeywordTrack')->getCntPositionsByProjectId($project_details['id'], $today, 'up');
         $positions_down_today = $em->getRepository('FrontFrontBundle:KeywordTrack')->getCntPositionsByProjectId($project_details['id'], $today, 'down');
-
         // competitor cnt
         $competitor_cnt = $em->getRepository('FrontFrontBundle:Competitor')->getCntProjectCompetitorsById($project_details['id']);
         
@@ -167,26 +168,7 @@ class ProjectController extends Controller {
         
         // new in top 10 keyword list
         $new_top10_keyword_list = $em->getRepository('FrontFrontBundle:KeywordTrack')->getNewTop10KeywordsByProjectId($project_details['id'], $today, '1 DAY');
-        
-        // out of top 10 keyword list
-//        $out_of_top10_keyword_list = $em->getRepository('FrontFrontBundle:KeywordTrack')->getOutOfTop10KeywordsByProjectId($project_details['id'], $today, '1 day');
-//        $cnt_out = count($out_of_top10_keyword_list);
-//        $out_ids = array();
-//        for($i=0;$i<$cnt_out;$i++) {
-//            $out_ids[] = $out_of_top10_keyword_list[$i]['id'];
-//        }
-//        // getting current ranks for selected keywords
-//        $today_ranks_or_ex_top10 = $em->getRepository('FrontFrontBundle:KeywordTrack')->getKeywordRanksForCertainDate($out_ids, $today);
-//        $ex_top10_formatted = array();
-//        $cnt_result = count($today_ranks_or_ex_top10);
-//        for($i=0;$i<$cnt_result;$i++) {
-//            $ex_top10_keyword_id = $today_ranks_or_ex_top10[$i]['keyword_id'];
-//            $ex_top10_formatted[$ex_top10_keyword_id] = 2;//$today_ranks_or_ex_top10[$i];
-//        }
-        
-        // getting project list for select
-        $project_list = $em->getRepository('FrontFrontBundle:Project')->getProjects(Auth::getAuthParam('id'));
-        
+
         $params = array();
         $params['project_details'] = $project_details;
         $params['keyword_cnt'] = $keyword_cnt;
