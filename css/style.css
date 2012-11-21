@@ -266,7 +266,7 @@ body {
     color: #FF0000;
     display: none;
 }
-.project_stats_tbs{
+.project_stats_tbs, .competitor_overview{
     width: 100%;
 }
 .project_stats_tbs th {
@@ -358,4 +358,12 @@ body {
 .report_textarea{
     width: 357px;
     height: 177px;
+}
+.competitor_overview th {
+    text-align: left;
+    padding: 7px;
+    font-size: 14px;
+}
+.competitor_overview td {
+    padding: 7px;
 }
