@@ -1,0 +1,63 @@
+<table class="project_stats_tbs">
+    <tr>
+        <th>
+            Average position
+            <a href="javascript:;" data-original-title="Average position" data-content="Shows the average position of ALL keywords of this project in ALL search engines.<br />1 = all keywords are on position 1 in all search engines<br />100 = all keywords had been found on position 100 or not found at all<br /><i style='font-size:11px;'>If some of the keywords were not found in first 10 pages then position 100 is automaticaly assinged.</i>" class="popup_hover_simple"><i class="icon-question-sign"></i></a>
+        </th>
+        <th>
+            Keywords in Top 10
+        </th>
+        <th>
+            Positions up
+        </th>
+        <th>
+            Positions down
+        </th>
+        <th>
+            Keyword count
+        </th>
+    </tr>
+    <tr>
+        <td>
+            {{ avg_position.avg_today }} 
+            <span class="font12">(
+                {% if avg_position.diff_from_yesterday>0 %}
+                    <span class="change_plus">
+                        +{{ avg_position.diff_from_yesterday }}
+                    </span>
+                {% elseif avg_position.diff_from_yesterday<0 %}
+                    <span class="change_minus">
+                        {{ avg_position.diff_from_yesterday }}
+                    </span>
+                {% elseif avg_position.diff_from_yesterday==0 %}
+                    {{ avg_position.diff_from_yesterday }}
+                {% endif %})
+            </span>
+        </td>
+        <td>
+            {{ top10.top10_today }} 
+            <span class="font12">(
+                {% if top10.diff_from_yesterday>0 %}
+                    <span class="change_plus">
+                        +{{ top10.diff_from_yesterday }}
+                    </span>
+                {% elseif top10.diff_from_yesterday<0 %}
+                    <span class="change_minus">
+                        {{ top10.diff_from_yesterday }}
+                    </span>
+                {% elseif top10.diff_from_yesterday==0 %}
+                    {{ top10.diff_from_yesterday }}
+                {% endif %})
+            </span>
+        </td>
+        <td>
+            <img src="/images/up.png" /> {{ fluctuations.rises }}
+        </td>
+        <td>
+            <img src="/images/down.png" /> {{ fluctuations.drops }}
+        </td>
+        <td>
+            {{ keyword_cnt }}
+        </td>
+    </tr>
+</table>

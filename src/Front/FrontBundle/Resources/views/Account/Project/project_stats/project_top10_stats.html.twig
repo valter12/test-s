@@ -1,0 +1,134 @@
+ <i class="icon-info-sign"></i> Some Top 10 stats <i style="font-size: 11px;">("Top 10" means first 10 results in a search engine)</i>
+<div class="sep"></div>
+<div class="ups_downs_sector">
+    <div class="widget-box">
+        <div class="widget-title"><h5>Top 10 keywords</h5></div>
+        <div class="widget-content">
+            {% if top10_keyword_list|length %}
+                <table class="up_down_stats">
+                    <tr>
+                        <th>
+                            Keyword
+                        </th>
+                        <th>
+                            Google
+                        </th>
+                        <th>
+                            Bing
+                        </th>
+                        <th>
+                            Yahoo
+                        </th>
+                    </tr>
+                    {% for item in top10_keyword_list %}
+                        <tr>
+                            <td>
+                                <a href="{{ path('account_keyword_stats') }}?keyword_id={{ item.id }}">{{ item.keyword }}</a>
+                            </td>
+                            <td class="no_wrap">
+                                {% if item.google_position != 0 %}
+                                    {{ item.google_position }} 
+                                {% else %}
+                                    -
+                                {% endif %}
+                            </td>
+                            <td class="no_wrap">
+                                {% if item.bing_position != 0 %}
+                                    {{ item.bing_position }} 
+                                {% else %}
+                                    -
+                                {% endif %}
+                            </td>
+                            <td class="no_wrap">
+                                {% if item.yahoo_position != 0 %}
+                                    {{ item.yahoo_position }} 
+                                {% else %}
+                                    -
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            {% else %}
+                No changes here yet..
+            {% endif %}
+        </div>
+    </div>
+</div>
+<div class="ups_downs_sector">
+    <div class="widget-box">
+        <div class="widget-title"><h5>New in Top 10 <a href="javascript:;" data-original-title="New in Top 10" data-content="Shows the list of keywords that are in top 10 today but were NOT in top 10 yesterday." class="popup_hover_simple"><i class="icon-question-sign"></i></a></h5></div>
+        <div class="widget-content">
+            {% if new_top10_keyword_list|length %}
+                <table class="up_down_stats">
+                    <tr>
+                        <th>
+                            Keyword
+                        </th>
+                        <th>
+                             Google
+                        </th>
+                        <th>
+                            Bing
+                        </th>
+                        <th>
+                            Yahoo
+                        </th>
+                    </tr>
+                    {% for item in new_top10_keyword_list %}
+                        <tr>
+                            <td>
+                                <a href="{{ path('account_keyword_stats') }}?keyword_id={{ item.id }}">{{ item.keyword }}</a>
+                            </td>
+                            <td class="no_wrap">
+                                {% if item.google_change!=0 %}<b>{% endif %}
+                                    {% if item.google_position != 0 %}
+                                        {{ item.google_position }} 
+                                    {% else %}
+                                        -
+                                    {% endif %}
+                                {% if item.google_change!=0 %}</b>{% endif %}
+                                {% if item.google_change<0 %}
+                                    (<span class="change_minus">{{ item.google_change }}</span>)
+                                {% elseif item.google_change>0 %}
+                                    (<span class="change_plus">+{{ item.google_change }}</span>)
+                                {% endif %}
+                            </td>
+                            <td class="no_wrap">
+                                {% if item.bing_change!=0 %}<b>{% endif %}
+                                    {% if item.bing_position != 0 %}
+                                        {{ item.bing_position }} 
+                                    {% else %}
+                                        -
+                                    {% endif %}
+                                {% if item.bing_change!=0 %}</b>{% endif %}
+                                {% if item.bing_change<0 %}
+                                    (<span class="change_minus">{{ item.bing_change }}</span>)
+                                {% elseif item.bing_change>0 %}
+                                    (<span class="change_plus">+{{ item.bing_change }}</span>)
+                                {% endif %}
+                            </td>
+                            <td class="no_wrap">
+                                {% if item.yahoo_change!=0 %}<b>{% endif %}
+                                    {% if item.yahoo_position != 0 %}
+                                        {{ item.yahoo_position }} 
+                                    {% else %}
+                                        -
+                                    {% endif %}
+                                {% if item.yahoo_change!=0 %}</b>{% endif %}
+                                {% if item.yahoo_change<0 %}
+                                    (<span class="change_minus">{{ item.yahoo_change }}</span>)
+                                {% elseif item.yahoo_change>0 %}
+                                    (<span class="change_plus">+{{ item.yahoo_change }}</span>)
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            {% else %}
+                No changes here.
+            {% endif %}
+
+        </div>
+    </div>
+</div>
