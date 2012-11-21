@@ -77,6 +77,10 @@ account_project_details:
   pattern: /project-details
   defaults: { _controller: FrontFrontBundle:Project:projectDetails }
 
+account_competitor_details:
+  pattern: /competitor-details
+  defaults: { _controller: FrontFrontBundle:Competitor:competitorDetails }
+
 # ajax
 ajax:
   pattern: /ajax
