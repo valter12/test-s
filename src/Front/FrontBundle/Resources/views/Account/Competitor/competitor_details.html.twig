@@ -1,0 +1,40 @@
+{% extends '::account_base.html.twig' %}
+{% block body %}
+    <h2>Competitor details & stats</h2>
+    Change competitor: 
+    <select name="hash" onchange="window.location='{{ path('account_competitor_details') }}?competitor_id='+this.value">
+        {% for item in competitor_list %}
+            <option value="{{ item.id}}" {% if app.request.get('competitor_id')==item.id %}selected="selected"{% endif %}>{{ item.competitor_name }}</option>
+        {% endfor %}
+    </select>
+    <div class="sep"></div>
+    {% include "FrontFrontBundle:Account:Competitor/competitor_stats/competitor_summary.html.twig" %}
+    <div class="sep"></div>
+    <hr />
+    <i class="icon-info-sign"></i> Some general stats for today <i style="font-size: 11px;">({{ expl_str }})</i>
+    <div class="sep"></div>
+    {% include "FrontFrontBundle:Account:Project/project_stats/project_general_stats.html.twig" %}
+    <div class="sep"></div>
+    <hr />
+    <i class="icon-info-sign"></i> Some more detailed stats <i style="font-size: 11px;">({{ expl_str }})</i>
+    <div class="sep"></div>
+    <div class="sep"></div>
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="#ups_downs" data-toggle="tab">Ups & Downs</a></li>
+        <li><a href="#top10_stats" data-toggle="tab">Top 10 stats</a></li>
+    </ul>
+    <div class="tab-content">
+        <div class="tab-pane active" id="ups_downs">
+            {% include "FrontFrontBundle:Account:Project/project_stats/project_ups_downs.html.twig" %}
+        </div>
+        <div class="tab-pane" id="top10_stats">
+            {% include "FrontFrontBundle:Account:Project/project_stats/project_top10_stats.html.twig" %}
+        </div>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('js/bootstrap-modal.js') }}"></script>
+    <script src="{{ asset('js/bootstrap-dropdown.js') }}"></script>
+    <script src="{{ asset('js/pages/projects.js') }}"></script>
+{% endblock %}
