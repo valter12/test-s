@@ -153,7 +153,66 @@ class AjaxController extends Controller {
                 
                 return $this->render('FrontFrontBundle:Ajax:keyword_note.html.twig', array('keyword_data' => $keyword_data, 'keyword_notes' => $keyword_notes));
                 break;
+            case 'get_competitor_stats':
+                if (!Auth::isAuth()) {
+                    die;
+                }
+                $project_hash = $request->get('hash');
+                if(!$project_hash) {
+                    die('Error 67');
+                }
+                $project_data = $em->getRepository('FrontFrontBundle:Project')->getProjectByHash(Auth::getAuthParam('id'), $project_hash);
+                if(empty($project_data)) {
+                    die('Error 67ad');
+                }
+                
+                $project_parsed = $em->getRepository('FrontFrontBundle:KeywordTrack')->isProjectParsed($project_data['id']);
+        
+                if($project_parsed) {
+                    $today = date('Y-m-d');
+                    $yesterday = date('Y-m-d', strtotime('-1 day', time()));
+                } else {
+                    $today = date('Y-m-d', strtotime('-1 day', time()));
+                    $yesterday = date('Y-m-d', strtotime('-2 day', time()));
+                }
+                
+                $competitor_list = $em->getRepository('FrontFrontBundle:Competitor')->getCompetitorsByProjectId($project_data['id']);
+                $competitor_cnt = count($competitor_list);
+                
+                
+                $result = array();
+                
+                for($i=0;$i<$competitor_cnt;$i++) {
+                    // avg keyword position
+                    $avg_keyword_position_today_competitor = $em->getRepository('FrontFrontBundle:KeywordTrackCompetitor')->getProjectAvgPosition($project_data['id'], $competitor_list[$i]['id'], $today);
+                
+                    $avg_keyword_position_yesterday_competitor = $em->getRepository('FrontFrontBundle:KeywordTrackCompetitor')->getProjectAvgPosition($project_data['id'], $competitor_list[$i]['id'], $yesterday);
+                    // devide by 3 because we have 3 search engines for now
+                    $avg_today_competitor = @array_sum($avg_keyword_position_today_competitor)/3;
+                    $avg_yesterday_competitor = @array_sum($avg_keyword_position_yesterday_competitor)/3;
+
+                    // keywords in Top10
+                    $top10_today_competitor = $em->getRepository('FrontFrontBundle:KeywordTrackCompetitor')->getTop10keywordCntByProjectId($project_data['id'], $competitor_list[$i]['id'], $today);
+                    $top10_yesterday_competitor = $em->getRepository('FrontFrontBundle:KeywordTrackCompetitor')->getTop10keywordCntByProjectId($project_data['id'], $competitor_list[$i]['id'],  $yesterday);
+
+                    // positions up/down
+                    $positions_up_today_competitor = $em->getRepository('FrontFrontBundle:KeywordTrackCompetitor')->getCntPositionsByProjectId($project_data['id'], $competitor_list[$i]['id'], $today, 'up');
+                    $positions_down_today_competitor = $em->getRepository('FrontFrontBundle:KeywordTrackCompetitor')->getCntPositionsByProjectId($project_data['id'], $competitor_list[$i]['id'], $today, 'down');
+                    
+                    $competitor_name = $competitor_list[$i]['competitor_name'];
+                    $competitor_id = $competitor_list[$i]['id'];
+                    $result[$competitor_name] = array(
+                        'competitor_id' => $competitor_id,
+                        'avg_position' => array('avg_today' => number_format($avg_today_competitor, 1), 'diff_from_yesterday' => number_format(($avg_yesterday_competitor - $avg_today_competitor),1)),
+                        'top10' => array('top10_today' => $top10_today_competitor, 'diff_from_yesterday' => ($top10_today_competitor - $top10_yesterday_competitor)),
+                        'fluctuations' => array('rises' => $positions_up_today_competitor, 'drops' => $positions_down_today_competitor),
+                    );
+                    
+                }
+                return $this->render('FrontFrontBundle:Ajax:competitor_stats.html.twig', array('competitor_stats' => $result));
+                break;
             default:
+                
                 break;
         }
         

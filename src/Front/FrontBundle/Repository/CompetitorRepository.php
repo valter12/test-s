@@ -21,6 +21,18 @@ class CompetitorRepository extends BackendCompetitorRepository {
         return $result;
     }
 
+    public function getCompetitorsByProjectId($project_id) {
+        $query = "
+            SELECT c.* 
+            FROM competitor c
+            WHERE c.project_id=:project_id
+            ORDER BY c.added DESC
+        ";
+        $q = $this->getEntityManager()->getConnection()->executeQuery($query, array(':project_id' => $project_id));
+        $result = $q->fetchAll(2);
+        return $result;
+    }
+
     public function getUserOwnsCompetitorByKeyword($keyword_id, $competitor_id) {
         $query = "
             SELECT COUNT(c.id ) AS cnt
@@ -96,6 +108,18 @@ class CompetitorRepository extends BackendCompetitorRepository {
             AND project_id IN(SELECT id FROM project WHERE user_id=:user_id AND project_hash=:project_hash)
         ";
         $q = $this->getEntityManager()->getConnection()->executeQuery($query, array(':user_id' => $user_id, ':competitor_id' => $competitor_id, ':competitor_name' => $competitor_name, 'project_hash' => $project_hash));
+    }
+    
+    public function getCompetitorsByUserId($user_id) {
+        $query = "
+            SELECT c.* 
+            FROM competitor c, project p
+            WHERE c.project_id=p.id
+            AND p.user_id=:user_id
+        ";
+        $q = $this->getEntityManager()->getConnection()->executeQuery($query, array(':user_id' => $user_id));
+        $result = $q->fetchAll(2);
+        return $result;
     }
 
 }

@@ -1,6 +1,7 @@
 Front\FrontBundle\Entity\KeywordTrackCompetitor:
   type: entity
   table: keyword_track_competitor
+  repositoryClass: Front\FrontBundle\Repository\KeywordTrackCompetitorRepository
   fields:
     id:
       id: true

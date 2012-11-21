@@ -1,0 +1,64 @@
+<table class="competitor_overview">
+    <tr>
+        <th>
+            Competitor
+        </th>
+        <th>
+            Average position
+        </th>
+        <th>
+            Keywords in Top 10
+        </th>
+        <th>
+            Positions up
+        </th>
+        <th>
+            Positions down
+        </th>
+    </tr>
+    {% for competitor_domain, item in competitor_stats %}
+        <tr>
+            <td>
+                <a href="{{ path('account_competitor_details') }}?competitor_id={{ item.competitor_id }}"> {{ competitor_domain }}</a>
+            </td>
+            <td>
+                {{ item.avg_position.avg_today }} 
+                <span class="font12">(
+                    {% if item.avg_position.diff_from_yesterday>0 %}
+                        <span class="change_plus">
+                            +{{ item.avg_position.diff_from_yesterday }}
+                        </span>
+                    {% elseif item.avg_position.diff_from_yesterday<0 %}
+                        <span class="change_minus">
+                            {{ item.avg_position.diff_from_yesterday }}
+                        </span>
+                    {% elseif item.avg_position.diff_from_yesterday==0 %}
+                        {{ item.avg_position.diff_from_yesterday }}
+                    {% endif %})
+                </span>
+            </td>
+            <td>
+                {{ item.top10.top10_today }} 
+                <span class="font12">(
+                    {% if item.top10.diff_from_yesterday>0 %}
+                        <span class="change_plus">
+                            +{{ item.top10.diff_from_yesterday }}
+                        </span>
+                    {% elseif item.top10.diff_from_yesterday<0 %}
+                        <span class="change_minus">
+                            {{ item.top10.diff_from_yesterday }}
+                        </span>
+                    {% elseif item.top10.diff_from_yesterday==0 %}
+                        {{ item.top10.diff_from_yesterday }}
+                    {% endif %})
+                </span>
+            </td>
+            <td>
+                <img src="/images/up.png" /> {{ item.fluctuations.rises }}
+            </td>
+            <td>
+                <img src="/images/down.png" /> {{ item.fluctuations.drops }}
+            </td>
+        </tr>
+    {% endfor %}
+</table>
