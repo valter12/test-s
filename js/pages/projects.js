@@ -28,3 +28,20 @@ function addProjectModal() {
         }
     });
 }
+
+function getCompetitorStats(hash) {
+    if(!hash) {
+        return;
+    }
+    $.ajax({
+        url: ajax_url,
+        data: "todo=get_competitor_stats&hash="+hash,
+        type: "get",
+        async: false,
+        beforeSend: function(){
+        },
+        success: function(data_return){
+            jQuery('#competitor_overview').html(data_return);
+        }
+    });
+}
