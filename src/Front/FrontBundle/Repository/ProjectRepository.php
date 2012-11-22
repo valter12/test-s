@@ -24,6 +24,20 @@ class ProjectRepository extends Backend\BackendProjectRepository {
         $result = $q->fetchAll(2);
         return $result;
     }
+    
+    public function getProjectById($project_id) {
+        $query = "
+            SELECT p.*
+            FROM project p
+            WHERE 
+                p.id=:project_id
+            ORDER BY p.added DESC
+        ";
+        $q = $this->getEntityManager()->getConnection()->executeQuery($query, array(':project_id' => $project_id));
+
+        $result = $q->fetch(2);
+        return $result;
+    }
 
     public function deleteProjectByHash($user_id, $project_hash) {
         $query = "
