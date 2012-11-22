@@ -11,18 +11,6 @@ class KeywordTrackCompetitorRepository extends EntityRepository {
      */
     public function getProjectAvgPosition($project_id, $competitor_id, $date=false) {
         $params = array();
-        $str_cond = '';
-        
-        if($date) {
-            $cond[] = "DATE_FORMAT(ktc.track_date, '%Y-%m-%d') = '".$date."'";
-        }
-        
-        if(!empty($cond)) {
-            $str_cond = implode(' AND ', $cond);
-            if(count($cond)==1) {
-                $str_cond = ' AND '.$str_cond;
-            }
-        }
         
         $primary_query = "
             SELECT 
@@ -31,6 +19,7 @@ class KeywordTrackCompetitorRepository extends EntityRepository {
             WHERE ktc1.keyword_id=k1.id
             AND k1.project_id=".$project_id."
             AND ktc1.competitor_id=".$competitor_id."
+            AND DATE_FORMAT(ktc1.track_date, '%Y-%m-%d') <= '".$date."'
             GROUP BY k1.id
         ";
         
@@ -58,6 +47,7 @@ class KeywordTrackCompetitorRepository extends EntityRepository {
             AND DATE_FORMAT(ktc.track_date, '%Y-%m-%d') <= '".$date."'
             AND ktc.competitor_id = ".$competitor_id."
         ";
+        
         $q = $this->getEntityManager()->getConnection()->executeQuery($query, $params);
         
         $result = $q->fetch(2);
