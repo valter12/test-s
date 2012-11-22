@@ -1,4 +1,4 @@
-function showModifyModal(id, hash) {
+function showModifyCompetitorModal(id, hash) {
     if(!id) {
         return;
     }
