@@ -345,11 +345,6 @@ class KeywordTrackRepository extends EntityRepository {
      */
     public function getProjectAvgPosition($project_id, $date=false) {
         $params = array();
-        $str_cond = '';
-        
-        if($date) {
-            $params[':date'] = $date;
-        }
         
         $params[':project_id'] = $project_id;
         
@@ -359,6 +354,7 @@ class KeywordTrackRepository extends EntityRepository {
             FROM keyword_track kt1, keyword k1
             WHERE kt1.keyword_id=k1.id
             AND k1.project_id=".$project_id."
+            AND DATE_FORMAT(kt1.track_date, '%Y-%m-%d') <= '".$date."'
             GROUP BY k1.id
         ";
         
@@ -380,7 +376,7 @@ class KeywordTrackRepository extends EntityRepository {
             kt.id IN (
                 ".implode(',', $ids)."
             )
-            AND DATE_FORMAT(kt.track_date, '%Y-%m-%d') <= :date
+            AND DATE_FORMAT(kt.track_date, '%Y-%m-%d') <= '".$date."'
         ";
         
         
