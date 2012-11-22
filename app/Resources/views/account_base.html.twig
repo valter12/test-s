@@ -32,7 +32,11 @@
                                 <a href="{{ path('account_keywords') }}"><i class="icon-screenshot"></i>Keywords</a>
                             </li>
                             <li>
-                                <a href="{{ path('account_competitors') }}"><i class="icon-random"></i>Competitors</a>
+                                <a href="javascript:;" onclick="jQuery('#competitor_submenu').toggle();"><i class="icon-random"></i>Competitors</a>
+                                <div style="display:none; margin-left:20px;" id="competitor_submenu">
+                                    <a href="{{ path('account_competitors') }}" style="padding:4px; display:block;">Competitor list</a>
+                                    <a href="{{ path('account_competitor_details') }}" style="padding:4px; display:block;">Competitor stats</a>
+                                </div>
                             </li>
                             <li>
                                 <a href="{{ path('account_keyword_charts') }}"><i class="icon-signal"></i>Charts</a>
