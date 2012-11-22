@@ -30,8 +30,8 @@
             {{ format_date(competitor_details.added) }}
         </td>
         <td>
-            <a href="javascript:;" onclick="showModifyModal('{{ competitor_details.project_hash }}')" class="btn btn-info" title="Modify project" style="padding:4px 14px;"><i class="icon-edit icon-white"></i></a>
-            <a href="{{ path('account_delete_project') }}?hash={{ competitor_details.project_hash }}" onclick="return confirm('Please confirm you want to delete this project. (The keywords and all statistics associated with it will be deleted also)')" class="btn btn-danger" title="Delete project" style="padding:4px 14px;"><i class="icon-trash icon-white"></i></a>
+            <a href="javascript:;" onclick="showModifyModal('{{ competitor_details.id }}', '{{ project_details.project_hash }}')" class="btn btn-info" title="Modify competitor" style="padding:4px 14px;"><i class="icon-edit icon-white"></i></a>
+            <a href="{{ path('account_delete_project_competitor') }}?id={{ competitor_details.id }}" onclick="return confirm('Please confirm you want to delete this Competitor. (All statistics associated with it will be deleted also)')" class="btn btn-danger" title="Delete competitor" style="padding:4px 14px;"><i class="icon-trash icon-white"></i></a>
         </td>
     </tr>
 </table>

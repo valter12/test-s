@@ -29,7 +29,7 @@
                 <td>{{ item.competitor_domain }}</td>
                 <td>{{ format_date(item.added) }}</td>
                 <td>
-                    <a href="javascript:;" onclick="showModifyModal('{{ item.id }}', '{{ project_data.project_hash }}')">Modify</a>
+                    <a href="javascript:;" onclick="showModifyCompetitorModal('{{ item.id }}', '{{ project_data.project_hash }}')">Modify</a>
                     <br />
                     <a href="{{ path('account_delete_project_competitor') }}?id={{ item.id }}" onclick="return confirm('Please confirm you want to delete this competitor. (All statistics associated with it will be deleted also)')">Delete</a>
                 </td>
