@@ -360,6 +360,9 @@ class KeywordTrackRepository extends EntityRepository {
         
         $q_primary = $this->getEntityManager()->getConnection()->executeQuery($primary_query, array());
         $primary_result = $q_primary->fetchAll(2);
+        if(empty($primary_result)) {
+            return;
+        }
         $cnt = count($primary_result);
         $ids = array();
         for($i=0;$i<$cnt;$i++) {
