@@ -349,15 +349,8 @@ class KeywordTrackRepository extends EntityRepository {
         
         if($date) {
             $params[':date'] = $date;
-            $cond[] = "DATE_FORMAT(kt.track_date, '%Y-%m-%d') = :date";
         }
         
-        if(!empty($cond)) {
-            $str_cond = implode(' AND ', $cond);
-            if(count($cond)==1) {
-                $str_cond = ' AND '.$str_cond;
-            }
-        }
         $params[':project_id'] = $project_id;
         
         $primary_query = "
