@@ -142,6 +142,7 @@ class CompetitorController extends Controller {
 
         // keyword count
         $keyword_cnt = $em->getRepository('FrontFrontBundle:Keyword')->getProjectKeywordCount($competitor_details['project_id']);
+        $project_details = $em->getRepository('FrontFrontBundle:Project')->getProjectById($competitor_details['project_id']);
 
         // avg keyword position
         $avg_keyword_position_today = $em->getRepository('FrontFrontBundle:KeywordTrackCompetitor')->getProjectAvgPosition($competitor_details['project_id'], $competitor_details['id'], $today);
@@ -170,6 +171,7 @@ class CompetitorController extends Controller {
 
         $params = array();
         $params['competitor_details'] = $competitor_details;
+        $params['project_details'] = $project_details;
         $params['keyword_cnt'] = $keyword_cnt;
         $params['avg_position'] = array('avg_today' => number_format($avg_today, 1), 'diff_from_yesterday' => number_format(($avg_yesterday - $avg_today), 1));
         $params['top10'] = array('top10_today' => $top10_today, 'diff_from_yesterday' => ($top10_today - $top10_yesterday));
