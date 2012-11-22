@@ -146,8 +146,8 @@ class ProjectController extends Controller {
         $avg_keyword_position_today = $em->getRepository('FrontFrontBundle:KeywordTrack')->getProjectAvgPosition($project_details['id'], $today);
         $avg_keyword_position_yesterday = $em->getRepository('FrontFrontBundle:KeywordTrack')->getProjectAvgPosition($project_details['id'], $yesterday);
         // devide by 3 because we have 3 search engines for now
-        $avg_today = array_sum($avg_keyword_position_today)/3;
-        $avg_yesterday = array_sum($avg_keyword_position_yesterday)/3;
+        $avg_today = @array_sum($avg_keyword_position_today)/3;
+        $avg_yesterday = @array_sum($avg_keyword_position_yesterday)/3;
         
         // keywords in Top10
         $top10_today = $em->getRepository('FrontFrontBundle:KeywordTrack')->getTop10keywordCntByProjectId($project_details['id'], $today);
