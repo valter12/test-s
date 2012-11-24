@@ -133,7 +133,13 @@ class CompetitorController extends Controller {
 
         // getting project list for select
         $competitor_list = $em->getRepository('FrontFrontBundle:Competitor')->getCompetitorsByUserId(Auth::getAuthParam('id'));
-
+        $competitor_list_grouped = array();
+        $cnt =  count($competitor_list);
+        for ($i = 0; $i < $cnt; $i++) {
+            $project_name = $competitor_list[$i]['project_name'];
+            $competitor_list_grouped[$project_name][] = $competitor_list[$i];
+        }
+        
         $competitor_id = $request->get('competitor_id', $competitor_list[0]['id']);
         if (!$competitor_id) {
             $this->get('session')->setFlash('error', 'The request is incorrect.');
@@ -202,7 +208,7 @@ class CompetitorController extends Controller {
         $params['keyword_ups_downs'] = array('up_keywords' => $up_keywords, 'down_keywords' => $down_keywords);
         $params['top10_keyword_list'] = $top10_keyword_list;
         $params['new_top10_keyword_list'] = $new_top10_keyword_list;
-        $params['competitor_list'] = $competitor_list;
+        $params['competitor_list'] = $competitor_list_grouped;
         $params['expl_str'] = $expl_str;
         $params['keyword_overall_for_graph'] = $keyword_overall_for_graph;
         return $this->render('FrontFrontBundle:Account:Competitor/competitor_details.html.twig', $params);
