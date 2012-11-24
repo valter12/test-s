@@ -6,6 +6,15 @@
     <div class="sep"></div>
     <a href="javascript:;" onclick="addProjectModal();" class="btn btn-success">Add project</a>
     <div class="sep"></div>
+    <div class="">
+        <label for="category_filter" class="no-block">Filter by category:</label> 
+        <select name="category_filter" id="category_filter" onchange="window.location='{{ path('account_projects') }}?category_id='+this.value">
+            <option value="">[All categories]</option>
+            {% for item in category_list %}
+                <option value="{{ item.id }}" {% if app.request.get('category_id')==item.id %}selected="selected"{% endif %}>{{ item.category_name }}</option>
+            {% endfor %}
+        </select>
+    </div>
     <table class="table">
         <tr>
             <th>#</th>
