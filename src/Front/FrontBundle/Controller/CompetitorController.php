@@ -44,9 +44,9 @@ class CompetitorController extends Controller {
             $competitor_stats = array_reverse($competitor_stats);
             $aux_stats = CommonLib::formatDataForGoogleChart($competitor_stats);
             
-            $competitor_stats_img[$project_competitors[$i]['id']]['google'] = 'http://'.$counter.'.chart.apis.google.com/chart?chxs=0,676767,7,0,lt,FCF7F7&chxt=y&chs=60x25&cht=lc&chco=3072F3&chd=t:'.implode(',', $aux_stats['google']).'&chg=19,4,0,1&chls=1&chm=B,E6F2FA,0,0,0&chxl=0:|100|1';
-            $competitor_stats_img[$project_competitors[$i]['id']]['bing'] = 'http://'.$counter.'.chart.apis.google.com/chart?chxs=0,676767,7,0,lt,FCF7F7&chxt=y&chs=60x25&cht=lc&chco=e95e36&chd=t:'.implode(',', $aux_stats['bing']).'&chg=19,4,0,1&chls=1&chm=B,E9D5AD,0,0,0&chxl=0:|100|1';
-            $competitor_stats_img[$project_competitors[$i]['id']]['yahoo'] = 'http://'.$counter.'.chart.apis.google.com/chart?chxs=0,676767,7,0,lt,FCF7F7&chxt=y&chs=60x25&cht=lc&chco=7B0099&chd=t:'.implode(',', $aux_stats['yahoo']).'&chg=19,4,0,1&chls=1&chm=B,F4C7FF,0,0,0&chxl=0:|100|1';
+            @$competitor_stats_img[$project_competitors[$i]['id']]['google'] = 'http://'.$counter.'.chart.apis.google.com/chart?chxs=0,676767,7,0,lt,FCF7F7&chxt=y&chs=60x25&cht=lc&chco=3072F3&chd=t:'.implode(',', $aux_stats['google']).'&chg=19,4,0,1&chls=1&chm=B,E6F2FA,0,0,0&chxl=0:|100|1';
+            @$competitor_stats_img[$project_competitors[$i]['id']]['bing'] = 'http://'.$counter.'.chart.apis.google.com/chart?chxs=0,676767,7,0,lt,FCF7F7&chxt=y&chs=60x25&cht=lc&chco=e95e36&chd=t:'.implode(',', $aux_stats['bing']).'&chg=19,4,0,1&chls=1&chm=B,E9D5AD,0,0,0&chxl=0:|100|1';
+            @$competitor_stats_img[$project_competitors[$i]['id']]['yahoo'] = 'http://'.$counter.'.chart.apis.google.com/chart?chxs=0,676767,7,0,lt,FCF7F7&chxt=y&chs=60x25&cht=lc&chco=7B0099&chd=t:'.implode(',', $aux_stats['yahoo']).'&chg=19,4,0,1&chls=1&chm=B,F4C7FF,0,0,0&chxl=0:|100|1';
             $counter++;
             if($counter > 9) {
                 $counter = 0;
