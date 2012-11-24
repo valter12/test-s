@@ -264,6 +264,8 @@ class UserController extends Controller {
         Auth::setAuthParam('pass', $login_pass);
         Auth::setAuthParam('date_format', $data['user_date_format']);
 
+        $em->getRepository('FrontFrontBundle:User')->updateLastLogin($data['id']);
+        
         if ($data['has_completed_profile'] == 0) { // logins first time and did not complete profile
             return $this->redirect($this->generateUrl('register_step_3'));
         }
