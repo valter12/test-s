@@ -107,8 +107,7 @@ class ChartController extends Controller {
         
         unset($_GET['project'], $_GET['show_chart']);
         $stats_link = http_build_query($_GET); // link for stats page
-//        echo $stats_link;die;
-
+//\Backend\BackendBundle\Additional\Debug::d1($axes);
         $project_list = $em->getRepository('FrontFrontBundle:Project')->getProjects(Auth::getAuthParam('id'));
 
         return $this->render('FrontFrontBundle:Account:Chart/chart.html.twig', array('project_list' => $project_list, 'axes' => $axes, 'stats_link' => $stats_link));
