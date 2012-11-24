@@ -4,6 +4,7 @@ namespace Front\FrontBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Front\FrontBundle\Security\Auth as Auth;
+use Front\FrontBundle\Libs\CommonLib;
 
 class ProjectController extends Controller {
 
@@ -168,6 +169,11 @@ class ProjectController extends Controller {
         
         // new in top 10 keyword list
         $new_top10_keyword_list = $em->getRepository('FrontFrontBundle:KeywordTrack')->getNewTop10KeywordsByProjectId($project_details['id'], $today, '1 DAY');
+        
+        // google, bing, yahoo overall stats for keywords
+        $keyword_overall_for_graph_raw_data = $em->getRepository('FrontFrontBundle:KeywordTrack')->getOverallKeywordProgressByProjectId($project_details['id'], '30');
+        $keyword_overall_for_graph = CommonLib::getOverallKeywordsPosition($keyword_overall_for_graph_raw_data);
+        
 
         $params = array();
         $params['project_details'] = $project_details;
@@ -183,7 +189,9 @@ class ProjectController extends Controller {
 //        $params['out_of_top10_keyword_list'] = array('out_of_top10_keyword_list' => $out_of_top10_keyword_list, 'today_ranks_or_ex_top10' => $ex_top10_formatted);
         $params['project_list'] = $project_list;
         $params['expl_str'] = $expl_str;
+        $params['keyword_overall_for_graph'] = $keyword_overall_for_graph;
         return $this->render('FrontFrontBundle:Account:Project/project_details.html.twig', $params);
     }
 
+    
 }
