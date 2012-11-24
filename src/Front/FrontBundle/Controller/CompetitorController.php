@@ -211,6 +211,7 @@ class CompetitorController extends Controller {
         $params['competitor_list'] = $competitor_list_grouped;
         $params['expl_str'] = $expl_str;
         $params['keyword_overall_for_graph'] = $keyword_overall_for_graph;
+        $params['competitor_aux_url'] = '&competitor_ids[]='.$competitor_id;
         return $this->render('FrontFrontBundle:Account:Competitor/competitor_details.html.twig', $params);
     }
 
