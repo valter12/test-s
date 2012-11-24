@@ -23,7 +23,7 @@
                     {% for item in keyword_ups_downs.up_keywords %}
                         <tr>
                             <td>
-                                <a href="{{ path('account_keyword_stats') }}?keyword_id={{ item.id }}">{{ item.keyword }}</a>
+                                <a href="{{ path('account_keyword_stats') }}?keyword_id={{ item.id }}{{ competitor_aux_url }}">{{ item.keyword }}</a>
                             </td>
                             <td>
                                 {% if item.google_change>0 %}<b>{% endif %}
@@ -87,7 +87,7 @@
                     {% for item in keyword_ups_downs.down_keywords %}
                         <tr>
                             <td>
-                                <a href="{{ path('account_keyword_stats') }}?keyword_id={{ item.id }}">{{ item.keyword }}</a>
+                                <a href="{{ path('account_keyword_stats') }}?keyword_id={{ item.id }}{{ competitor_aux_url }}">{{ item.keyword }}</a>
                             </td>
                             <td>
                                 {% if item.google_change<0 %}<b>{% endif %}
