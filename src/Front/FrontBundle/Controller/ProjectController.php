@@ -18,12 +18,28 @@ class ProjectController extends Controller {
             return $this->redirect($this->generateUrl('login_register'));
         }
         
+        $project_stats_img = array();
         $request = $this->getRequest();
         $em = $this->getDoctrine()->getEntityManager();
         $project_list = $em->getRepository('FrontFrontBundle:Project')->getProjects(Auth::getAuthParam('id'));
         $max_domains = Auth::getMaxDomains();
+        $cnt_projects = count($project_list);
+        $counter = 0;
+        for ($i = 0; $i < $cnt_projects; $i++) {
+            $project_stats = $keyword_overall_for_graph_raw_data = $em->getRepository('FrontFrontBundle:KeywordTrack')->getOverallKeywordProgressByProjectId($project_list[$i]['id'], '5');
+            $project_stats = array_reverse($project_stats);
+            $aux_stats = CommonLib::formatDataForGoogleChart($project_stats);
+            
+            $project_stats_img[$project_list[$i]['id']]['google'] = 'http://'.$counter.'.chart.apis.google.com/chart?chxs=0,676767,7,0,lt,FCF7F7&chxt=y&chs=60x25&cht=lc&chco=3072F3&chd=t:'.implode(',', $aux_stats['google']).'&chg=19,4,0,1&chls=1&chm=B,E6F2FA,0,0,0&chxl=0:|100|1';
+            $project_stats_img[$project_list[$i]['id']]['bing'] = 'http://'.$counter.'.chart.apis.google.com/chart?chxs=0,676767,7,0,lt,FCF7F7&chxt=y&chs=60x25&cht=lc&chco=e95e36&chd=t:'.implode(',', $aux_stats['bing']).'&chg=19,4,0,1&chls=1&chm=B,E9D5AD,0,0,0&chxl=0:|100|1';
+            $project_stats_img[$project_list[$i]['id']]['yahoo'] = 'http://'.$counter.'.chart.apis.google.com/chart?chxs=0,676767,7,0,lt,FCF7F7&chxt=y&chs=60x25&cht=lc&chco=7B0099&chd=t:'.implode(',', $aux_stats['yahoo']).'&chg=19,4,0,1&chls=1&chm=B,F4C7FF,0,0,0&chxl=0:|100|1';
+            $counter++;
+            if($counter > 9) {
+                $counter = 0;
+            }
+        }
         
-        return $this->render('FrontFrontBundle:Account:Project/project_list.html.twig', array('project_list' => $project_list, 'max_packages' => $max_domains));
+        return $this->render('FrontFrontBundle:Account:Project/project_list.html.twig', array('project_list' => $project_list, 'max_packages' => $max_domains, 'project_stats' => $project_stats_img));
     }
 
     /**
