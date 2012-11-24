@@ -52,9 +52,9 @@
                 <td>{{ format_date(item.last_track) }}</td>
                 <td>
                     <div class="se_div">
-                        <div class="g">{{ item.google_position }}</div>
-                        <div class="b">{{ item.bing_position }}</div>
-                        <div class="y">{{ item.yahoo_position }}</div>
+                        <div class="g">{% if item.google_position %}{{ item.google_position }}{% else %}-{% endif %}</div>
+                        <div class="b">{% if item.bing_position %}{{ item.bing_position }}{% else %}-{% endif %}</div>
+                        <div class="y">{% if item.yahoo_position %}{{ item.yahoo_position }}{% else %}-{% endif %}</div>
                     </div>
                 </td>
                 <td>{{ format_date(item.added) }}</td>
@@ -76,6 +76,7 @@
             </tr>
         {% endfor %}
     </table>
+    "<b>-</b>" means that the keyword was not found in first 10 pages of the coresponding search engine
 {% endblock %}
 {% block javascripts %}
     {{ parent() }}
