@@ -16,6 +16,9 @@
     {% include "FrontFrontBundle:Account:Project/project_stats/project_general_stats.html.twig" %}
     <div class="sep"></div>
     <hr />
+    {% include "FrontFrontBundle:Account:Project/project_stats/overall_keyword_position.html.twig" %}
+    <div class="sep"></div>
+    <hr />
     <i class="icon-info-sign"></i> Some more detailed stats <i style="font-size: 11px;">({{ expl_str }})</i>
     <div class="sep"></div>
     <div class="sep"></div>
@@ -36,11 +39,16 @@
         </div>
     </div>
 {% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="../css/jquery-ui-1.8.22.custom.css" rel="stylesheet" type="text/css" />
+{% endblock %}
 {% block javascripts %}
     {{ parent() }}
     <script src="{{ asset('js/bootstrap-modal.js') }}"></script>
     <script src="{{ asset('js/bootstrap-dropdown.js') }}"></script>
     <script src="{{ asset('js/pages/projects.js') }}"></script>
+    <script src="{{ asset('js_hh634h56/chart.js') }}"></script>
 {% endblock %}
 {% block inline_javascripts %}
     <script>
