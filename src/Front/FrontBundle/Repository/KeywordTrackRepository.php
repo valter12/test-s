@@ -79,21 +79,20 @@ class KeywordTrackRepository extends EntityRepository {
                     FROM
                         keyword_track
                     WHERE
-                        keyword_id = :keyword_id " . $sql_date_str . ")
+                        keyword_id = ".$keyword_id." " . $sql_date_str . ")
                     UNION ALL 
                     (SELECT 
                         DATE_FORMAT(track_date, '%Y-%m-%d') AS track_date
                     FROM
                         keyword_track_competitor
                     WHERE
-                        keyword_id = :keyword_id " . $sql_date_str . " AND competitor_id IN (" . implode(', ', $competitor_ids) . ")
+                        keyword_id = ".$keyword_id." " . $sql_date_str . " AND competitor_id IN (" . implode(', ', $competitor_ids) . ")
                     )
                 ) AS union_track
                 GROUP BY track_date
             ) AS total
         ";
 
-        $params[':keyword_id'] = $keyword_id;
         $q = $this->getEntityManager()->getConnection()->executeQuery($query, $params);
         $total_result = $q->fetch(2);
         $total = $total_result['total'];
@@ -109,14 +108,15 @@ class KeywordTrackRepository extends EntityRepository {
         // selecting dates with pagination from keyword_track and keyword_track_competitor
         $query = "
             SELECT track_date FROM(
-                (SELECT DATE_FORMAT(track_date, '%Y-%m-%d') AS track_date FROM keyword_track WHERE keyword_id=:keyword_id " . $sql_date_str . ")
+                (SELECT DATE_FORMAT(track_date, '%Y-%m-%d') AS track_date FROM keyword_track WHERE keyword_id=".$keyword_id." " . $sql_date_str . ")
                 UNION ALL
-                (SELECT DATE_FORMAT(track_date, '%Y-%m-%d') AS track_date FROM keyword_track_competitor WHERE keyword_id=:keyword_id " . $sql_date_str . " AND competitor_id IN(" . implode(', ', $competitor_ids) . "))
+                (SELECT DATE_FORMAT(track_date, '%Y-%m-%d') AS track_date FROM keyword_track_competitor WHERE keyword_id=".$keyword_id." " . $sql_date_str . " AND competitor_id IN(" . implode(', ', $competitor_ids) . "))
             ) AS union_track
+            GROUP BY track_date
             ORDER BY DATE_FORMAT(track_date, '%Y-%m-%d') ".$order."
             ".$limit_str."
         ";
-        $params[':keyword_id'] = $keyword_id;
+        
         $q = $this->getEntityManager()->getConnection()->executeQuery($query, $params);
         $result_dates = $q->fetchAll(2);
 
@@ -201,12 +201,11 @@ class KeywordTrackRepository extends EntityRepository {
                         IF(DATE_FORMAT(ktc.track_date, '%Y-%m-%d')='" . $dates[$i] . "', ktc.yahoo_description_change, 0) AS yahoo_description_change 
                     FROM
                         competitor c
-                    LEFT JOIN keyword_track_competitor ktc ON ktc.competitor_id = c.id AND ktc.keyword_id = " . $keyword_id . " AND ktc.competitor_id = " . $competitor_ids[$j] . " AND (DATE_FORMAT(ktc.track_date, '%Y-%m-%d') = '" . $dates[$i] . "' OR DATE_FORMAT(ktc.track_date, '%Y-%m-%d')=(SELECT MAX(DATE_FORMAT(track_date, '%Y-%m-%d')) FROM keyword_track_competitor WHERE DATE_FORMAT(track_date, '%Y-%m-%d')<'" . $dates[$i] . "' AND keyword_id=ktc.keyword_id AND competitor_id=" . $competitor_ids[$j] . "))
+                    LEFT JOIN keyword_track_competitor ktc ON ktc.competitor_id = c.id AND ktc.keyword_id = " . $keyword_id . " AND ktc.competitor_id = " . $competitor_ids[$j] . " AND (DATE_FORMAT(ktc.track_date, '%Y-%m-%d') = '" . $dates[$i] . "' OR DATE_FORMAT(ktc.track_date, '%Y-%m-%d')=(SELECT MAX(DATE_FORMAT(track_date, '%Y-%m-%d')) FROM keyword_track_competitor WHERE DATE_FORMAT(track_date, '%Y-%m-%d')<'" . $dates[$i] . "' AND keyword_id=".$keyword_id." AND competitor_id=" . $competitor_ids[$j] . "))
                     WHERE c.id = " . $competitor_ids[$j] . "
                     ORDER BY DATE_FORMAT(ktc.track_date, '%Y-%m-%d') DESC
                     LIMIT 1)
                 ";
-//                die($q);
             }
         }
 
@@ -225,6 +224,7 @@ class KeywordTrackRepository extends EntityRepository {
                 $value = $value[0];
             }
         }
+//        \Backend\BackendBundle\Additional\Debug::d1($result_final);
 
         return array('result_final' => $result_final, 'total' => $total);
     }
