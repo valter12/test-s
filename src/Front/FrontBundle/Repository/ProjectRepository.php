@@ -10,16 +10,26 @@ class ProjectRepository extends Backend\BackendProjectRepository {
      * returns the list of projects of a user
      * @return type
      */
-    public function getProjects($user_id) {
+    public function getProjects($user_id, $category_id=false) {
+        $sql_str = '';
+        $params = array();
+        
+        if($category_id) {
+            $params[':category_id'] = $category_id;
+            $sql_str = ' AND pc.id=:category_id';
+        }
+        
         $query = "
             SELECT p.*, pc.category_name, (SELECT COUNT(k.id) FROM keyword k WHERE k.project_id=p.id) AS cnt_keywords
             FROM project p, project_category pc, user u
             WHERE p.category_id = pc.id
             AND pc.user_id=u.id
             AND u.id=:user_id 
+            ".$sql_str."
             ORDER BY p.added DESC
         ";
-        $q = $this->getEntityManager()->getConnection()->executeQuery($query, array(':user_id' => $user_id));
+        $params[':user_id'] = $user_id;
+        $q = $this->getEntityManager()->getConnection()->executeQuery($query, $params);
 
         $result = $q->fetchAll(2);
         return $result;
