@@ -20,8 +20,10 @@ class ProjectController extends Controller {
         
         $project_stats_img = array();
         $request = $this->getRequest();
+        $category_id = $request->get('category_id');
         $em = $this->getDoctrine()->getEntityManager();
-        $project_list = $em->getRepository('FrontFrontBundle:Project')->getProjects(Auth::getAuthParam('id'));
+        $category_list = $em->getRepository('FrontFrontBundle:ProjectCategory')->getProjectCategoriesByUserId(Auth::getAuthParam('id'));
+        $project_list = $em->getRepository('FrontFrontBundle:Project')->getProjects(Auth::getAuthParam('id'), $category_id);
         $max_domains = Auth::getMaxDomains();
         $cnt_projects = count($project_list);
         $counter = 0;
@@ -39,7 +41,7 @@ class ProjectController extends Controller {
             }
         }
         
-        return $this->render('FrontFrontBundle:Account:Project/project_list.html.twig', array('project_list' => $project_list, 'max_packages' => $max_domains, 'project_stats' => $project_stats_img));
+        return $this->render('FrontFrontBundle:Account:Project/project_list.html.twig', array('project_list' => $project_list, 'max_packages' => $max_domains, 'project_stats' => $project_stats_img, 'category_list' => $category_list));
     }
 
     /**
