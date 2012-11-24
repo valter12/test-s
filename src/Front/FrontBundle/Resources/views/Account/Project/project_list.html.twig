@@ -15,6 +15,9 @@
             <th>Hash <a href="javascript:;" data-original-title="Project HASH" data-content="You will need this hash when using <a href=''>Google bot tracker</a>." class="popup_hover"><i class="icon-question-sign"></i></a></th>
             <th>Creation date</th>
             <th>Keyword count</th>
+            <th>Google</th>
+            <th>Bing</th>
+            <th>Yahoo</th>
             <th style="padding-left:20px;text-align:left !important">Options</th>
         </tr>
         {% for key, item in project_list %}
@@ -26,6 +29,9 @@
                 <td>{{ item.project_hash }}</td>
                 <td>{{ format_date(item.added) }}</td>
                 <td>{{ item.cnt_keywords }}</td>
+                <td><img src="{{ project_stats[item.id].google }}" /></td>
+                <td><img src="{{ project_stats[item.id].bing }}" /></td>
+                <td><img src="{{ project_stats[item.id].yahoo }}" /></td>
                 <td width="150" style="padding:0">
                     <ul class="nav nav-pills" style="margin:0">
                         <li class="dropdown">
