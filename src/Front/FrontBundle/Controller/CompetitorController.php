@@ -4,6 +4,7 @@ namespace Front\FrontBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Front\FrontBundle\Security\Auth as Auth;
+use Front\FrontBundle\Libs\CommonLib;
 
 class CompetitorController extends Controller {
 
@@ -168,6 +169,10 @@ class CompetitorController extends Controller {
 
         // new in top 10 keyword list
         $new_top10_keyword_list = $em->getRepository('FrontFrontBundle:KeywordTrackCompetitor')->getNewTop10KeywordsByProjectId($competitor_details['project_id'], $competitor_details['id'], $today, '1 DAY');
+        
+        // google, bing, yahoo overall stats for keywords
+        $keyword_overall_for_graph_raw_data = $em->getRepository('FrontFrontBundle:KeywordTrackCompetitor')->getOverallKeywordProgressByProjectId($project_details['id'], $competitor_details['id'], '30');
+        $keyword_overall_for_graph = CommonLib::getOverallKeywordsPosition($keyword_overall_for_graph_raw_data);
 
         $params = array();
         $params['competitor_details'] = $competitor_details;
@@ -181,6 +186,7 @@ class CompetitorController extends Controller {
         $params['new_top10_keyword_list'] = $new_top10_keyword_list;
         $params['competitor_list'] = $competitor_list;
         $params['expl_str'] = $expl_str;
+        $params['keyword_overall_for_graph'] = $keyword_overall_for_graph;
         return $this->render('FrontFrontBundle:Account:Competitor/competitor_details.html.twig', $params);
     }
 
