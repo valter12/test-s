@@ -39,7 +39,7 @@
             <a href="http://{{ project_details.project_domain }}" target="_blank">{{ project_details.project_domain }}</a>
         </td>
         <td>
-            <a href="" title="See all projects of this category">{{ project_details.category_name }}</a>
+            <a href="{{ path('account_projects') }}?category_id={{ project_details.category_id }}" title="See all projects of this category">{{ project_details.category_name }}</a>
         </td>
         <td>
             {{ project_details.project_hash }}
