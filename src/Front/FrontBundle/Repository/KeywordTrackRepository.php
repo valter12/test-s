@@ -661,4 +661,24 @@ class KeywordTrackRepository extends EntityRepository {
 
         return $result['keywords_tracked'] == $result['total_keywords'];
     }
+    
+    public function getOverallKeywordProgressByProjectId($project_id, $nr_days) {
+        $query = "
+            SELECT 
+                ((SUM(CASE WHEN kt.google_position > 0 THEN kt.google_position ELSE 100 END)+(((SELECT COUNT(id) FROM keyword WHERE project_id=".$project_id.")-COUNT(kt.id))*100)))/((SELECT COUNT(id) FROM keyword WHERE project_id=".$project_id.")) as avg_google_position,
+                ((SUM(CASE WHEN kt.bing_position > 0 THEN kt.bing_position ELSE 100 END)+(((SELECT COUNT(id) FROM keyword WHERE project_id=".$project_id.")-COUNT(kt.id))*100)))/((SELECT COUNT(id) FROM keyword WHERE project_id=".$project_id.")) as avg_bing_position,
+                ((SUM(CASE WHEN kt.yahoo_position > 0 THEN kt.yahoo_position ELSE 100 END)+(((SELECT COUNT(id) FROM keyword WHERE project_id=".$project_id.")-COUNT(kt.id))*100)))/((SELECT COUNT(id) FROM keyword WHERE project_id=".$project_id.")) as avg_yahoo_position,
+                DATE_FORMAT(kt.track_date, '%Y-%m-%d') as track_date
+            FROM keyword_track kt, keyword k
+            WHERE kt.keyword_id=k.id
+            AND k.project_id=".$project_id."
+            AND kt.track_date>=DATE_SUB(NOW(), INTERVAL ".$nr_days." DAY)
+            GROUP BY DATE_FORMAT(kt.track_date, '%Y-%m-%d')
+            ORDER BY DATE_FORMAT(kt.track_date, '%Y-%m-%d') DESC
+        ";
+        $q = $this->getEntityManager()->getConnection()->executeQuery($query, array());
+        
+        $result = $q->fetchAll(2);
+        return $result;
+    }
 }
