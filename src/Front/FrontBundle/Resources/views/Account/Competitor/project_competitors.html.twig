@@ -28,7 +28,7 @@
         {% for key, item in project_competitors %}
             <tr>
                 <td>{{ key+1 }}</td>
-                <td>{{ item.competitor_name }}</td>
+                <td><a href="{{ path('account_competitor_details') }}?competitor_id={{ item.id }}">{{ item.competitor_name }}</a></td>
                 <td>{{ item.competitor_domain }}</td>
                 <td><img src="{{ competitor_stats[item.id].google }}" /></td>
                 <td><img src="{{ competitor_stats[item.id].bing }}" /></td>
