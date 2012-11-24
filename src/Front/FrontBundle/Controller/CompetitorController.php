@@ -33,11 +33,29 @@ class CompetitorController extends Controller {
             return $this->redirect($this->generateUrl('account_projects'));
         }
 
+        $competitor_stats_img = array();
         $project_competitors = $em->getRepository('FrontFrontBundle:Competitor')->getCompetitorByProjectHash(Auth::getAuthParam('id'), $project_hash);
+//        \Backend\BackendBundle\Additional\Debug::d1($project_competitors);
+        $cnt_competitors = count($project_competitors);
+//        echo $cnt_competitors;die;
+        $counter = 0;
+        for ($i = 0; $i < $cnt_competitors; $i++) {
+            $competitor_stats = $keyword_overall_for_graph_raw_data = $em->getRepository('FrontFrontBundle:KeywordTrackCompetitor')->getOverallKeywordProgressByProjectId($project_competitors[$i]['project_id'], $project_competitors[$i]['id'], '5');
+            $competitor_stats = array_reverse($competitor_stats);
+            $aux_stats = CommonLib::formatDataForGoogleChart($competitor_stats);
+            
+            $competitor_stats_img[$project_competitors[$i]['id']]['google'] = 'http://'.$counter.'.chart.apis.google.com/chart?chxs=0,676767,7,0,lt,FCF7F7&chxt=y&chs=60x25&cht=lc&chco=3072F3&chd=t:'.implode(',', $aux_stats['google']).'&chg=19,4,0,1&chls=1&chm=B,E6F2FA,0,0,0&chxl=0:|100|1';
+            $competitor_stats_img[$project_competitors[$i]['id']]['bing'] = 'http://'.$counter.'.chart.apis.google.com/chart?chxs=0,676767,7,0,lt,FCF7F7&chxt=y&chs=60x25&cht=lc&chco=e95e36&chd=t:'.implode(',', $aux_stats['bing']).'&chg=19,4,0,1&chls=1&chm=B,E9D5AD,0,0,0&chxl=0:|100|1';
+            $competitor_stats_img[$project_competitors[$i]['id']]['yahoo'] = 'http://'.$counter.'.chart.apis.google.com/chart?chxs=0,676767,7,0,lt,FCF7F7&chxt=y&chs=60x25&cht=lc&chco=7B0099&chd=t:'.implode(',', $aux_stats['yahoo']).'&chg=19,4,0,1&chls=1&chm=B,F4C7FF,0,0,0&chxl=0:|100|1';
+            $counter++;
+            if($counter > 9) {
+                $counter = 0;
+            }
+        }
 
         $max_competitors = Auth::getMaxCompetitors();
 
-        return $this->render('FrontFrontBundle:Account:Competitor/project_competitors.html.twig', array('project_data' => $project_data, 'project_competitors' => $project_competitors, 'max_competitors' => $max_competitors, 'project_list' => $project_list));
+        return $this->render('FrontFrontBundle:Account:Competitor/project_competitors.html.twig', array('project_data' => $project_data, 'project_competitors' => $project_competitors, 'max_competitors' => $max_competitors, 'project_list' => $project_list, 'competitor_stats' => $competitor_stats_img));
     }
 
     /**
