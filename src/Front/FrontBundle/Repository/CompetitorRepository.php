@@ -112,7 +112,7 @@ class CompetitorRepository extends BackendCompetitorRepository {
     
     public function getCompetitorsByUserId($user_id) {
         $query = "
-            SELECT c.* 
+            SELECT c.*, p.project_name
             FROM competitor c, project p
             WHERE c.project_id=p.id
             AND p.user_id=:user_id
