@@ -19,6 +19,9 @@
             <th>#</th>
             <th>Competitor name</th>
             <th>Competitor domain</th>
+            <th>Google</th>
+            <th>Bing</th>
+            <th>Yahoo</th>
             <th>Creation date</th>
             <th>Operations</th>
         </tr>
@@ -27,6 +30,9 @@
                 <td>{{ key+1 }}</td>
                 <td>{{ item.competitor_name }}</td>
                 <td>{{ item.competitor_domain }}</td>
+                <td><img src="{{ competitor_stats[item.id].google }}" /></td>
+                <td><img src="{{ competitor_stats[item.id].bing }}" /></td>
+                <td><img src="{{ competitor_stats[item.id].yahoo }}" /></td>
                 <td>{{ format_date(item.added) }}</td>
                 <td>
                     <a href="javascript:;" onclick="showModifyCompetitorModal('{{ item.id }}', '{{ project_data.project_hash }}')">Modify</a>
