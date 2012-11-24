@@ -14,11 +14,12 @@
         <th>Tr start</th>
         <th>Pr <a href="javascript:;" title="Number of projects">?</a></th>
         <th>Ky <a href="javascript:;" title="Number of keywords">?</a></th>
+        <th>Last login</th>
         <th>Created</th>
         <th>Options</th>
     </tr>
     {% for item in users %}
-        <tr class="{% if item.added|date('Y-m-d') == now|date('Y-m-d') %}success{% endif %}">
+        <tr class="{% if item.added|date('Y-m-d') == now|date('Y-m-d') %}success{% endif %} {% if item.last_login and item.last_login|date('Y-m-d')==now|date('Y-m-d') %}warning{% endif %}">
             <td>{{ item.id }}</td>
             <td>{{ item.package_name }}</td>
             <td>{{ item.email }}</td>
@@ -31,6 +32,7 @@
             <td>{{ item.trial_start }}</td>
             <td>{{ item.project_cnt }}</td>
             <td>{{ item.keyword_cnt }}</td>
+            <td>{{ item.last_login }}</td>
             <td>{{ item.added }}</td>
             <td width="155">
                 <ul class="nav nav-pills" style="margin:0">
