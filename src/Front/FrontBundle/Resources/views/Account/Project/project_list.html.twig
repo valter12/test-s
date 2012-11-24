@@ -36,7 +36,7 @@
                 <td>{{ item.project_domain }}</td>
                 <td>{{ item.project_hash }}</td>
                 <td>{{ format_date(item.added) }}</td>
-                <td>{{ item.cnt_keywords }}</td>
+                <td><a href="{{ path('account_keywords') }}?hash={{ item.project_hash }}">{{ item.cnt_keywords }}</a></td>
                 <td><img src="{{ project_stats[item.id].google }}" /></td>
                 <td><img src="{{ project_stats[item.id].bing }}" /></td>
                 <td><img src="{{ project_stats[item.id].yahoo }}" /></td>
