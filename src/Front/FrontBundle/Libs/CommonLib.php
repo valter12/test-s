@@ -55,5 +55,18 @@ class CommonLib {
         }
         return NULL;
     }
+    
+    
+    public static function formatDataForGoogleChart($project_stats) {
+        $cnt = count($project_stats);
+        $aux_stats = array();
+        // substracting from 100 to invers the y axe
+        for ($j= 0; $j < $cnt; $j++) {
+            $aux_stats['google'][] = 100 - (int)$project_stats[$j]['avg_google_position'];
+            $aux_stats['bing'][] = 100 - (int)$project_stats[$j]['avg_bing_position'];
+            $aux_stats['yahoo'][] = 100 - (int)$project_stats[$j]['avg_yahoo_position'];
+        }
+        return $aux_stats;
+    }
 
 }
