@@ -19,9 +19,9 @@ class ProjectCategoryController extends Controller {
 
         $request = $this->getRequest();
         $em = $this->getDoctrine()->getEntityManager();
-        $project_list = $em->getRepository('FrontFrontBundle:ProjectCategory')->getProjectCategoriesByUserId(Auth::getAuthParam('id'));
+        $category_list = $em->getRepository('FrontFrontBundle:ProjectCategory')->getProjectCategoriesByUserId(Auth::getAuthParam('id'));
 
-        return $this->render('FrontFrontBundle:Account:ProjectCategories/project_categories_list.html.twig', array('categories_list' => $project_list));
+        return $this->render('FrontFrontBundle:Account:ProjectCategories/project_categories_list.html.twig', array('categories_list' => $category_list));
     }
 
     /**
