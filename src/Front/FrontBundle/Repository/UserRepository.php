@@ -181,4 +181,11 @@ class UserRepository extends Backend\BackendUserRepository {
         $q = $this->getEntityManager()->getConnection()->executeQuery($query, array(':id' => $id));
     }
     
+    public function updateLastLogin($id) {
+        $query = "UPDATE user SET last_login=NOW() WHERE id=:id";
+        $q = $this->getEntityManager()->getConnection()->executeQuery($query, array(':id' => $id));
+    }
+    
+    
+    
 }
