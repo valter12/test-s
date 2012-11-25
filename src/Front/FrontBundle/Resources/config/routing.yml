@@ -11,7 +11,7 @@ features:
     defaults: { _controller: FrontFrontBundle:Default:features }
     
 feature_details:
-    pattern:  /features/{id}/{feature_title}
+    pattern:  /features/{feature_title}_{id}.html
     defaults: { _controller: FrontFrontBundle:Default:featureDetails }
     requirements:
       id: \d+
