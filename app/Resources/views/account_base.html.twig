@@ -39,7 +39,11 @@
                                 </div>
                             </li>
                             <li>
-                                <a href="{{ path('account_keyword_charts') }}"><i class="icon-signal"></i>Charts</a>
+                                <a href="javascript:;" onclick="jQuery('#charts_submenu').toggle();"><i class="icon-signal"></i>Charts</a>
+                                <div style="display:none; margin-left:20px;" id="charts_submenu">
+                                    <a href="{{ path('account_keyword_charts') }}" style="padding:4px; display:block;">Keyword charts</a>
+                                    <a href="{{ path('account_comparative_charts') }}" style="padding:4px; display:block;">Comparative charts</a>
+                                </div>
                             </li>
                             <li>
                                 <a href="{{ path('account_report_list') }}"><i class="icon-tasks"></i>Scheduled reports</a>
