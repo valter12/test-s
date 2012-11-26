@@ -21,6 +21,7 @@
     <div class="sep"></div>
     <hr />
     {% include "FrontFrontBundle:Account:Project/project_stats/overall_keyword_position.html.twig" %}
+    <a href="{{ path('account_comparative_charts') }}?competitor_id={{ competitor_details.id }}">See more comparative charts</a>
     <div class="sep"></div>
     <hr />
     <i class="icon-info-sign"></i> Some more detailed stats <i style="font-size: 11px;">({{ expl_str }})</i>
