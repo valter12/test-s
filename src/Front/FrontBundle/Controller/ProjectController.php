@@ -191,7 +191,9 @@ class ProjectController extends Controller {
         // google, bing, yahoo overall stats for keywords
         $keyword_overall_for_graph_raw_data = $em->getRepository('FrontFrontBundle:KeywordTrack')->getOverallKeywordProgressByProjectId($project_details['id'], '30');
         $keyword_overall_for_graph = CommonLib::getOverallKeywordsPosition($keyword_overall_for_graph_raw_data);
-        
+        $keyword_overall_for_graph['hash_chart'] = md5($project_details['id'].$project_details['project_name']);
+        $keyword_overall_for_graph['project_name'] = $project_details['project_name'];
+
 
         $params = array();
         $params['project_details'] = $project_details;
