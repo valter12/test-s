@@ -197,6 +197,8 @@ class CompetitorController extends Controller {
         // google, bing, yahoo overall stats for keywords
         $keyword_overall_for_graph_raw_data = $em->getRepository('FrontFrontBundle:KeywordTrackCompetitor')->getOverallKeywordProgressByProjectId($project_details['id'], $competitor_details['id'], '30');
         $keyword_overall_for_graph = CommonLib::getOverallKeywordsPosition($keyword_overall_for_graph_raw_data);
+        $keyword_overall_for_graph['hash_chart'] = md5($competitor_details['id'].$competitor_details['competitor_name']);
+        $keyword_overall_for_graph['project_name'] = $competitor_details['competitor_name'];
 
         $params = array();
         $params['competitor_details'] = $competitor_details;
