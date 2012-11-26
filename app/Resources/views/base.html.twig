@@ -3,6 +3,9 @@
     <head>
         <meta charset="UTF-8" />
         <title>{% block title %}Welcome!{% endblock %}</title>
+        <meta name="keywords" content="{% block keywords %}{% endblock %}" />
+        <meta name="description" content="{% block description %}{% endblock %}" />
+        {% block canonical %}{% endblock %}
         {% block stylesheets %}
             <link href="/css/style.css" rel="stylesheet" type="text/css" />
             <link href="/css/bootstrap.css" rel="stylesheet" type="text/css" />
