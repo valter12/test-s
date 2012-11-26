@@ -1,0 +1,57 @@
+{% extends '::account_base.html.twig' %}
+{% block body %}
+    <h2>Comparative charts</h2>
+    <div class="sep"></div>
+    <i class="icon-info-sign"></i> On this page you can see overall position of keywords in all search engines
+    <div class="sep"></div>
+    <form action="" method="GET">
+        Project: 
+        <br />
+        <select name="hash" onchange="getKeywordCompetitors(this.value);applyChangesHint()">
+            <option value="0">[Choose project]</option>
+            {% for item in project_list %}
+                <option value="{{ item.project_hash }}" {% if project_hash==item.project_hash %}selected="selected"{% endif %}>{{ item.project_name }}</option>
+            {% endfor %}
+        </select>
+        <span id="keywords_placeholder"></span>
+        <div class="sep"></div>
+        Competitors: <span id="competitor_list_placeholder"></span>
+        <div class="sep"></div>
+        Period from <input type="text" style="width:100px;" name="from_date" id="from_date" class="datepicker" onchange="applyChangesHint();" value="{{ app.request.get('from_date') }}"> 
+        to <input type="text" style="width:100px;" name="to_date" id="to_date" class="datepicker" onchange="applyChangesHint();" value="{{ app.request.get('to_date') }}">
+        <div class="sep"></div>
+        <input type="submit" value="Apply" id="filter_apply_changes" class="btn btn-primary"> <span id="apply_changes_hint">- don't forget to apply the changes</span>
+    </form>
+    {% for item in result %}
+        {% include "FrontFrontBundle:Account:Project/project_stats/overall_keyword_position.html.twig" with {'keyword_overall_for_graph':item} %}
+        <hr />
+    {% endfor %}
+{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="../css/jquery-ui-1.8.22.custom.css" rel="stylesheet" type="text/css" />
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('js/bootstrap-modal.js') }}"></script>
+    <script src="{{ asset('js/jquery-ui-1.8.22.custom.min_datepicker.js') }}"></script>
+    <script src="{{ asset('js/pages/chart.js') }}"></script>
+    <script src="{{ asset('js/pages/keyword_stats.js') }}"></script>
+    <script src="{{ asset('js_hh634h56/chart.js') }}"></script>
+{% endblock %}
+{% block inline_javascripts %}
+    <script>
+        jQuery(document).ready(function(){
+            jQuery('.datepicker').datepicker({dateFormat: '{{ format_date('', 0, 1)}}'});
+            getKeywordCompetitors('{{ project_hash }}');
+            {% for item in app.request.get('competitor_ids') %}
+                addCompetitor({{ item }});
+            {% endfor %}
+            {% if app.request.get('competitor_id') %}
+                addCompetitor({{ app.request.get('competitor_id') }});
+            {% endif %}
+            
+        });
+        
+    </script>
+{% endblock %}
