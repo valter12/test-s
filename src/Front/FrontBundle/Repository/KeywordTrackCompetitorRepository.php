@@ -75,7 +75,7 @@ class KeywordTrackCompetitorRepository extends EntityRepository {
             AND ktc1.competitor_id=".$competitor_id."
             GROUP BY k1.id
         ";
-        
+//        die($primary_query);
         $q_primary = $this->getEntityManager()->getConnection()->executeQuery($primary_query, array());
         $primary_result = $q_primary->fetchAll(2);
         if(empty($primary_result)) {
@@ -101,7 +101,7 @@ class KeywordTrackCompetitorRepository extends EntityRepository {
             AND ktc.keyword_id=q.keyword_id
             AND ktc.track_date=q.track_date ".str_replace('{tbl_holder}', 'ktc', $str_cond)."
         ";
-        
+//        die($query);
         
         $q = $this->getEntityManager()->getConnection()->executeQuery($query, $params);
         
@@ -219,12 +219,12 @@ class KeywordTrackCompetitorRepository extends EntityRepository {
             ) q
             WHERE ktc.keyword_id=k.id
             AND k.project_id=".$project_id."
+            AND ktc.competitor_id = ".$competitor_id."
             AND (ktc.google_position BETWEEN 1 AND 10 OR ktc.bing_position BETWEEN 1 AND 10 OR ktc.yahoo_position BETWEEN 1 AND 10)
             AND ktc.keyword_id=q.keyword_id
             AND ktc.track_date=q.track_date
             GROUP BY k.id
         ";
-        
         $q = $this->getEntityManager()->getConnection()->executeQuery($query, $params);
         
         $result = $q->fetchAll(2);
