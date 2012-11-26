@@ -358,7 +358,18 @@ class KeywordTrackCompetitorRepository extends EntityRepository {
         return $result['keywords_tracked'] == $result['total_keywords'];
     }
     
-    public function getOverallKeywordProgressByProjectId($project_id, $competitor_id, $nr_days) {
+    public function getOverallKeywordProgressByProjectId($project_id, $competitor_id, $nr_days=false, $from_date=false, $to_date=false) {
+        $str_cond = '';
+        
+        if($nr_days) {
+            $str_cond .= "AND ktc.track_date>=DATE_SUB(NOW(), INTERVAL ".$nr_days." DAY) ";
+        }
+        if($from_date) {
+            $str_cond .= "AND ktc.track_date>='".$from_date."' ";
+        }
+        if($to_date) {
+            $str_cond .= "AND ktc.track_date<='".$to_date."' ";
+        }
         $query = "
             SELECT 
                 ((SUM(CASE WHEN ktc.google_position > 0 THEN ktc.google_position ELSE 100 END)+(((SELECT COUNT(id) FROM keyword WHERE project_id=".$project_id.")-COUNT(ktc.id))*100)))/((SELECT COUNT(id) FROM keyword WHERE project_id=".$project_id.")) as avg_google_position,
@@ -369,7 +380,7 @@ class KeywordTrackCompetitorRepository extends EntityRepository {
             WHERE ktc.keyword_id=k.id
             AND ktc.competitor_id=".$competitor_id."
             AND k.project_id=".$project_id."
-            AND ktc.track_date>=DATE_SUB(NOW(), INTERVAL ".$nr_days." DAY)
+            ".$str_cond."
             GROUP BY DATE_FORMAT(ktc.track_date, '%Y-%m-%d')
             ORDER BY DATE_FORMAT(ktc.track_date, '%Y-%m-%d') DESC
         ";
