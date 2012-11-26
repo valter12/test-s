@@ -1,6 +1,11 @@
 {% extends '::base.html.twig' %}
+{% block title %}{{ feature_details.html_title }}{% endblock %}
+{% block keywords %}{{ feature_details.keywords }}{% endblock %}
+{% block description %}{{ feature_details.html_desc|raw }}{% endblock %}
 {% block body %}
-    <h1>{{ feature_details.feature_title }}</h1>
-    <div class="sep"></div>
-    {{ feature_details.feature_desc|raw }}
+    <article>
+        <h1>{{ feature_details.feature_title }}</h1>
+        <div class="sep"></div>
+        {{ feature_details.feature_desc|raw }}
+    </article>
 {% endblock %}
