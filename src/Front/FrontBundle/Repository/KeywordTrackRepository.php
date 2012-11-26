@@ -661,7 +661,19 @@ class KeywordTrackRepository extends EntityRepository {
         return $result['keywords_tracked'] == $result['total_keywords'];
     }
     
-    public function getOverallKeywordProgressByProjectId($project_id, $nr_days) {
+    public function getOverallKeywordProgressByProjectId($project_id, $nr_days=false, $from_date=false, $to_date=false) {
+        $str_cond = '';
+        
+        if($nr_days) {
+            $str_cond .= " AND kt.track_date>=DATE_SUB(NOW(), INTERVAL ".$nr_days." DAY) ";
+        }
+        if($from_date) {
+            $str_cond .= " AND kt.track_date>='".$from_date."' ";
+        }
+        if($to_date) {
+            $str_cond .= " AND kt.track_date<='".$to_date."' ";
+        }
+       
         $query = "
             SELECT 
                 ((SUM(CASE WHEN kt.google_position > 0 THEN kt.google_position ELSE 100 END)+(((SELECT COUNT(id) FROM keyword WHERE project_id=".$project_id.")-COUNT(kt.id))*100)))/((SELECT COUNT(id) FROM keyword WHERE project_id=".$project_id.")) as avg_google_position,
@@ -671,7 +683,7 @@ class KeywordTrackRepository extends EntityRepository {
             FROM keyword_track kt, keyword k
             WHERE kt.keyword_id=k.id
             AND k.project_id=".$project_id."
-            AND kt.track_date>=DATE_SUB(NOW(), INTERVAL ".$nr_days." DAY)
+            ".$str_cond."
             GROUP BY DATE_FORMAT(kt.track_date, '%Y-%m-%d')
             ORDER BY DATE_FORMAT(kt.track_date, '%Y-%m-%d') DESC
         ";
