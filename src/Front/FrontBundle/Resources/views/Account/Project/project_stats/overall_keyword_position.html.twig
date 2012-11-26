@@ -1,19 +1,16 @@
-<div id="container_0" style="min-width: 400px; height: 400px; margin: 0 auto"></div>
-<div class="sep"></div>
-<div class="sep"></div>
-<div class="sep"></div>
+<div id="container_{{ keyword_overall_for_graph.hash_chart }}" style="min-width: 400px; height: 400px; margin: 0 auto"></div>
 <div class="sep"></div>
 <script>
         jQuery(document).ready(function(){
             var chart_{{ key }};
             chart_{{ key }} = new Highcharts.Chart({
                 chart: {
-                    renderTo: 'container_0',
+                    renderTo: 'container_{{ keyword_overall_for_graph.hash_chart }}',
                     type: 'spline',
                     zoomType: 'x'
                 },
                 title: {
-                    text: 'Overall positions of keywords in search engines for last 30 days',
+                    text: 'Overall positions of keywords in search engines for {% if graph_period %}{{ graph_period|raw }}{% else %}last 30 days{% endif %} for project <b>"{{ keyword_overall_for_graph.project_name }}"</b>',
                     x: -20 //center
                 },
                 subtitle: {
