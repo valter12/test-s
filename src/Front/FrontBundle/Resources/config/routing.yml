@@ -139,6 +139,10 @@ account_keyword_charts:
   pattern: /keyword-chart
   defaults: { _controller: FrontFrontBundle:Chart:keywordChart }
 
+account_comparative_charts:
+  pattern: /comparative-charts
+  defaults: { _controller: FrontFrontBundle:Chart:overallComparativeCharts }
+  
 # uptime
 account_uptime:
   pattern: /uptime
