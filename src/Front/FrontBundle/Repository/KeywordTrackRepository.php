@@ -434,8 +434,7 @@ class KeywordTrackRepository extends EntityRepository {
         $str_cond = '';
         
         if($date) {
-            $params[':date'] = $date;
-            $cond[] = "DATE_FORMAT(kt.track_date, '%Y-%m-%d') = :date";
+            $cond[] = "DATE_FORMAT(kt.track_date, '%Y-%m-%d') = '".$date."'";
         }
         
         if($direction) {
@@ -457,9 +456,9 @@ class KeywordTrackRepository extends EntityRepository {
                 COUNT(kt.id) AS cnt
             FROM keyword_track kt, keyword k
             WHERE kt.keyword_id=k.id
-            AND k.project_id=:project_id ".$str_cond."
+            AND k.project_id=".$project_id." ".$str_cond."
         ";
-        $params[':project_id'] = $project_id;
+//        die($query);
         $q = $this->getEntityManager()->getConnection()->executeQuery($query, $params);
         
         $result = $q->fetch(2);
