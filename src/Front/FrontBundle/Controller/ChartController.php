@@ -4,6 +4,7 @@ namespace Front\FrontBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Front\FrontBundle\Security\Auth as Auth;
+use Front\FrontBundle\Libs\CommonLib;
 
 class ChartController extends Controller {
 
@@ -107,10 +108,85 @@ class ChartController extends Controller {
         
         unset($_GET['project'], $_GET['show_chart']);
         $stats_link = http_build_query($_GET); // link for stats page
-//\Backend\BackendBundle\Additional\Debug::d1($axes);
+
         $project_list = $em->getRepository('FrontFrontBundle:Project')->getProjects(Auth::getAuthParam('id'));
 
         return $this->render('FrontFrontBundle:Account:Chart/chart.html.twig', array('project_list' => $project_list, 'axes' => $axes, 'stats_link' => $stats_link));
+    }
+    
+    public function overallComparativeChartsAction() {
+        if (!Auth::isAuth()) {
+            return $this->redirect($this->generateUrl('login_register'));
+        }
+        $request = $this->getRequest();
+        $from_date = $request->get('from_date');
+        $to_date = $request->get('to_date');
+        
+        $em = $this->getDoctrine()->getEntityManager();
+        $project_list = $em->getRepository('FrontFrontBundle:Project')->getProjects(Auth::getAuthParam('id'));
+        $competitor_id = $request->get('competitor_id');
+        if($competitor_id) { // we are here from a competitor page
+            $competitor_details = $em->getRepository('FrontFrontBundle:Competitor')->getCompetitorById(Auth::getAuthParam('id'), $competitor_id);
+            $project_hash = $competitor_details['project_hash'];
+            
+        } else {
+            $project_hash = $request->get('hash', $project_list[0]['project_hash']);
+        }
+        
+        if (!$project_hash) {
+            $this->get('session')->setFlash('error', 'The request is incorrect.');
+            return $this->redirect($request->headers->get('referer'));
+            return $this->redirect($this->generateUrl('account_projects'));
+        }
+        
+        $project_details = $em->getRepository('FrontFrontBundle:Project')->getProjectByHash(Auth::getAuthParam('id'), $project_hash);
+        if(empty($project_details)) {
+            $this->get('session')->setFlash('error', 'The request is incorrect.');
+            return $this->redirect($request->headers->get('referer'));
+            return $this->redirect($this->generateUrl('account_projects'));
+        }
+        $nr_days = 30;
+        $graph_period = '30 days';
+        if($from_date || $to_date) {
+            $nr_days = false;
+            if($from_date && !$to_date) {
+                $graph_period = $from_date.' - '.date('Y-m-d');
+            } elseif(!$from_date && $to_date) {
+                $graph_period = ' <= '.$to_date;
+            } elseif($from_date && $to_date) {
+                $graph_period = $from_date.' - '.$to_date;
+            }
+        }
+        $graph_period = '<b>'.$graph_period.'</b>';
+        
+        $keyword_overall_for_graph_raw_data = $em->getRepository('FrontFrontBundle:KeywordTrack')->getOverallKeywordProgressByProjectId($project_details['id'], $nr_days, $from_date, $to_date);
+        $keyword_overall_for_graph = CommonLib::getOverallKeywordsPosition($keyword_overall_for_graph_raw_data);
+        $keyword_overall_for_graph['hash_chart'] = md5($project_details['id'].$project_details['project_name']);
+        $keyword_overall_for_graph['project_name'] = $project_details['project_name'];
+        $result[] = $keyword_overall_for_graph;
+        
+        $competitor_ids = $request->get('competitor_ids');
+        if($competitor_id) {
+            $competitor_ids = array($competitor_id);
+        }
+        $competitor_ids_cnt = count($competitor_ids);
+        
+        for($i=0;$i<$competitor_ids_cnt;$i++) {
+            $competitor_details = $em->getRepository('FrontFrontBundle:Competitor')->getCompetitorById(Auth::getAuthParam('id'), $competitor_ids[$i]);
+            if(empty($competitor_details)) {
+               continue; 
+            }
+            $keyword_overall_for_graph_raw_data = $em->getRepository('FrontFrontBundle:KeywordTrackCompetitor')->getOverallKeywordProgressByProjectId($project_details['id'], $competitor_details['id'], $nr_days, $from_date, $to_date);
+            if(empty($keyword_overall_for_graph_raw_data)) {
+                continue;
+            }
+            $keyword_overall_for_graph = CommonLib::getOverallKeywordsPosition($keyword_overall_for_graph_raw_data);
+            $keyword_overall_for_graph['hash_chart'] = md5($competitor_details['id'].$competitor_details['competitor_name']);
+            $keyword_overall_for_graph['project_name'] = $competitor_details['competitor_name'];
+            $result[] = $keyword_overall_for_graph;
+        }
+        
+        return $this->render('FrontFrontBundle:Account:Chart/overall_comparative_chart.html.twig', array('result' => $result, 'project_list' => $project_list, 'project_hash' => $project_details['project_hash'], 'graph_period' => $graph_period));
     }
 
 }
