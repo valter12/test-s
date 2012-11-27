@@ -1,0 +1,73 @@
+<div id="container_competitors_overall" style="min-width: 400px; height: 400px; margin: 0 auto"></div>
+<div class="sep"></div>
+<script>
+        jQuery(document).ready(function(){
+            var chart_{{ key }};
+            chart_{{ key }} = new Highcharts.Chart({
+                chart: {
+                    renderTo: 'container_competitors_overall',
+                    type: 'spline',
+                    zoomType: 'x'
+                },
+                title: {
+                    text: 'Overall positions of keywords in search engines for {% if graph_period %}{{ graph_period|raw }}{% else %}last 30 days{% endif %} for all competitors of project <b>"{{ keyword_overall_for_graph.project_name }}"</b>',
+                    x: -20 //center
+                },
+                subtitle: {
+                    text: '',
+                    x: -20
+                },
+                xAxis: {
+                    categories: {{ overall_all_competitors.0.xAxis|raw }},
+                    overflow: 'undefined',
+                    labels: {
+                        rotation: -45,
+                        aligh: 'right',
+                        x: -20,
+                        y: 35,
+                        style: {
+                            fontSize: '11px'
+                        }
+                    }
+                },
+                yAxis: {
+                    reversed:true,
+                    title: {
+                        text: 'Average position in search engines'
+                    },
+                    min:1,
+                    max:100
+                },
+                tooltip: {
+                    crosshairs: true,
+                    shared: true
+                },
+                plotOptions: {
+                    spline: {
+                        marker: {
+                            radius: 4,
+                            lineColor: '#666666',
+                            lineWidth: 1
+                        }
+                    }
+                },
+                legend: {
+                    layout: 'vertical',
+                    align: 'right',
+                    verticalAlign: 'top',
+                    x: -10,
+                    y: 50,
+                    borderWidth: 0
+                },
+                series: [
+                    {% for index, data in overall_all_competitors %}
+                        {
+                            name: '{{ data.project_name }}',
+                            data: {{ data.yAxis }}
+                        }
+                        {% if index!=(overall_all_competitors|length)-1 %},{% endif %}
+                    {% endfor %}
+                ]
+            });
+        });
+    </script>
