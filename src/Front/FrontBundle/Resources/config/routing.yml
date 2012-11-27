@@ -15,6 +15,12 @@ feature_details:
     defaults: { _controller: FrontFrontBundle:Default:featureDetails }
     requirements:
       id: \d+
+      
+article_details:
+    pattern:  /content/{feature_title}_{id}.html
+    defaults: { _controller: FrontFrontBundle:Default:featureDetails }
+    requirements:
+      id: \d+
     
 feature_demand:
     pattern:  /feature-demand
