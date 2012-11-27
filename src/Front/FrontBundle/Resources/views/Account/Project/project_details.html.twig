@@ -20,6 +20,12 @@
     <a href="{{ path('account_comparative_charts') }}?hash={{ project_details.project_hash }}">See more comparative charts</a>
     <div class="sep"></div>
     <hr />
+    <div class="sep"></div>
+    <i class="icon-info-sign"></i> The chart below shows the average position of your site and competitor sites for the last 30 days
+    <div class="sep"></div>
+    {% include "FrontFrontBundle:Account:Project/project_stats/overall_keyword_position_competitors.html.twig" %}
+    <div class="sep"></div>
+    <hr />
     <i class="icon-info-sign"></i> Some more detailed stats <i style="font-size: 11px;">({{ expl_str }})</i>
     <div class="sep"></div>
     <div class="sep"></div>
