@@ -7,7 +7,8 @@ class CommonLib {
     /**
      * gets overall position on google,bing,yahoo for a certain project for a certain period of time
      */
-    public static function getOverallKeywordsPosition($keyword_overall_for_graph) {
+    public static function getOverallKeywordsPosition($keyword_overall_for_graph, $min_date = false, $avg_all = false) {
+        
         $keyword_overall_for_graph = array_reverse($keyword_overall_for_graph);
         $cnt_overall_for_graph = count($keyword_overall_for_graph);
         $first_date = $keyword_overall_for_graph[0]['track_date'];
@@ -21,8 +22,8 @@ class CommonLib {
         }
         // filling gaps in dates
 
-        $cursor_date = $first_date;
-        $aux = array();
+        $cursor_date = $min_date?$min_date:$first_date;
+        
         while ($cursor_date != $last_date) {
             if (!isset($keyword_overall_with_dates[$cursor_date])) { // if this date does not exist
                 $keyword_overall_with_dates[$cursor_date] = self::getLastFullDate($keyword_overall_with_dates, $cursor_date);
@@ -35,25 +36,42 @@ class CommonLib {
 
         foreach ($keyword_overall_with_dates as $date => $value) {
             $dates[] = "'" . $date . "'";
-            $result['yAxis']['Google'][] = (int) $value['avg_google_position'];
-            $result['yAxis']['Bing'][] = (int) $value['avg_bing_position'];
-            $result['yAxis']['Yahoo'][] = (int) $value['avg_yahoo_position'];
+            if($avg_all) {
+                $result['yAxis'][] = (int) (($value['avg_google_position'] + $value['avg_bing_position'] + $value['avg_yahoo_position'])/3);
+            } else {
+                $result['yAxis']['Google'][] = (int) $value['avg_google_position'];
+                $result['yAxis']['Bing'][] = (int) $value['avg_bing_position'];
+                $result['yAxis']['Yahoo'][] = (int) $value['avg_yahoo_position'];
+            }
         }
-        foreach ($result['yAxis'] as &$value) {
-            $value = '[' . implode(',', $value) . ']';
+        
+        if($avg_all) {
+            $result['yAxis'] = '[' . implode(',', $result['yAxis']) . ']';
+        } else {
+            foreach ($result['yAxis'] as &$value) {
+                $value = '[' . implode(',', $value) . ']';
+            }
         }
         $result['xAxis'] = '[' . implode(',', $dates) . ']';
         return $result;
     }
 
     protected static function getLastFullDate($keyword_overall_with_dates, $cursor_date) {
+        $saved_date = $cursor_date;
         for ($i = 0; $i < count($keyword_overall_with_dates); $i++) {
-            if (isset($keyword_overall_with_dates[$cursor_date])) {
+            if (@is_float($keyword_overall_with_dates[$cursor_date]) || @is_numeric($keyword_overall_with_dates[$cursor_date])) {
                 return $keyword_overall_with_dates[$cursor_date];
             }
             $cursor_date = date('Y-m-d', strtotime('-1 day', strtotime($cursor_date)));
         }
-        return NULL;
+        
+        // if nothing found returning 100, that is default max position in SE
+        return array(
+            'avg_google_position' => 100,
+            'avg_bing_position' => 100,
+            'avg_yahoo_position' => 100,
+            'track_date' => $saved_date,
+        ); 
     }
     
     
