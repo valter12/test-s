@@ -194,6 +194,11 @@ class ProjectController extends Controller {
         $keyword_overall_for_graph['hash_chart'] = md5($project_details['id'].$project_details['project_name']);
         $keyword_overall_for_graph['project_name'] = $project_details['project_name'];
 
+        
+        $result_overall = $this->getOverallWithCompetitors($project_details, $em);
+        
+//        \Backend\BackendBundle\Additional\Debug::d1($result_overall);
+        
 
         $params = array();
         $params['project_details'] = $project_details;
@@ -210,7 +215,53 @@ class ProjectController extends Controller {
         $params['project_list'] = $project_list;
         $params['expl_str'] = $expl_str;
         $params['keyword_overall_for_graph'] = $keyword_overall_for_graph;
+        $params['overall_all_competitors'] = $result_overall;
         return $this->render('FrontFrontBundle:Account:Project/project_details.html.twig', $params);
+    }
+    
+    protected function getOverallWithCompetitors($project_details, $em) {
+        $competitor_list = $em->getRepository('FrontFrontBundle:Competitor')->getCompetitorsByProjectId($project_details['id']);
+        $days_30_ago = date('Y-m-d', strtotime('-30 day', time()));
+        
+        $result_overall = array();
+        $overall_data = $em->getRepository('FrontFrontBundle:KeywordTrack')->getOverallKeywordProgressByProjectId($project_details['id'], false, $days_30_ago);
+        $keyword_overall_competitors = array('se_stats' => $overall_data);
+        $keyword_overall_competitors['hash_chart'] = md5($project_details['id'].$project_details['project_name']);
+        $keyword_overall_competitors['project_name'] = $project_details['project_name'];
+        $raw_data[] = $keyword_overall_competitors;
+        
+        $first_date = $overall_data[count($overall_data)-1]['track_date'];
+        
+        $competitor_cnt = count($competitor_list);
+        // getting raw data for competitors
+        for($i=0;$i<$competitor_cnt;$i++) {
+            $competitor_details = $em->getRepository('FrontFrontBundle:Competitor')->getCompetitorById(Auth::getAuthParam('id'), $competitor_list[$i]['id']);
+            if(empty($competitor_details)) {
+               continue; 
+            }
+            $overall_data = $em->getRepository('FrontFrontBundle:KeywordTrackCompetitor')->getOverallKeywordProgressByProjectId($project_details['id'], $competitor_details['id'], false, $days_30_ago, false);
+            if(empty($overall_data)) {
+                continue;
+            }
+            $first_date_competitor = $overall_data[count($overall_data)-1]['track_date'];
+            
+            if(strtotime($first_date) > strtotime($first_date_competitor)) {
+                $first_date = $first_date_competitor;
+            }
+            $keyword_overall_competitors = array('se_stats' => $overall_data);
+            $keyword_overall_competitors['hash_chart'] = md5($competitor_details['id'].$competitor_details['competitor_name']);
+            $keyword_overall_competitors['project_name'] = $competitor_details['competitor_name'];
+            $raw_data[] = $keyword_overall_competitors;
+        }
+        $cnt = count($raw_data);
+        for($i=0;$i<$cnt;$i++) {
+            $data = CommonLib::getOverallKeywordsPosition($raw_data[$i]['se_stats'], $first_date, true);
+            $data['hash_chart'] = $raw_data[$i]['hash_chart'];
+            $data['project_name'] = $raw_data[$i]['project_name'];
+            $result_overall[] = $data;
+        }
+        
+        return $result_overall;
     }
 
     
