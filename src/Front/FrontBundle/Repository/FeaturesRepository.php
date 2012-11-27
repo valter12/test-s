@@ -12,6 +12,8 @@ class FeaturesRepository extends EntityRepository {
         if($for_homepage) {
             $params[':for_homepage'] = 1;
             $condition_str .= ' AND f.on_homepage=:for_homepage';
+        } else {
+            $condition_str .= ' AND f.on_homepage IN(0, 1)';
         }
         if($limit) {
             $limit_str = ' LIMIT '.$limit;
