@@ -30,7 +30,7 @@ class Auth {
     }
 
     static public function getMaxDomains() {
-        $packages_projects = array(1 => '1', 2 => '3', 3 => '20');
+        $packages_projects = array(1 => '1', 2 => '5', 3 => '20');
 
         $package_id = self::getAuthParam('package_id');
         if (self::getAuthParam('is_trial') == 1) {
