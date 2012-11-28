@@ -45,7 +45,7 @@
                     <td>
                         {% if item.page_link_google %}
                             {% if item.page_link_google|length>50 %}
-                                {{ item.page_link_google|slice(0, 50) }}...
+                                {{ item.page_link_google|truncate(0, 50) }}...
                                 <a href="javascript:;" class="popup_hover_simple" data-original-title="Full link" data-content="<div style='word-wrap: break-word;'>{{ item.page_link_google }}</div>"><i class="icon-question-sign"></i></a>
                             {% else %}
                                 {{ item.page_link_google }}
@@ -57,7 +57,7 @@
                     <td>
                         {% if item.page_link_bing %}
                             {% if item.page_link_bing|length>50 %}
-                                {{ item.page_link_bing|slice(0, 50) }}...
+                                {{ item.page_link_bing|truncate(0, 50) }}...
                                 <a href="javascript:;" class="popup_hover_simple" data-original-title="Full link" data-content="<div style='word-wrap: break-word;'>{{ item.page_link_bing }}</div>"><i class="icon-question-sign"></i></a>
                             {% else %}
                                 {{ item.page_link_bing }}
@@ -69,7 +69,7 @@
                     <td>
                         {% if item.page_link_yahoo %}
                             {% if item.page_link_yahoo|length>50 %}
-                                {{ item.page_link_yahoo|slice(0, 50) }}...
+                                {{ item.page_link_yahoo|truncate(0, 50) }}...
                                 <a href="javascript:;" class="popup_hover_simple" data-original-title="Full link" data-content="<div style='word-wrap: break-word;'>{{ item.page_link_yahoo }}</div>"><i class="icon-question-sign"></i></a>
                             {% else %}
                                 {{ item.page_link_yahoo }}
