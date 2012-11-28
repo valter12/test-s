@@ -50,7 +50,11 @@ class KeywordTrackController extends Controller {
         $user_owns_keyword = $em->getRepository('FrontFrontBundle:Keyword')->userOwnsKeyword(Auth::getAuthParam('id'), $keyword_id);
         if (!$user_owns_keyword['cnt']) { // user does not own this keyword
             $this->get('session')->setFlash('error', 'The request is incorrect.');
-            return $this->redirect($request->headers->get('referer'));
+            if($request->headers->get('referer')) {
+                return $this->redirect($request->headers->get('referer'));
+            } else {
+                return $this->redirect($this->generateUrl('account_keywords'));
+            }
         }
 
         $all_keywords = $em->getRepository('FrontFrontBundle:Keyword')->getAllProjectKeywordsByOneKeywordId($keyword_id);
