@@ -17,7 +17,7 @@
             <div class="masthead">
                 <ul class="nav nav-pills pull-right">
                     <li {% if app.request.attributes.get('_route') == 'homepage' %}class="active"{% endif %}><a href="{{ path('homepage') }}">Home</a></li>
-{#                    <li><a href="{{ path('plans') }}">Plans</a></li>#}
+                    <li {% if app.request.attributes.get('_route') == 'plans' %}class="active"{% endif %}><a href="{{ path('plans') }}">Plans</a></li>
                     <li {% if app.request.attributes.get('_route') == 'features' or app.request.attributes.get('_route') == 'feature_details' %}class="active"{% endif %}><a href="{{ path('features') }}">Features</a></li>
                     <li {% if app.request.attributes.get('_route') == 'login_register' %}class="active"{% endif %}><a href="{{ path('login_register') }}">Login/Register</a></li>
                 </ul>
