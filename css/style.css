@@ -32,7 +32,7 @@ input, button::-moz-focus-inner {
     font-size: 14px;
     line-height: normal;
     margin-left: 14px;
-    width: 220px;
+    width: 200px;
     margin-top: 63px;
 }
 .card .top {
@@ -100,7 +100,6 @@ a.button:hover {
 }
 .highlight {
     box-shadow: 0 0 12px rgba(0, 0, 0, 0.8);
-    width: 240px;
 }
 .highlight .top {
     background: none repeat scroll 0 0 #000000;
