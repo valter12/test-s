@@ -42,6 +42,7 @@ class KeywordRepository extends EntityRepository {
             FROM keyword k, project p
             WHERE k.id=:keyword_id
             AND p.user_id=:user_id
+            AND k.project_id=p.id
         ";
         $q = $this->getEntityManager()->getConnection()->executeQuery($query, array(':user_id' => $user_id, ':keyword_id' => $keyword_id));
 
