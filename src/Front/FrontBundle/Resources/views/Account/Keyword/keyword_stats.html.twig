@@ -42,9 +42,42 @@
                             {% if item.yahoo_change > 0 %}+{{ item.yahoo_change }}{% elseif item.yahoo_change < 0 %}{{ item.yahoo_change }}{% endif %}
                         {% endif %}
                     </td>
-                    <td>{% if item.page_link_google %}{{ item.page_link_google }}{% else %}-{% endif %}</td>
-                    <td>{% if item.page_link_bing %}{{ item.page_link_bing }}{% else %}-{% endif %}</td>
-                    <td>{% if item.page_link_yahoo %}{{ item.page_link_yahoo }}{% else %}-{% endif %}</td>
+                    <td>
+                        {% if item.page_link_google %}
+                            {% if item.page_link_google|length>50 %}
+                                {{ item.page_link_google|slice(0, 50) }}...
+                                <a href="javascript:;" class="popup_hover_simple" data-original-title="Full link" data-content="<div style='word-wrap: break-word;'>{{ item.page_link_google }}</div>"><i class="icon-question-sign"></i></a>
+                            {% else %}
+                                {{ item.page_link_google }}
+                            {% endif %}
+                        {% else %}
+                            -
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if item.page_link_bing %}
+                            {% if item.page_link_bing|length>50 %}
+                                {{ item.page_link_bing|slice(0, 50) }}...
+                                <a href="javascript:;" class="popup_hover_simple" data-original-title="Full link" data-content="<div style='word-wrap: break-word;'>{{ item.page_link_bing }}</div>"><i class="icon-question-sign"></i></a>
+                            {% else %}
+                                {{ item.page_link_bing }}
+                            {% endif %}
+                        {% else %}
+                            -
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if item.page_link_yahoo %}
+                            {% if item.page_link_yahoo|length>50 %}
+                                {{ item.page_link_yahoo|slice(0, 50) }}...
+                                <a href="javascript:;" class="popup_hover_simple" data-original-title="Full link" data-content="<div style='word-wrap: break-word;'>{{ item.page_link_yahoo }}</div>"><i class="icon-question-sign"></i></a>
+                            {% else %}
+                                {{ item.page_link_yahoo }}
+                            {% endif %}
+                        {% else %}
+                            -
+                        {% endif %}
+                    </td>
                     <td>{% if item.google_description_change or item.bing_description_change or item.yahoo_description_change %}<a href="javascript:;" onclick="getChangesModal({{ item.track_id }}, 0)" class="popup_hover_simple_left" data-original-title="Record contains changes" data-content="You have some changes on this record. Click the icon to see them."><i class="icon-asterisk"></i></a>{% else %}&nbsp;{% endif %}</td>
                 </tr>
             {% endfor %}
