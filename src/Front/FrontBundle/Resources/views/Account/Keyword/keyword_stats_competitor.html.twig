@@ -61,21 +61,48 @@
                         </td>
                         <td class="font_seo_links" parent_class="{{ stats.competitor_name|clear_class }}_page_link_google" rel="keyword_hover">
                             {% if stats.project_added <= date %}
-                                {% if stats.page_link_google %}{{ stats.page_link_google }}{% else %}-{% endif %}
+                                {% if stats.page_link_google %}
+                                    {% if stats.page_link_google|length>40 %}
+                                        {{ stats.page_link_google|slice(0, 40) }}...
+                                        <a href="javascript:;" class="popup_hover_simple" data-original-title="Full link" data-content="<div style='word-wrap: break-word;'>{{ stats.page_link_google }}</div>"><i class="icon-question-sign"></i></a>
+                                    {% else %}
+                                        {{ stats.page_link_google }}
+                                    {% endif %}
+                                {% else %}
+                                    -
+                                {% endif %}
                             {% else %}
                                 <center><a href="javascript:;" class="site_not_tracker"><i class="icon-exclamation-sign"></i></a></center>
                             {% endif %}
                         </td>
                         <td class="font_seo_links" parent_class="{{ stats.competitor_name|clear_class }}_page_link_bing" rel="keyword_hover">
                             {% if stats.project_added <= date %}
-                                {% if stats.page_link_bing %}{{ stats.page_link_bing }}{% else %}-{% endif %}
+                                {% if stats.page_link_bing %}
+                                    {% if stats.page_link_bing|length>40 %}
+                                        {{ stats.page_link_bing|slice(0, 40) }}...
+                                        <a href="javascript:;" class="popup_hover_simple" data-original-title="Full link" data-content="<div style='word-wrap: break-word;'>{{ stats.page_link_bing }}</div>"><i class="icon-question-sign"></i></a>
+                                    {% else %}
+                                        {{ stats.page_link_bing }}
+                                    {% endif %}
+                                {% else %}
+                                    -
+                                {% endif %}
                             {% else %}
                                 <center><a href="javascript:;" class="site_not_tracker"><i class="icon-exclamation-sign"></i></a></center>
                             {% endif %}
                         </td>
                         <td class="font_seo_links" parent_class="{{ stats.competitor_name|clear_class }}_page_link_yahoo" rel="keyword_hover">
                             {% if stats.project_added <= date %}
-                                {% if stats.page_link_yahoo %}{{ stats.page_link_yahoo }}{% else %}-{% endif %}
+                                {% if stats.page_link_yahoo %}
+                                    {% if stats.page_link_yahoo|length>40 %}
+                                        {{ stats.page_link_yahoo|slice(0, 40) }}...
+                                        <a href="javascript:;" class="popup_hover_simple" data-original-title="Full link" data-content="<div style='word-wrap: break-word;'>{{ stats.page_link_yahoo }}</div>"><i class="icon-question-sign"></i></a>
+                                    {% else %}
+                                        {{ stats.page_link_yahoo }}
+                                    {% endif %}
+                                {% else %}
+                                    -
+                                {% endif %}
                             {% else %}
                                 <center><a href="javascript:;" class="site_not_tracker"><i class="icon-exclamation-sign"></i></a></center>
                             {% endif %}
