@@ -63,7 +63,7 @@
                             {% if stats.project_added <= date %}
                                 {% if stats.page_link_google %}
                                     {% if stats.page_link_google|length>40 %}
-                                        {{ stats.page_link_google|slice(0, 40) }}...
+                                        {{ stats.page_link_google|truncate(0, 40) }}...
                                         <a href="javascript:;" class="popup_hover_simple" data-original-title="Full link" data-content="<div style='word-wrap: break-word;'>{{ stats.page_link_google }}</div>"><i class="icon-question-sign"></i></a>
                                     {% else %}
                                         {{ stats.page_link_google }}
@@ -79,7 +79,7 @@
                             {% if stats.project_added <= date %}
                                 {% if stats.page_link_bing %}
                                     {% if stats.page_link_bing|length>40 %}
-                                        {{ stats.page_link_bing|slice(0, 40) }}...
+                                        {{ stats.page_link_bing|truncate(0, 40) }}...
                                         <a href="javascript:;" class="popup_hover_simple" data-original-title="Full link" data-content="<div style='word-wrap: break-word;'>{{ stats.page_link_bing }}</div>"><i class="icon-question-sign"></i></a>
                                     {% else %}
                                         {{ stats.page_link_bing }}
@@ -95,7 +95,7 @@
                             {% if stats.project_added <= date %}
                                 {% if stats.page_link_yahoo %}
                                     {% if stats.page_link_yahoo|length>40 %}
-                                        {{ stats.page_link_yahoo|slice(0, 40) }}...
+                                        {{ stats.page_link_yahoo|truncate(0, 40) }}...
                                         <a href="javascript:;" class="popup_hover_simple" data-original-title="Full link" data-content="<div style='word-wrap: break-word;'>{{ stats.page_link_yahoo }}</div>"><i class="icon-question-sign"></i></a>
                                     {% else %}
                                         {{ stats.page_link_yahoo }}
