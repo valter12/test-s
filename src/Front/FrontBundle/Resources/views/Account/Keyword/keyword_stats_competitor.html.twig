@@ -120,6 +120,9 @@
                                         </a>
                                         <ul class="dropdown-menu">
                                             <li><a href="javascript:;" onclick="notes('{{ app.request.get('keyword_id') }}', '{{ date }}')"><i class="icon-list-alt"></i>&nbsp;Record notes</a></li>
+                                            <li><a href="{{ path('account_se_results') }}?se=google&keyword_id={{ app.request.get('keyword_id') }}&date={{ date }}">&nbsp;See Google results</a></li>
+                                            <li><a href="{{ path('account_se_results') }}?se=bing&keyword_id={{ app.request.get('keyword_id') }}&date={{ date }}">&nbsp;See Bing results</a></li>
+                                            <li><a href="{{ path('account_se_results') }}?se=yahoo&keyword_id={{ app.request.get('keyword_id') }}&date={{ date }}">&nbsp;See Yahoo results</a></li>
                                         </ul>
                                     </li>
                                 </ul>
