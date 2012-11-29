@@ -61,7 +61,12 @@ class KeywordRepository extends EntityRepository {
     }
 
     public function getKeywordById($keyword_id) {
-        $query = "SELECT * FROM keyword WHERE id=:keyword_id";
+        $query = "
+            SELECT k.*, p.project_hash
+            FROM keyword k, project p
+            WHERE k.id=:keyword_id
+            AND k.project_id=p.id
+        ";
         $q = $this->getEntityManager()->getConnection()->executeQuery($query, array(':keyword_id' => $keyword_id));
         return $q->fetch(2);
     }
@@ -70,6 +75,19 @@ class KeywordRepository extends EntityRepository {
         $query = "SELECT * FROM keyword WHERE project_id=(SELECT project_id FROM keyword WHERE id=:keyword_id)";
         $q = $this->getEntityManager()->getConnection()->executeQuery($query, array(':keyword_id' => $keyword_id));
         return $q->fetchAll(2);
+    }
+    
+    public function getKeywordSEresult($keyword_id, $date, $se) {
+        $query = "
+            SELECT sr.*, k.keyword
+            FROM saved_se_results sr, keyword k 
+            WHERE sr.keyword_id=:keyword_id 
+            AND sr.keyword_id=k.id
+            AND sr.se_name=:se_name 
+            AND sr.added=:date
+        ";
+        $q = $this->getEntityManager()->getConnection()->executeQuery($query, array(':keyword_id' => $keyword_id, ':se_name' => $se, ':date' => $date));
+        return $q->fetch(2);
     }
 
 
