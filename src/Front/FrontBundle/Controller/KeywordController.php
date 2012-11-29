@@ -4,6 +4,7 @@ namespace Front\FrontBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Front\FrontBundle\Security\Auth as Auth;
+use Front\FrontBundle\Libs\dom_parser\simple_html_dom;
 
 /**
  * Keyword controller.
@@ -163,6 +164,165 @@ class KeywordController extends Controller {
             $this->get('session')->setFlash('notice', 'The project was updated.');
         }
         return $this->redirect($this->generateUrl('account_projects'));
+    }
+    
+    public function seResultAction() {
+        if (!Auth::isAuth()) {
+            return $this->redirect($this->generateUrl('login_register'));
+        }
+        
+        $request = $this->getRequest();
+        $em = $this->getDoctrine()->getEntityManager();
+
+        $keyword_id = $request->get('keyword_id');
+        $se = $request->get('se');
+        $date = $request->get('date');
+        
+        $allowed_se = array('google', 'bing', 'yahoo');
+        
+        if(!in_array($se, $allowed_se)) {
+            $this->get('session')->setFlash('error', 'Wrong search engine.');
+            if($request->headers->get('referer')) {
+                return $this->redirect($request->headers->get('referer'));
+            } else {
+                return $this->redirect($this->generateUrl('account_projects'));
+            }
+        }
+        if(!is_numeric($keyword_id)) {
+            $this->get('session')->setFlash('error', 'Wrong request.');
+            if($request->headers->get('referer')) {
+                return $this->redirect($request->headers->get('referer'));
+            } else {
+                return $this->redirect($this->generateUrl('account_projects'));
+            }
+        }
+        
+        $keyword_exists = $em->getRepository('FrontFrontBundle:Keyword')->userOwnsKeyword(Auth::getAuthParam('id'), $keyword_id);
+        
+        $project_data = $em->getRepository('FrontFrontBundle:Project')->getProjectDataByKeyword($keyword_id);
+        $keyword_data = $em->getRepository('FrontFrontBundle:Keyword')->getKeywordById($keyword_id);
+        
+        $competitors = $em->getRepository('FrontFrontBundle:Competitor')->getCompetitorsByKeywordId($keyword_id);
+        
+        for($i=0;$i<count($competitors);$i++) {
+            $competitor_list[] = $competitors[$i]['competitor_domain'];
+        }
+        
+        
+        if (!$keyword_exists['cnt']) {
+            $this->get('session')->setFlash('error', 'The request is incorrect (E22).');
+            if($request->headers->get('referer')) {
+                return $this->redirect($request->headers->get('referer'));
+            } else {
+                return $this->redirect($this->generateUrl('account_projects'));
+            }
+        }
+        $se_result_raw = $em->getRepository('FrontFrontBundle:Keyword')->getKeywordSEresult($keyword_id, $date, $se);
+        
+        $se_result_final = '';
+        $se_result = '<ul class="se_results_ul">'.$se_result_raw['se_result'].'</ul>';
+        if(!empty($se_result_raw)) {
+            switch($se) {
+                case 'google':
+                    $se_result_final = $this->parseGoogleResults($se_result, $project_data['project_domain'], $competitor_list);
+                    break;
+                case 'bing':
+                    $se_result_final = $this->parseBingResults($se_result, $project_data['project_domain'], $competitor_list);
+                    break;
+                case 'yahoo':
+                    $se_result_final = $this->parseYahooResults($se_result, $project_data['project_domain'], $competitor_list);
+                    break;
+            }
+        }
+        $se_result_raw['se_result'] = $se_result_final;
+        $project_list = $em->getRepository('FrontFrontBundle:Project')->getProjects(Auth::getAuthParam('id'));
+//        \Backend\BackendBundle\Additional\Debug::d1($project_list);
+        
+        return $this->render('FrontFrontBundle:Account:Keyword/keyword_se_result.html.twig', array('se_result' => $se_result_raw, 'project_list' => $project_list, 'keyword_data' => $keyword_data));
+    }
+    
+    protected function parseGoogleResults($se_result, $own_domain, $competitors) {
+        $return_arr = $aux = array();
+        $dom_parser_html_obj = new simple_html_dom($se_result);
+        $counter = 0;
+        $competitor_cnt = count($competitors);
+        foreach ($dom_parser_html_obj->find('li') as $li_element) {
+            foreach ($li_element->find('h3 a') as $a_element) {
+                $counter++;
+                if (preg_match('/^(?:\/url\?url=)?(?:http:\/\/)?(?:www\.)?'.$own_domain.'/i', $a_element->href)) { // the domain name is in the google link
+                    $aux['own_domain_found'] = true;
+                    $a_element->href = 'http://google.com'.$a_element->href;
+                    break;
+                }
+                for ($i = 0; $i < $competitor_cnt; $i++) {
+                    if (preg_match('/^(?:\/url\?url=)?(?:http:\/\/)?(?:www\.)?'.$competitors[$i].'/i', $a_element->href)) { // the domain name is in the google link
+                        $aux['competitor_domain_found'] = true;
+                        break;
+                    }
+                }
+                $a_element->href = 'http://google.com'.$a_element->href;
+            }
+            $aux['content'] = $li_element->innertext;
+            $return_arr[] = $aux;
+            $aux = array();
+        }
+        return $return_arr;
+    }
+    
+    protected function parseBingResults($se_result, $own_domain, $competitors) {
+        $return_arr = $aux = array();
+        $dom_parser_html_obj = new simple_html_dom($se_result);
+        $counter = 0;
+        $competitor_cnt = count($competitors);
+        
+        foreach ($dom_parser_html_obj->find('ul[class=se_results_ul] li') as $li_element) {
+            foreach ($li_element->find('div div div h3 a') as $a_element) {
+                $counter++;
+                if (preg_match('/(?:http:\/\/)(?:www\.)?' . $own_domain . '/i', $a_element->href)) {
+                    $aux['own_domain_found'] = true;
+                    break;
+                }
+                for ($i = 0; $i < $competitor_cnt; $i++) {
+                    if (preg_match('/(?:http:\/\/)(?:www\.)?' . $competitors[$i] . '/i', $a_element->href)) {
+                        $aux['competitor_domain_found'] = true;
+                        break;
+                    }
+                }
+            }
+            $aux['content'] = $li_element->innertext;
+            $return_arr[] = $aux;
+            $aux = array();
+        }
+        
+        return $return_arr;
+    }
+    
+    protected function parseYahooResults($se_result, $own_domain, $competitors) {
+        $return_arr = $aux = array();
+        $dom_parser_html_obj = new simple_html_dom($se_result);
+        $competitor_cnt = count($competitors);
+        
+        foreach ($dom_parser_html_obj->find('ul[class=se_results_ul] li') as $li_element) {
+            foreach ($li_element->find('div div h3 a') as $a_element) {
+                if (preg_match('/.*\*((?:http%3a\/\/)?(?:www\.)?'.$own_domain.'.*).*/i', $a_element->href)) {
+                    $aux['own_domain_found'] = true;
+                    $a_element->href = 'http://search.yahoo.com'.$a_element->href;
+                    break;
+                }
+                for ($i = 0; $i < $competitor_cnt; $i++) {
+                    if (preg_match('/.*\*((?:http%3a\/\/)?(?:www\.)?'.$competitors[$i].'.*).*/i', $a_element->href)) {
+                        $aux['competitor_domain_found'] = true;
+                        break;
+                    }
+                }
+                $a_element->href = 'http://search.yahoo.com'.$a_element->href;
+            }
+            $aux['content'] = $li_element->innertext;
+            $return_arr[] = $aux;
+            $aux = array();
+        }
+        
+        return $return_arr;
     }
 
 }
