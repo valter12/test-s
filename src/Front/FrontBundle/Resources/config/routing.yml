@@ -188,4 +188,9 @@ account_view_email_report:
 account_settings:
   pattern: /user-settings
   defaults: { _controller: FrontFrontBundle:User:settings }
-  
+
+# Search engine results
+account_se_results:
+  pattern: /search-engine-results
+  defaults: { _controller: FrontFrontBundle:Keyword:seResult }
+
