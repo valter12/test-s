@@ -366,3 +366,24 @@ body {
 .competitor_overview td {
     padding: 7px;
 }
+.se_results_table a{
+    font-size: 14px;
+}
+.se_results_table{
+    font-size: 12px;
+}
+.se_results_table .se_td{
+    background-color: #F5F5EB;
+    padding-left:15px;
+    padding-top:7px;
+    padding-bottom:10px;
+}
+.se_results_table .se_td_sep{
+    height: 10px;
+}
+.se_results_table .own_domain_se td{
+    background-color: #94FFC1;
+}
+.se_results_table .competitor_domain_se td{
+    background-color: #E7A2FF;
+}
