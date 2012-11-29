@@ -1,0 +1,55 @@
+{% extends '::account_base.html.twig' %}
+{% block body %}
+    <div class="well">
+        <form action="{{ path('account_se_results') }}" method="get" style="margin:0">
+            <select name="" onchange="getProjectKeywords(this.value);applyChangesHint()">
+               {% for item in project_list %}
+                   <option value="{{ item.project_hash }}" {% if keyword_data.project_id == item.id %}selected="selected"{% endif %}>{{ item.project_name }}</option>
+               {% endfor %}
+            </select>
+            <i class="icon-arrow-right"></i> 
+            <span id="keywords_placeholder"></span>
+            &nbsp;&nbsp;&nbsp;
+            Choose date: <input type="text" style="width:100px;" onchange="applyChangesHint();" name="date" id="from_date" class="datepicker" value="{{ app.request.get('date') }}"> 
+            <div class="sep"></div>
+            <input type="hidden" name="se" value="{{ app.request.get('se') }}">
+            <input type="submit" id="filter_apply_changes" value="Apply" class="btn btn-primary"> <span id="apply_changes_hint">- don't forget to apply the changes</span>
+        </form>
+    </div>
+    {{ se_result.se_name|upper }} result for keyword "<b>{{ se_result.keyword }}</b>" for date {{ se_result.added }}
+    <div class="sep"></div>
+    {% if se_result|length %}
+        <table class="se_results_table">
+            {% for key,item in se_result.se_result %}
+                <tr class="{% if item.own_domain_found %}own_domain_se{% elseif item.competitor_domain_found %}competitor_domain_se{% endif %}">
+                    <td class="se_td" valign="top" style="font-size: 20px;font-weight: bold;">{{ key+1 }}</td>  
+                    <td class="se_td">{{ item.content|raw }}</td>  
+                </tr>
+                <tr>
+                    <td class="se_td_sep"> </td>
+                    <td class="se_td_sep"> </td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        No data
+    {% endif %}
+{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="../css/jquery-ui-1.8.22.custom.css" rel="stylesheet" type="text/css" />
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('js/jquery-ui-1.8.22.custom.min_datepicker.js') }}"></script>
+    <script src="{{ asset('js/pages/keyword_stats.js') }}"></script>
+    <script src="{{ asset('js/pages/chart.js') }}"></script>
+{% endblock %}
+{% block inline_javascripts %}
+    <script>
+        jQuery(document).ready(function(){
+            jQuery('.datepicker').datepicker({dateFormat: 'yy-mm-dd'});
+        });
+        getProjectKeywords('{{ keyword_data.project_hash }}');
+    </script>
+{% endblock %}
