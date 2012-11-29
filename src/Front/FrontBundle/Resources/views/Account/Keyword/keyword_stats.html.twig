@@ -17,6 +17,7 @@
                 <th>Bing link</th>
                 <th>Yahoo link</th>
                 <th>Other</th>
+                <th>Options</th>
             </tr>
             {% for item in keyword_stats %}
                 <tr>
@@ -79,6 +80,22 @@
                         {% endif %}
                     </td>
                     <td>{% if item.google_description_change or item.bing_description_change or item.yahoo_description_change %}<a href="javascript:;" onclick="getChangesModal({{ item.track_id }}, 0)" class="popup_hover_simple_left" data-original-title="Record contains changes" data-content="You have some changes on this record. Click the icon to see them."><i class="icon-asterisk"></i></a>{% else %}&nbsp;{% endif %}</td>
+                    <td width="160" style="padding:0">
+                        <ul class="nav nav-pills" style="margin:0 auto;width:78px;">
+                            <li class="dropdown">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="javascript:;">
+                                    Options
+                                    <b class="caret"></b>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="javascript:;" onclick="notes('{{ app.request.get('keyword_id') }}', '{{ item.track_date }}')"><i class="icon-list-alt"></i>&nbsp;Record notes</a></li>
+                                    <li><a href="{{ path('account_se_results') }}?se=google&keyword_id={{ app.request.get('keyword_id') }}&date={{ item.track_date }}">&nbsp;See Google results</a></li>
+                                    <li><a href="{{ path('account_se_results') }}?se=bing&keyword_id={{ app.request.get('keyword_id') }}&date={{ item.track_date }}">&nbsp;See Bing results</a></li>
+                                    <li><a href="{{ path('account_se_results') }}?se=yahoo&keyword_id={{ app.request.get('keyword_id') }}&date={{ item.track_date }}">&nbsp;See Yahoo results</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </td>
                 </tr>
             {% endfor %}
         </table>
