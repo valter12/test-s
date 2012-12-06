@@ -66,6 +66,10 @@ class CronWatcherController extends Controller {
         }
         $em = $this->getDoctrine()->getEntityManager();
         $cron_profile = $em->getRepository('FrontFrontBundle:CronWatcher')->getCronProfile($session_id);
+        $cnt = count($cron_profile);
+//        for ($i = 0; $i < $cnt; $i++) {
+//            $cron_profile[$i]['message'] = 
+//        }
 //        \Backend\BackendBundle\Additional\Debug::d1($cron_profile);
         
         return $this->render('BackendBackendBundle:CronWatcher:cron_profile.html.twig', array('cron_profile' => $cron_profile));
