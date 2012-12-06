@@ -12,7 +12,15 @@
     {% for item in cron_profile %}
         <tr class="{% if item.cron_status == 2 %}warning {% elseif item.cron_status == 3 %}error{% endif %}">
             <td>{{ item.cron_name }}</td>
-            <td>{{ item.cron_status }}</td>
+            <td>
+                {% if item.cron_status==1 %}
+                    NORMAL
+                {% elseif item.cron_status==2 %}
+                    WARNING
+                {% elseif item.cron_status==3 %}
+                    ERROR
+                {% endif %}
+            </td>
             <td style="text-align: left !important;">{{ item.message|nl2br|raw }}</td>
             <td>{{ item.added }}</td>
         </tr>
