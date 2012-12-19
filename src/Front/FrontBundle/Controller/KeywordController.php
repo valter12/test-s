@@ -245,17 +245,18 @@ class KeywordController extends Controller {
         $return_arr = $aux = array();
         $dom_parser_html_obj = new simple_html_dom($se_result);
         $counter = 0;
+        $pattern = '/^(?:\/url\?q=)?(?:http:\/\/)?(?:www\.)?';
         $competitor_cnt = count($competitors);
         foreach ($dom_parser_html_obj->find('li') as $li_element) {
             foreach ($li_element->find('h3 a') as $a_element) {
                 $counter++;
-                if (preg_match('/^(?:\/url\?url=)?(?:http:\/\/)?(?:www\.)?'.$own_domain.'/i', $a_element->href)) { // the domain name is in the google link
+                if (preg_match($pattern.$own_domain.'/i', $a_element->href)) { // the domain name is in the google link
                     $aux['own_domain_found'] = true;
                     $a_element->href = 'http://google.com'.$a_element->href;
                     break;
                 }
                 for ($i = 0; $i < $competitor_cnt; $i++) {
-                    if (preg_match('/^(?:\/url\?url=)?(?:http:\/\/)?(?:www\.)?'.$competitors[$i].'/i', $a_element->href)) { // the domain name is in the google link
+                    if (preg_match($pattern.$competitors[$i].'/i', $a_element->href)) { // the domain name is in the google link
                         $aux['competitor_domain_found'] = true;
                         break;
                     }
