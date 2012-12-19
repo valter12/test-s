@@ -28,7 +28,7 @@ class ProjectController extends Controller {
         $cnt_projects = count($project_list);
         $counter = 0;
         for ($i = 0; $i < $cnt_projects; $i++) {
-            $project_stats = $keyword_overall_for_graph_raw_data = $em->getRepository('FrontFrontBundle:KeywordTrack')->getOverallKeywordProgressByProjectId($project_list[$i]['id'], '5');
+            $project_stats = $keyword_overall_for_graph_raw_data = $em->getRepository('FrontFrontBundle:KeywordTrack')->getOverallKeywordProgressByProjectId($project_list[$i]['id'], date('Y-m-d', strtotime('-5 day', time())), date('Y-m-d'));
             $project_stats = array_reverse($project_stats);
             $aux_stats = CommonLib::formatDataForGoogleChart($project_stats);
             
@@ -154,7 +154,6 @@ class ProjectController extends Controller {
             $yesterday = date('Y-m-d', strtotime('-2 day', time()));
             $expl_str = 'the shown differences are between '.$yesterday.' and '.$today.'';
         }
-
         // keyword count
         $keyword_cnt = $em->getRepository('FrontFrontBundle:Keyword')->getProjectKeywordCount($project_details['id']);
 
@@ -187,14 +186,14 @@ class ProjectController extends Controller {
         
         // new in top 10 keyword list
         $new_top10_keyword_list = $em->getRepository('FrontFrontBundle:KeywordTrack')->getNewTop10KeywordsByProjectId($project_details['id'], $today, '1 DAY');
-        
+
         // google, bing, yahoo overall stats for keywords
-        $keyword_overall_for_graph_raw_data = $em->getRepository('FrontFrontBundle:KeywordTrack')->getOverallKeywordProgressByProjectId($project_details['id'], '30');
+        $keyword_overall_for_graph_raw_data = $em->getRepository('FrontFrontBundle:KeywordTrack')->getOverallKeywordProgressByProjectId($project_details['id'], date('Y-m-d', strtotime('-30 day', time())), date('Y-m-d'));
+//        \Backend\BackendBundle\Additional\Debug::d1($keyword_overall_for_graph_raw_data);
         $keyword_overall_for_graph = CommonLib::getOverallKeywordsPosition($keyword_overall_for_graph_raw_data);
         $keyword_overall_for_graph['hash_chart'] = md5($project_details['id'].$project_details['project_name']);
         $keyword_overall_for_graph['project_name'] = $project_details['project_name'];
 
-        
         $result_overall = $this->getOverallWithCompetitors($project_details, $em);
         
 //        \Backend\BackendBundle\Additional\Debug::d1($result_overall);
@@ -224,7 +223,7 @@ class ProjectController extends Controller {
         $days_30_ago = date('Y-m-d', strtotime('-30 day', time()));
         
         $result_overall = array();
-        $overall_data = $em->getRepository('FrontFrontBundle:KeywordTrack')->getOverallKeywordProgressByProjectId($project_details['id'], false, $days_30_ago);
+        $overall_data = $em->getRepository('FrontFrontBundle:KeywordTrack')->getOverallKeywordProgressByProjectId($project_details['id'], date('Y-m-d', strtotime('-30 day', time())), date('Y-m-d'));
         $keyword_overall_competitors = array('se_stats' => $overall_data);
         $keyword_overall_competitors['hash_chart'] = md5($project_details['id'].$project_details['project_name']);
         $keyword_overall_competitors['project_name'] = $project_details['project_name'];
@@ -236,10 +235,10 @@ class ProjectController extends Controller {
         // getting raw data for competitors
         for($i=0;$i<$competitor_cnt;$i++) {
             $competitor_details = $em->getRepository('FrontFrontBundle:Competitor')->getCompetitorById(Auth::getAuthParam('id'), $competitor_list[$i]['id']);
-            if(empty($competitor_details)) {
+            if(empty($competitor_details)) { // check if user owns competitor
                continue; 
             }
-            $overall_data = $em->getRepository('FrontFrontBundle:KeywordTrackCompetitor')->getOverallKeywordProgressByProjectId($project_details['id'], $competitor_details['id'], false, $days_30_ago, false);
+            $overall_data = $em->getRepository('FrontFrontBundle:KeywordTrackCompetitor')->getOverallKeywordProgressByProjectId($project_details['id'], $competitor_details['id'], date('Y-m-d', strtotime('-30 day', time())), date('Y-m-d'));
             if(empty($overall_data)) {
                 continue;
             }
