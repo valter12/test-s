@@ -120,7 +120,13 @@ class ChartController extends Controller {
         }
         $request = $this->getRequest();
         $from_date = $request->get('from_date');
-        $to_date = $request->get('to_date');
+        if(!$from_date) {
+            $from_date = date('Y-m-d', strtotime('-30 day', time()));
+        }
+        $to_date = $request->get('to_date', date('Y-m-d'));
+        if(!$to_date) {
+            $to_date = date('Y-m-d');
+        }
         
         $em = $this->getDoctrine()->getEntityManager();
         $project_list = $em->getRepository('FrontFrontBundle:Project')->getProjects(Auth::getAuthParam('id'));
@@ -145,7 +151,7 @@ class ChartController extends Controller {
             return $this->redirect($request->headers->get('referer'));
             return $this->redirect($this->generateUrl('account_projects'));
         }
-        $nr_days = 30;
+        
         $graph_period = '30 days';
         if($from_date || $to_date) {
             $nr_days = false;
@@ -159,7 +165,7 @@ class ChartController extends Controller {
         }
         $graph_period = '<b>'.$graph_period.'</b>';
         
-        $keyword_overall_for_graph_raw_data = $em->getRepository('FrontFrontBundle:KeywordTrack')->getOverallKeywordProgressByProjectId($project_details['id'], $nr_days, $from_date, $to_date);
+        $keyword_overall_for_graph_raw_data = $em->getRepository('FrontFrontBundle:KeywordTrack')->getOverallKeywordProgressByProjectId($project_details['id'], $from_date, $to_date);
         $keyword_overall_for_graph = CommonLib::getOverallKeywordsPosition($keyword_overall_for_graph_raw_data);
         $keyword_overall_for_graph['hash_chart'] = md5($project_details['id'].$project_details['project_name']);
         $keyword_overall_for_graph['project_name'] = $project_details['project_name'];
@@ -176,7 +182,7 @@ class ChartController extends Controller {
             if(empty($competitor_details)) {
                continue; 
             }
-            $keyword_overall_for_graph_raw_data = $em->getRepository('FrontFrontBundle:KeywordTrackCompetitor')->getOverallKeywordProgressByProjectId($project_details['id'], $competitor_details['id'], $nr_days, $from_date, $to_date);
+            $keyword_overall_for_graph_raw_data = $em->getRepository('FrontFrontBundle:KeywordTrackCompetitor')->getOverallKeywordProgressByProjectId($project_details['id'], $competitor_details['id'], $from_date, $to_date);
             if(empty($keyword_overall_for_graph_raw_data)) {
                 continue;
             }
@@ -185,7 +191,6 @@ class ChartController extends Controller {
             $keyword_overall_for_graph['project_name'] = $competitor_details['competitor_name'];
             $result[] = $keyword_overall_for_graph;
         }
-        
         return $this->render('FrontFrontBundle:Account:Chart/overall_comparative_chart.html.twig', array('result' => $result, 'project_list' => $project_list, 'project_hash' => $project_details['project_hash'], 'graph_period' => $graph_period));
     }
 
