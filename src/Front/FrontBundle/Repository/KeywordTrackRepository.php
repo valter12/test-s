@@ -6,7 +6,7 @@ use Doctrine\ORM\EntityRepository;
 
 class KeywordTrackRepository extends EntityRepository {
 
-    public function getKeywordStats($keyword_id, $results_per_page, $from_date, $to_date, $page, $order='DESC') {
+    public function getKeywordStats($keyword_id, $results_per_page, $from_date, $to_date, $page, $order = 'DESC') {
         $sql_date = $params = array();
         $sql_date_str = false;
         if ($from_date) {
@@ -32,9 +32,9 @@ class KeywordTrackRepository extends EntityRepository {
         $total = $result_total['total'];
 
         $limit_str = '';
-        if($results_per_page) {
+        if ($results_per_page) {
             $offset = ($page - 1) * $results_per_page + 1;
-            if($offset == 1) {
+            if ($offset == 1) {
                 $offset = 0;
             }
             $limit_str = "LIMIT " . $offset . ", " . $results_per_page;
@@ -44,16 +44,16 @@ class KeywordTrackRepository extends EntityRepository {
             FROM keyword_track
             WHERE keyword_id=:keyword_id
             " . $sql_date_str . "
-            ORDER BY track_date ".$order."
-        ".$limit_str;
-        
+            ORDER BY track_date " . $order . "
+        " . $limit_str;
+
         $params[':keyword_id'] = $keyword_id;
         $q = $this->getEntityManager()->getConnection()->executeQuery($query, $params);
         $result = $q->fetchAll(2);
         return array('result_final' => $result, 'total' => $total);
     }
 
-    public function getKeywordStatsWithCompetitors($keyword_id, $competitor_ids, $results_per_page, $from_date, $to_date, $page, $order='DESC') {
+    public function getKeywordStatsWithCompetitors($keyword_id, $competitor_ids, $results_per_page, $from_date, $to_date, $page, $order = 'DESC') {
         $sql_date = $params = array();
         $sql_date_str = false;
 
@@ -79,14 +79,14 @@ class KeywordTrackRepository extends EntityRepository {
                     FROM
                         keyword_track
                     WHERE
-                        keyword_id = ".$keyword_id." " . $sql_date_str . ")
+                        keyword_id = " . $keyword_id . " " . $sql_date_str . ")
                     UNION ALL 
                     (SELECT 
                         DATE_FORMAT(track_date, '%Y-%m-%d') AS track_date
                     FROM
                         keyword_track_competitor
                     WHERE
-                        keyword_id = ".$keyword_id." " . $sql_date_str . " AND competitor_id IN (" . implode(', ', $competitor_ids) . ")
+                        keyword_id = " . $keyword_id . " " . $sql_date_str . " AND competitor_id IN (" . implode(', ', $competitor_ids) . ")
                     )
                 ) AS union_track
                 GROUP BY track_date
@@ -98,9 +98,9 @@ class KeywordTrackRepository extends EntityRepository {
         $total = $total_result['total'];
 
         $limit_str = '';
-        if($results_per_page) {
+        if ($results_per_page) {
             $offset = ($page - 1) * $results_per_page + 1;
-            if($offset == 1) {
+            if ($offset == 1) {
                 $offset = 0;
             }
             $limit_str = "LIMIT " . $offset . ", " . $results_per_page;
@@ -108,15 +108,15 @@ class KeywordTrackRepository extends EntityRepository {
         // selecting dates with pagination from keyword_track and keyword_track_competitor
         $query = "
             SELECT track_date FROM(
-                (SELECT DATE_FORMAT(track_date, '%Y-%m-%d') AS track_date FROM keyword_track WHERE keyword_id=".$keyword_id." " . $sql_date_str . ")
+                (SELECT DATE_FORMAT(track_date, '%Y-%m-%d') AS track_date FROM keyword_track WHERE keyword_id=" . $keyword_id . " " . $sql_date_str . ")
                 UNION ALL
-                (SELECT DATE_FORMAT(track_date, '%Y-%m-%d') AS track_date FROM keyword_track_competitor WHERE keyword_id=".$keyword_id." " . $sql_date_str . " AND competitor_id IN(" . implode(', ', $competitor_ids) . "))
+                (SELECT DATE_FORMAT(track_date, '%Y-%m-%d') AS track_date FROM keyword_track_competitor WHERE keyword_id=" . $keyword_id . " " . $sql_date_str . " AND competitor_id IN(" . implode(', ', $competitor_ids) . "))
             ) AS union_track
             GROUP BY track_date
-            ORDER BY DATE_FORMAT(track_date, '%Y-%m-%d') ".$order."
-            ".$limit_str."
+            ORDER BY DATE_FORMAT(track_date, '%Y-%m-%d') " . $order . "
+            " . $limit_str . "
         ";
-        
+
         $q = $this->getEntityManager()->getConnection()->executeQuery($query, $params);
         $result_dates = $q->fetchAll(2);
 
@@ -201,7 +201,7 @@ class KeywordTrackRepository extends EntityRepository {
                         IF(DATE_FORMAT(ktc.track_date, '%Y-%m-%d')='" . $dates[$i] . "', ktc.yahoo_description_change, 0) AS yahoo_description_change 
                     FROM
                         competitor c
-                    LEFT JOIN keyword_track_competitor ktc ON ktc.competitor_id = c.id AND ktc.keyword_id = " . $keyword_id . " AND ktc.competitor_id = " . $competitor_ids[$j] . " AND (DATE_FORMAT(ktc.track_date, '%Y-%m-%d') = '" . $dates[$i] . "' OR DATE_FORMAT(ktc.track_date, '%Y-%m-%d')=(SELECT MAX(DATE_FORMAT(track_date, '%Y-%m-%d')) FROM keyword_track_competitor WHERE DATE_FORMAT(track_date, '%Y-%m-%d')<'" . $dates[$i] . "' AND keyword_id=".$keyword_id." AND competitor_id=" . $competitor_ids[$j] . "))
+                    LEFT JOIN keyword_track_competitor ktc ON ktc.competitor_id = c.id AND ktc.keyword_id = " . $keyword_id . " AND ktc.competitor_id = " . $competitor_ids[$j] . " AND (DATE_FORMAT(ktc.track_date, '%Y-%m-%d') = '" . $dates[$i] . "' OR DATE_FORMAT(ktc.track_date, '%Y-%m-%d')=(SELECT MAX(DATE_FORMAT(track_date, '%Y-%m-%d')) FROM keyword_track_competitor WHERE DATE_FORMAT(track_date, '%Y-%m-%d')<'" . $dates[$i] . "' AND keyword_id=" . $keyword_id . " AND competitor_id=" . $competitor_ids[$j] . "))
                     WHERE c.id = " . $competitor_ids[$j] . "
                     ORDER BY DATE_FORMAT(ktc.track_date, '%Y-%m-%d') DESC
                     LIMIT 1)
@@ -260,7 +260,7 @@ class KeywordTrackRepository extends EntityRepository {
                 kt.id = (SELECT MAX(id) FROM keyword_track WHERE id < :track_id AND keyword_id=(SELECT keyword_id FROM keyword_track WHERE id=:track_id) LIMIT 1) 
             AND kt.keyword_id = k.id AND k.project_id = p.id AND p.user_id = :user_id
         ";
-        
+
         $q = $this->getEntityManager()->getConnection()->executeQuery($query, array(':track_id' => $track_id, ':user_id' => $user_id));
         $result = $q->fetchAll(2);
         return $result;
@@ -297,12 +297,12 @@ class KeywordTrackRepository extends EntityRepository {
                 ktc.id = (SELECT MAX(id) FROM keyword_track_competitor WHERE id < :track_id AND keyword_id=(SELECT keyword_id FROM keyword_track_competitor WHERE id=:track_id) LIMIT 1) 
             AND ktc.keyword_id = k.id AND k.project_id = p.id AND p.user_id = :user_id
         ";
-        
+
         $q = $this->getEntityManager()->getConnection()->executeQuery($query, array(':track_id' => $track_id, ':user_id' => $user_id));
         $result = $q->fetchAll(2);
         return $result;
     }
-    
+
     public function getAvgStatsPerProject($user_id, $date) {
         $date_periods = "DATE_FORMAT(kt.track_date, '%Y-%m-%d') = :date";
         $query = "
@@ -313,7 +313,7 @@ class KeywordTrackRepository extends EntityRepository {
                 'rises' as `type`
             FROM 
                 project p,
-                keyword k LEFT JOIN keyword_track kt ON kt.keyword_id=k.id AND (kt.google_change > 0 OR kt.bing_change > 0 OR kt.yahoo_change > 0) AND ".$date_periods."
+                keyword k LEFT JOIN keyword_track kt ON kt.keyword_id=k.id AND (kt.google_change > 0 OR kt.bing_change > 0 OR kt.yahoo_change > 0) AND " . $date_periods . "
             WHERE 
                 k.project_id=p.id
                 AND p.user_id=:user_id
@@ -327,48 +327,48 @@ class KeywordTrackRepository extends EntityRepository {
                 'drops' as `type`
             FROM 
                 project p,
-                keyword k LEFT JOIN keyword_track kt ON kt.keyword_id=k.id AND (kt.google_change < 0 OR kt.bing_change < 0 OR kt.yahoo_change < 0) AND ".$date_periods."
+                keyword k LEFT JOIN keyword_track kt ON kt.keyword_id=k.id AND (kt.google_change < 0 OR kt.bing_change < 0 OR kt.yahoo_change < 0) AND " . $date_periods . "
             WHERE 
                 k.project_id=p.id
                 AND p.user_id=:user_id
                 AND DATE_FORMAT(k.last_track, '%Y%m%d') = DATE_FORMAT(:date, '%Y%m%d')
             GROUP BY p.id
         ";
-        
+
         $q = $this->getEntityManager()->getConnection()->executeQuery($query, array(':user_id' => $user_id, ':date' => $date));
         $result = $q->fetchAll(2);
         return $result;
     }
-    
+
     /**
      * gets avg position for all keywords of a project
      */
-    public function getProjectAvgPosition($project_id, $date=false) {
+    public function getProjectAvgPosition($project_id, $date = false) {
         $params = array();
-        
+
         $params[':project_id'] = $project_id;
-        
+
         $primary_query = "
             SELECT 
                 MAX(kt1.id) as id
             FROM keyword_track kt1, keyword k1
             WHERE kt1.keyword_id=k1.id
-            AND k1.project_id=".$project_id."
-            AND DATE_FORMAT(kt1.track_date, '%Y-%m-%d') <= '".$date."'
+            AND k1.project_id=" . $project_id . "
+            AND DATE_FORMAT(kt1.track_date, '%Y-%m-%d') <= '" . $date . "'
             GROUP BY k1.id
         ";
-        
+
         $q_primary = $this->getEntityManager()->getConnection()->executeQuery($primary_query, array());
         $primary_result = $q_primary->fetchAll(2);
-        if(empty($primary_result)) {
+        if (empty($primary_result)) {
             return;
         }
         $cnt = count($primary_result);
         $ids = array();
-        for($i=0;$i<$cnt;$i++) {
+        for ($i = 0; $i < $cnt; $i++) {
             $ids[] = $primary_result[$i]['id'];
         }
-        
+
         $query = "
             SELECT 
                 ((SUM(CASE WHEN kt.google_position > 0 THEN kt.google_position ELSE 100 END)+(((SELECT COUNT(id) FROM keyword WHERE project_id=:project_id)-COUNT(kt.id))*100)))/((SELECT COUNT(id) FROM keyword WHERE project_id=:project_id)) as avg_google_position,
@@ -377,32 +377,32 @@ class KeywordTrackRepository extends EntityRepository {
             FROM keyword_track kt
             WHERE 
             kt.id IN (
-                ".implode(',', $ids)."
+                " . implode(',', $ids) . "
             )
-            AND DATE_FORMAT(kt.track_date, '%Y-%m-%d') <= '".$date."'
+            AND DATE_FORMAT(kt.track_date, '%Y-%m-%d') <= '" . $date . "'
         ";
-        
-        
+
+
         $q = $this->getEntityManager()->getConnection()->executeQuery($query, $params);
-        
+
         $result = $q->fetch(2);
         return $result;
     }
-    
-    public function getTop10keywordCntByProjectId($project_id, $date=false) {
+
+    public function getTop10keywordCntByProjectId($project_id, $date = false) {
         $params = array();
         $str_cond = '';
-        
-        if($date) {
+
+        if ($date) {
             $params[':date'] = $date;
             $cond[] = "DATE_FORMAT({tbl_holder}.track_date, '%Y-%m-%d') <= :date";
         }
-        
-        if(!empty($cond)) {
+
+        if (!empty($cond)) {
             $str_cond = implode(' AND ', $cond);
-            $str_cond = ' AND '.$str_cond;
+            $str_cond = ' AND ' . $str_cond;
         }
-        
+
         $query = "
             SELECT 
                 COUNT(k.id) as cnt
@@ -411,83 +411,83 @@ class KeywordTrackRepository extends EntityRepository {
                 SELECT MAX(kt1.track_date) as track_date, kt1.keyword_id
                 FROM keyword_track kt1, keyword k1
                 WHERE kt1.keyword_id=k1.id
-                AND k1.project_id=:project_id ".str_replace('{tbl_holder}', 'kt1', $str_cond)."
+                AND k1.project_id=:project_id " . str_replace('{tbl_holder}', 'kt1', $str_cond) . "
                 GROUP BY k1.id
             ) q
             WHERE kt.keyword_id=k.id
             AND k.project_id=:project_id 
             AND (kt.google_position BETWEEN 1 AND 10 OR kt.bing_position BETWEEN 1 AND 10 OR kt.yahoo_position BETWEEN 1 AND 10)
             AND kt.keyword_id=q.keyword_id
-            AND kt.track_date=q.track_date ".str_replace('{tbl_holder}', 'kt', $str_cond)."
+            AND kt.track_date=q.track_date " . str_replace('{tbl_holder}', 'kt', $str_cond) . "
         ";
-        
+
         $params[':project_id'] = $project_id;
-        
+
         $q = $this->getEntityManager()->getConnection()->executeQuery($query, $params);
-        
+
         $result = $q->fetch(2);
         return $result['cnt'];
     }
-    
-    public function getCntPositionsByProjectId($project_id, $date=false, $direction='up') {
+
+    public function getCntPositionsByProjectId($project_id, $date = false, $direction = 'up') {
         $params = array();
         $str_cond = '';
-        
-        if($date) {
-            $cond[] = "DATE_FORMAT(kt.track_date, '%Y-%m-%d') = '".$date."'";
+
+        if ($date) {
+            $cond[] = "DATE_FORMAT(kt.track_date, '%Y-%m-%d') = '" . $date . "'";
         }
-        
-        if($direction) {
-            if($direction == 'up') {
+
+        if ($direction) {
+            if ($direction == 'up') {
                 $sign = '>';
-            } elseif($direction == 'down') {
+            } elseif ($direction == 'down') {
                 $sign = '<';
             }
-            $cond[] = "(kt.google_change ".$sign." 0 OR kt.bing_change ".$sign." 0 OR kt.yahoo_change ".$sign." 0)";
+            $cond[] = "(kt.google_change " . $sign . " 0 OR kt.bing_change " . $sign . " 0 OR kt.yahoo_change " . $sign . " 0)";
         }
-        
-        if(!empty($cond)) {
+
+        if (!empty($cond)) {
             $str_cond = implode(' AND ', $cond);
-            $str_cond = ' AND '.$str_cond;
+            $str_cond = ' AND ' . $str_cond;
         }
-        
+
         $query = "
             SELECT 
                 COUNT(kt.id) AS cnt
             FROM keyword_track kt, keyword k
             WHERE kt.keyword_id=k.id
-            AND k.project_id=".$project_id." ".$str_cond."
+            AND k.project_id=" . $project_id . " " . $str_cond . "
         ";
 //        die($query);
         $q = $this->getEntityManager()->getConnection()->executeQuery($query, $params);
-        
+
         $result = $q->fetch(2);
         return $result['cnt'];
     }
-    
-    public function getProjectUps($project_id, $date=false, $direction='up') {
+
+    public function getProjectUps($project_id, $date = false, $direction = 'up') {
         $params = array();
         $str_cond = '';
-        
-        if($date) {
+
+        if ($date) {
             $params[':date'] = $date;
             $cond[] = "DATE_FORMAT(kt.track_date, '%Y-%m-%d') = :date";
         }
-        
-        if($direction) {
-            if($direction == 'up') {
+
+        if ($direction) {
+            if ($direction == 'up') {
                 $sign = '>';
-            } elseif($direction == 'down') {
+            } elseif ($direction == 'down') {
                 $sign = '<';
             }
-            $cond[] = "(kt.google_change ".$sign." 0 OR kt.bing_change ".$sign." 0 OR kt.yahoo_change ".$sign." 0)";
+            $cond[] = "(kt.google_change " . $sign . " 0 OR kt.bing_change " . $sign . " 0 OR kt.yahoo_change " . $sign . " 0)";
         }
-        
-        if(!empty($cond)) {
+
+        if (!empty($cond)) {
             $str_cond = implode(' AND ', $cond);
-            $str_cond = ' AND '.$str_cond;
+            $str_cond = ' AND ' . $str_cond;
         }
-        
+
         $query = "
             SELECT 
                 k.id, k.keyword,
@@ -495,20 +495,20 @@ class KeywordTrackRepository extends EntityRepository {
                 kt.google_change, kt.bing_change, kt.yahoo_change
             FROM keyword_track kt, keyword k
             WHERE kt.keyword_id=k.id
-            AND k.project_id=:project_id ".$str_cond."
+            AND k.project_id=:project_id " . $str_cond . "
             GROUP BY k.id
         ";
-        
+
         $params[':project_id'] = $project_id;
         $q = $this->getEntityManager()->getConnection()->executeQuery($query, $params);
-        
+
         $result = $q->fetchAll(2);
         return $result;
     }
-    
+
     public function getTop10KeywordsByProjectId($project_id) {
         $params = array();
-        
+
         $query = "
             SELECT 
                 k.id, k.keyword,
@@ -529,17 +529,17 @@ class KeywordTrackRepository extends EntityRepository {
             AND kt.track_date=q.track_date
             GROUP BY k.id
         ";
-        
+
         $params[':project_id'] = $project_id;
         $q = $this->getEntityManager()->getConnection()->executeQuery($query, $params);
-        
+
         $result = $q->fetchAll(2);
         return $result;
     }
-    
+
     public function getNewTop10KeywordsByProjectId($project_id, $date, $interval) {
         $params = array();
-        
+
         $query = "
             SELECT 
                 k.id, k.keyword,
@@ -568,7 +568,7 @@ class KeywordTrackRepository extends EntityRepository {
                     FROM keyword_track kt1s, keyword k1s
                     WHERE kt1s.keyword_id=k1s.id
                     AND k1s.project_id=:project_id
-                    AND DATE_FORMAT(kt1s.track_date, '%Y-%m-%d')<'".$date."'
+                    AND DATE_FORMAT(kt1s.track_date, '%Y-%m-%d')<'" . $date . "'
                     GROUP BY k1s.id
                 ) qs
                 WHERE kts.keyword_id=ks.id
@@ -579,20 +579,20 @@ class KeywordTrackRepository extends EntityRepository {
             )
             GROUP BY k.id
         ";
-        
+
         $params[':project_id'] = $project_id;
         $q = $this->getEntityManager()->getConnection()->executeQuery($query, $params);
-        
+
         $result = $q->fetchAll(2);
         return $result;
     }
-    
+
     public function getOutOfTop10KeywordsByProjectId($project_id, $date, $interval) {
         $params = array();
-        
+
         $params[':date'] = $date;
         $params[':interval'] = $interval;
-        
+
         $query = "
             SELECT 
                 k.id, k.keyword,
@@ -613,21 +613,21 @@ class KeywordTrackRepository extends EntityRepository {
             )
             GROUP BY k.id
         ";
-        
+
         $params[':project_id'] = $project_id;
         $q = $this->getEntityManager()->getConnection()->executeQuery($query, $params);
-        
+
         $result = $q->fetchAll(2);
         return $result;
     }
-    
+
     public function getKeywordRanksForCertainDate($keyword_ids, $date) {
         $params = array();
-        if(empty($keyword_ids)) {
+        if (empty($keyword_ids)) {
             return;
         }
         $params[':date'] = $date;
-        
+
         $query = "
             SELECT 
                 kt.keyword_id,
@@ -636,60 +636,62 @@ class KeywordTrackRepository extends EntityRepository {
                 kt.yahoo_position
             FROM keyword_track kt
             WHERE DATE_FORMAT(kt.track_date, '%Y-%m-%d') = :date
-            AND kt.keyword_id IN (".implode(',', $keyword_ids).")
+            AND kt.keyword_id IN (" . implode(',', $keyword_ids) . ")
         ";
-        
+
         $q = $this->getEntityManager()->getConnection()->executeQuery($query, $params);
-        
+
         $result = $q->fetchAll(2);
         return $result;
     }
-    
+
     public function isProjectParsed($project_id) {
         $params[':project_id'] = $project_id;
-        
+
         $query = "
             SELECT 
                 (SELECT COUNT(id) FROM keyword WHERE project_id=:project_id AND DATE_FORMAT(last_track, '%Y-%m-%d') = DATE_FORMAT(NOW(), '%Y-%m-%d')) as keywords_tracked,
                 (SELECT COUNT(id) FROM keyword WHERE project_id=:project_id) as total_keywords
         ";
-        
+
         $q = $this->getEntityManager()->getConnection()->executeQuery($query, $params);
-        
+
         $result = $q->fetch(2);
 
         return $result['keywords_tracked'] == $result['total_keywords'];
     }
-    
-    public function getOverallKeywordProgressByProjectId($project_id, $nr_days=false, $from_date=false, $to_date=false) {
-        $str_cond = '';
+
+    public function getOverallKeywordProgressByProjectId($project_id, $from_date, $to_date) {
+        $query = "SELECT COUNT(id) AS cnt FROM keyword WHERE project_id=:project_id";
+        $q = $this->getEntityManager()->getConnection()->executeQuery($query, array(':project_id' => $project_id));
+        $result = $q->fetch(2);
+        $cnt_keywords = $result['cnt'];
+
+        $return =  array();
         
-        if($nr_days) {
-            $str_cond .= " AND kt.track_date>=DATE_SUB(NOW(), INTERVAL ".$nr_days." DAY) ";
-        }
-        if($from_date) {
-            $str_cond .= " AND kt.track_date>='".$from_date."' ";
-        }
-        if($to_date) {
-            $str_cond .= " AND kt.track_date<='".$to_date."' ";
-        }
-       
-        $query = "
-            SELECT 
-                ((SUM(CASE WHEN kt.google_position > 0 THEN kt.google_position ELSE 100 END)+(((SELECT COUNT(id) FROM keyword WHERE project_id=".$project_id.")-COUNT(kt.id))*100)))/((SELECT COUNT(id) FROM keyword WHERE project_id=".$project_id.")) as avg_google_position,
-                ((SUM(CASE WHEN kt.bing_position > 0 THEN kt.bing_position ELSE 100 END)+(((SELECT COUNT(id) FROM keyword WHERE project_id=".$project_id.")-COUNT(kt.id))*100)))/((SELECT COUNT(id) FROM keyword WHERE project_id=".$project_id.")) as avg_bing_position,
-                ((SUM(CASE WHEN kt.yahoo_position > 0 THEN kt.yahoo_position ELSE 100 END)+(((SELECT COUNT(id) FROM keyword WHERE project_id=".$project_id.")-COUNT(kt.id))*100)))/((SELECT COUNT(id) FROM keyword WHERE project_id=".$project_id.")) as avg_yahoo_position,
-                DATE_FORMAT(kt.track_date, '%Y-%m-%d') as track_date
-            FROM keyword_track kt, keyword k
-            WHERE kt.keyword_id=k.id
-            AND k.project_id=".$project_id."
-            ".$str_cond."
-            GROUP BY DATE_FORMAT(kt.track_date, '%Y-%m-%d')
-            ORDER BY DATE_FORMAT(kt.track_date, '%Y-%m-%d') DESC
-        ";
-        $q = $this->getEntityManager()->getConnection()->executeQuery($query, array());
-        
-        $result = $q->fetchAll(2);
-        return $result;
+        $date = $from_date;
+        while (strtotime($date) < strtotime($to_date)) {
+            $date = date ("Y-m-d", strtotime("+1 day", strtotime($date)));
+            $query = "
+                SELECT 
+                  COUNT(q.keyword_id),
+                  (SUM(CASE WHEN q.google_position>0 THEN q.google_position ELSE 100 END)+(100*(" . $cnt_keywords . "-COUNT(q.keyword_id))))/(" . $cnt_keywords . "+" . $cnt_keywords . "-COUNT(q.keyword_id)) as avg_google_position, 
+                  (SUM(CASE WHEN q.bing_position>0 THEN q.bing_position ELSE 100 END)+(100*(" . $cnt_keywords . "-COUNT(q.keyword_id))))/(" . $cnt_keywords . "+" . $cnt_keywords . "-COUNT(q.keyword_id)) as avg_bing_position, 
+                  (SUM(CASE WHEN q.yahoo_position>0 THEN q.yahoo_position ELSE 100 END)+(100*(" . $cnt_keywords . "-COUNT(q.keyword_id))))/(" . $cnt_keywords . "+" . $cnt_keywords . "-COUNT(q.keyword_id)) as avg_yahoo_position, 
+                  '".$date."' as track_date
+                FROM keyword k LEFT JOIN (
+                  SELECT 
+                    kt.keyword_id, kt.google_position, kt.bing_position, kt.yahoo_position, MAX(kt.track_date) as track_date 
+                  FROM keyword_track kt, keyword k WHERE kt.keyword_id=k.id AND k.project_id=" . $project_id . " AND kt.track_date<='" . $date . "'
+                  GROUP BY keyword_id
+                ) q ON q.keyword_id = k.id
+                WHERE k.project_id=" . $project_id . "
+            ";
+            $q = $this->getEntityManager()->getConnection()->executeQuery($query, array());
+            $result = $q->fetch(2);
+            $return[] = $result;
+	}
+        return $return;
     }
+
 }
