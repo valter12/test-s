@@ -40,7 +40,7 @@ class CompetitorController extends Controller {
 //        echo $cnt_competitors;die;
         $counter = 0;
         for ($i = 0; $i < $cnt_competitors; $i++) {
-            $competitor_stats = $keyword_overall_for_graph_raw_data = $em->getRepository('FrontFrontBundle:KeywordTrackCompetitor')->getOverallKeywordProgressByProjectId($project_competitors[$i]['project_id'], $project_competitors[$i]['id'], '5');
+            $competitor_stats = $keyword_overall_for_graph_raw_data = $em->getRepository('FrontFrontBundle:KeywordTrackCompetitor')->getOverallKeywordProgressByProjectId($project_competitors[$i]['project_id'], $project_competitors[$i]['id'], date('Y-m-d', strtotime('-5 day', time())), date('Y-m-d'));
             $competitor_stats = array_reverse($competitor_stats);
             $aux_stats = CommonLib::formatDataForGoogleChart($competitor_stats);
             
@@ -195,7 +195,7 @@ class CompetitorController extends Controller {
         $new_top10_keyword_list = $em->getRepository('FrontFrontBundle:KeywordTrackCompetitor')->getNewTop10KeywordsByProjectId($competitor_details['project_id'], $competitor_details['id'], $today, '1 DAY');
         
         // google, bing, yahoo overall stats for keywords
-        $keyword_overall_for_graph_raw_data = $em->getRepository('FrontFrontBundle:KeywordTrackCompetitor')->getOverallKeywordProgressByProjectId($project_details['id'], $competitor_details['id'], '30');
+        $keyword_overall_for_graph_raw_data = $em->getRepository('FrontFrontBundle:KeywordTrackCompetitor')->getOverallKeywordProgressByProjectId($project_details['id'], $competitor_details['id'], date('Y-m-d', strtotime('-30 day', time())), date('Y-m-d'));
         $keyword_overall_for_graph = CommonLib::getOverallKeywordsPosition($keyword_overall_for_graph_raw_data);
         $keyword_overall_for_graph['hash_chart'] = md5($competitor_details['id'].$competitor_details['competitor_name']);
         $keyword_overall_for_graph['project_name'] = $competitor_details['competitor_name'];
