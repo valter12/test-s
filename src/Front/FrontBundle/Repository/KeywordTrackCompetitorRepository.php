@@ -358,18 +358,40 @@ class KeywordTrackCompetitorRepository extends EntityRepository {
         return $result['keywords_tracked'] == $result['total_keywords'];
     }
     
-    public function getOverallKeywordProgressByProjectId($project_id, $competitor_id, $nr_days=false, $from_date=false, $to_date=false) {
-        $str_cond = '';
+    public function getOverallKeywordProgressByProjectId($project_id, $competitor_id, $from_date, $to_date) {
+        $query = "SELECT COUNT(id) AS cnt FROM keyword WHERE project_id=:project_id";
+        $q = $this->getEntityManager()->getConnection()->executeQuery($query, array(':project_id' => $project_id));
+        $result = $q->fetch(2);
+        $cnt_keywords = $result['cnt'];
+
+        $return =  array();
         
-        if($nr_days) {
-            $str_cond .= "AND ktc.track_date>=DATE_SUB(NOW(), INTERVAL ".$nr_days." DAY) ";
-        }
-        if($from_date) {
-            $str_cond .= "AND ktc.track_date>='".$from_date."' ";
-        }
-        if($to_date) {
-            $str_cond .= "AND ktc.track_date<='".$to_date."' ";
-        }
+        $date = $from_date;
+        while (strtotime($date) < strtotime($to_date)) {
+            $date = date ("Y-m-d", strtotime("+1 day", strtotime($date)));
+            $query = "
+                SELECT 
+                  COUNT(q.keyword_id),
+                  (SUM(CASE WHEN q.google_position>0 THEN q.google_position ELSE 100 END)+(100*(" . $cnt_keywords . "-COUNT(q.keyword_id))))/(" . $cnt_keywords . "+" . $cnt_keywords . "-COUNT(q.keyword_id)) as avg_google_position, 
+                  (SUM(CASE WHEN q.bing_position>0 THEN q.bing_position ELSE 100 END)+(100*(" . $cnt_keywords . "-COUNT(q.keyword_id))))/(" . $cnt_keywords . "+" . $cnt_keywords . "-COUNT(q.keyword_id)) as avg_bing_position, 
+                  (SUM(CASE WHEN q.yahoo_position>0 THEN q.yahoo_position ELSE 100 END)+(100*(" . $cnt_keywords . "-COUNT(q.keyword_id))))/(" . $cnt_keywords . "+" . $cnt_keywords . "-COUNT(q.keyword_id)) as avg_yahoo_position, 
+                  '".$date."' as track_date
+                FROM keyword k LEFT JOIN (
+                  SELECT 
+                    ktc.keyword_id, ktc.google_position, ktc.bing_position, ktc.yahoo_position, MAX(ktc.track_date) as track_date 
+                  FROM keyword_track_competitor ktc WHERE ktc.competitor_id=" . $competitor_id . " AND ktc.track_date<='" . $date . "'
+                  GROUP BY ktc.keyword_id
+                ) q ON q.keyword_id = k.id
+                WHERE k.project_id=" . $project_id . "
+            ";
+            $q = $this->getEntityManager()->getConnection()->executeQuery($query, array());
+            $result = $q->fetch(2);
+            $return[] = $result;
+	}
+        
+        return $return;
+        
+        
         $query = "
             SELECT 
                 ((SUM(CASE WHEN ktc.google_position > 0 THEN ktc.google_position ELSE 100 END)+(((SELECT COUNT(id) FROM keyword WHERE project_id=".$project_id.")-COUNT(ktc.id))*100)))/((SELECT COUNT(id) FROM keyword WHERE project_id=".$project_id.")) as avg_google_position,
